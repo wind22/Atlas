@@ -1,0 +1,186 @@
+{
+  "period": "max",
+  "tickers": {
+    "SPY": {
+      "overall": {
+        "name": "标普500",
+        "start": "1994-05-05",
+        "end": "2026-07-07",
+        "bars": 8096,
+        "bh_maxdd": 55.2,
+        "gated_maxdd": 19.5,
+        "bh_cagr": 11.1,
+        "gated_cagr": 9.8,
+        "bh_total": 2824.3,
+        "gated_total": 1906.6,
+        "defensive_episodes": 36,
+        "whipsaw_episodes": 16,
+        "time_pct": {
+          "risk_on": 71.5,
+          "caution": 10.0,
+          "risk_off": 18.3,
+          "oversold": 0.1
+        },
+        "dd_saved": 35.7
+      },
+      "crises": [
+        {
+          "key": "2000",
+          "name": "2000 互联网泡沫",
+          "peak_date": "2000-03-24",
+          "trough_date": "2002-10-09",
+          "bh_drop": -47.5,
+          "flipped": true,
+          "flip_date": "2000-11-10",
+          "days_from_peak": 161,
+          "drop_at_flip": -10.6,
+          "avoided_after_flip": -41.3,
+          "gated_change": -11.3
+        },
+        {
+          "key": "2008",
+          "name": "2008 金融危机",
+          "peak_date": "2007-10-09",
+          "trough_date": "2009-03-09",
+          "bh_drop": -55.2,
+          "flipped": true,
+          "flip_date": "2008-01-03",
+          "days_from_peak": 59,
+          "drop_at_flip": -6.9,
+          "avoided_after_flip": -51.9,
+          "gated_change": -10.3
+        },
+        {
+          "key": "2018Q4",
+          "name": "2018Q4 急跌",
+          "peak_date": "2018-09-20",
+          "trough_date": "2018-12-24",
+          "bh_drop": -19.3,
+          "flipped": true,
+          "flip_date": "2018-12-13",
+          "days_from_peak": 58,
+          "drop_at_flip": -9.2,
+          "avoided_after_flip": -11.2,
+          "gated_change": -12.1
+        },
+        {
+          "key": "2020",
+          "name": "2020 疫情崩盘",
+          "peak_date": "2020-02-19",
+          "trough_date": "2020-03-23",
+          "bh_drop": -33.7,
+          "flipped": true,
+          "flip_date": "2020-02-28",
+          "days_from_peak": 7,
+          "drop_at_flip": -12.4,
+          "avoided_after_flip": -24.3,
+          "gated_change": -12.4
+        },
+        {
+          "key": "2022",
+          "name": "2022 加息熊市",
+          "peak_date": "2022-01-03",
+          "trough_date": "2022-10-12",
+          "bh_drop": -24.5,
+          "flipped": true,
+          "flip_date": "2022-02-23",
+          "days_from_peak": 35,
+          "drop_at_flip": -11.7,
+          "avoided_after_flip": -14.5,
+          "gated_change": -14.3
+        }
+      ]
+    },
+    "QQQ": {
+      "overall": {
+        "name": "纳指100",
+        "start": "2000-06-13",
+        "end": "2026-07-07",
+        "bars": 6554,
+        "bh_maxdd": 80.5,
+        "gated_maxdd": 24.3,
+        "bh_cagr": 8.8,
+        "gated_cagr": 9.1,
+        "bh_total": 793.3,
+        "gated_total": 874.7,
+        "defensive_episodes": 45,
+        "whipsaw_episodes": 22,
+        "time_pct": {
+          "risk_on": 66.9,
+          "caution": 11.8,
+          "risk_off": 21.2,
+          "oversold": 0.1
+        },
+        "dd_saved": 56.2
+      },
+      "crises": [
+        {
+          "key": "2000",
+          "name": "2000 互联网泡沫",
+          "peak_date": "2000-09-01",
+          "trough_date": "2002-10-09",
+          "bh_drop": -80.5,
+          "flipped": true,
+          "flip_date": "2000-09-26",
+          "days_from_peak": 16,
+          "drop_at_flip": -12.9,
+          "avoided_after_flip": -77.6,
+          "gated_change": -17.1
+        },
+        {
+          "key": "2008",
+          "name": "2008 金融危机",
+          "peak_date": "2007-10-31",
+          "trough_date": "2008-11-20",
+          "bh_drop": -53.4,
+          "flipped": true,
+          "flip_date": "2008-01-11",
+          "days_from_peak": 49,
+          "drop_at_flip": -14.4,
+          "avoided_after_flip": -45.6,
+          "gated_change": -22.0
+        },
+        {
+          "key": "2018Q4",
+          "name": "2018Q4 急跌",
+          "peak_date": "2018-08-29",
+          "trough_date": "2018-12-24",
+          "bh_drop": -22.8,
+          "flipped": true,
+          "flip_date": "2018-10-29",
+          "days_from_peak": 42,
+          "drop_at_flip": -12.4,
+          "avoided_after_flip": -11.8,
+          "gated_change": -17.2
+        },
+        {
+          "key": "2020",
+          "name": "2020 疫情崩盘",
+          "peak_date": "2020-02-19",
+          "trough_date": "2020-03-16",
+          "bh_drop": -28.6,
+          "flipped": true,
+          "flip_date": "2020-03-12",
+          "days_from_peak": 16,
+          "drop_at_flip": -25.2,
+          "avoided_after_flip": -4.5,
+          "gated_change": -19.1
+        },
+        {
+          "key": "2022",
+          "name": "2022 加息熊市",
+          "peak_date": "2021-12-27",
+          "trough_date": "2022-10-14",
+          "bh_drop": -35.1,
+          "flipped": true,
+          "flip_date": "2022-01-26",
+          "days_from_peak": 21,
+          "drop_at_flip": -14.6,
+          "avoided_after_flip": -24.0,
+          "gated_change": -18.0
+        }
+      ]
+    }
+  },
+  "as_of": "2026-07-07"
+}
