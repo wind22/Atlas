@@ -1,0 +1,14 @@
+{
+  "name": "Atlas 市场风险监控",
+  "short_name": "Atlas",
+  "description": "趋势风险与机会监控——每天回答：市场偏危险还是偏机会",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#0f131a",
+  "theme_color": "#0f131a",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
