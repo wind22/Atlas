@@ -6,13 +6,13 @@
       "overall": {
         "name": "标普500",
         "start": "1994-05-05",
-        "end": "2026-07-07",
-        "bars": 8096,
+        "end": "2026-07-08",
+        "bars": 8097,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 2824.3,
-            "cagr": 11.1,
+            "total": 2798.2,
+            "cagr": 11.0,
             "maxdd": 55.2,
             "sharpe": 0.65,
             "sortino": 0.83,
@@ -21,7 +21,7 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 1700.4,
+            "total": 1684.3,
             "cagr": 9.4,
             "maxdd": 20.5,
             "sharpe": 0.82,
@@ -35,7 +35,7 @@
             "time_off": 18.3
           },
           "naive200": {
-            "total": 1130.3,
+            "total": 1119.3,
             "cagr": 8.1,
             "maxdd": 30.8,
             "sharpe": 0.7,
@@ -121,25 +121,25 @@
       "overall": {
         "name": "纳指100",
         "start": "2000-06-13",
-        "end": "2026-07-07",
-        "bars": 6554,
+        "end": "2026-07-08",
+        "bars": 6555,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 793.3,
-            "cagr": 8.8,
+            "total": 785.7,
+            "cagr": 8.7,
             "maxdd": 80.5,
-            "sharpe": 0.46,
+            "sharpe": 0.45,
             "sortino": 0.6,
             "ulcer": 40.6,
             "mar": 0.11,
             "label": "买入持有"
           },
           "atlas": {
-            "total": 768.4,
+            "total": 761.0,
             "cagr": 8.6,
             "maxdd": 25.2,
-            "sharpe": 0.64,
+            "sharpe": 0.63,
             "sortino": 0.73,
             "ulcer": 11.4,
             "mar": 0.34,
@@ -150,8 +150,8 @@
             "time_off": 21.2
           },
           "naive200": {
-            "total": 637.7,
-            "cagr": 8.0,
+            "total": 631.4,
+            "cagr": 7.9,
             "maxdd": 44.9,
             "sharpe": 0.58,
             "sortino": 0.64,
@@ -233,5 +233,5 @@
       ]
     }
   },
-  "as_of": "2026-07-07"
+  "as_of": "2026-07-08"
 }
