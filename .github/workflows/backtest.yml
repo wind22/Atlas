@@ -16,10 +16,10 @@ on:
       period:
         description: "历史窗口"
         default: "max"
-  # Auto-rerun whenever the backtest logic changes (re-validate on every change).
+  # Auto-rerun when the backtest logic or this workflow changes (re-validate).
   push:
     branches: [main]
-    paths: ["atlas/backtest.py"]
+    paths: ["atlas/backtest.py", ".github/workflows/backtest.yml"]
 
 permissions:
   contents: write
@@ -53,17 +53,24 @@ jobs:
           path: reports/
 
       - name: Commit report to repo
-        continue-on-error: true
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -f reports/backtest.html reports/backtest.json
           if git diff --cached --quiet; then
             echo "report unchanged; nothing to commit"
-          else
-            # No [skip ci]: this commit intentionally triggers deploy-pages to
-            # publish the refreshed report. It doesn't touch atlas/backtest.py,
-            # so it does NOT re-trigger this backtest workflow (no loop).
-            git commit -m "chore(backtest): 生存回测报告 $(date -u +%Y-%m-%d)"
-            git push origin HEAD:main
+            exit 0
           fi
+          # No [skip ci]: this commit intentionally triggers deploy-pages to
+          # publish the refreshed report. It touches only reports/, so it does
+          # NOT re-trigger this backtest workflow (no loop).
+          git commit -m "chore(backtest): 生存回测报告 $(date -u +%Y-%m-%d)"
+          # Robust push: another workflow (deploy-pages snapshot) may push to
+          # main concurrently, so rebase-and-retry instead of failing the race.
+          for i in 1 2 3 4 5; do
+            if git push origin HEAD:main; then echo "pushed"; exit 0; fi
+            echo "push rejected (attempt $i) — rebasing onto latest main"
+            git fetch origin main && git rebase origin/main || git rebase --abort
+            sleep 3
+          done
+          echo "::error::could not push report after retries"; exit 1
