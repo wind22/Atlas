@@ -101,6 +101,9 @@
   .card .scores .val { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
   .card .dist { font-size: 13px; color: var(--muted); }
   .card .dist b { font-variant-numeric: tabular-nums; }
+  .card .price { font-size: 13px; color: var(--muted); margin: 2px 0 4px; }
+  .card .price b { color: var(--ink); font-size: 17px; font-variant-numeric: tabular-nums; }
+  .heat .cell .px { font-size: 12px; font-variant-numeric: tabular-nums; margin: 1px 0 3px; opacity: .95; }
   .pos { color: var(--good); } .neg { color: var(--bad); }
 
   /* ---- sector heatmap ---- */
@@ -193,6 +196,7 @@
         <div><span class="nm">{{ m.name }}</span> <span class="tk">{{ m.ticker }}</span></div>
         <span class="tag {{ m.status.cls }}">{{ m.status.icon }} {{ m.status.label }}</span>
       </div>
+      <div class="price">现价 <b>{{ m.price }}</b> <span class="{{ 'pos' if m.chg_good else 'neg' }}">{{ m.chg }}</span></div>
       <div class="scores">
         <div><div class="lab">趋势 T</div><div class="val">{{ m.T }}</div></div>
         <div><div class="lab">风险 R</div><div class="val">{{ m.R }}</div></div>
@@ -208,6 +212,7 @@
     {% for s in sectors %}
     <div class="cell" style="{{ s.style }}">
       <div class="nm">{{ s.name }}</div>
+      <div class="px">现价 {{ s.price }}　{{ s.chg }}</div>
       <div class="row">
         <span class="tk">{{ s.ticker }}</span>
         <span class="t">T {{ s.T }}</span>
@@ -224,7 +229,7 @@
     <div class="asset">
       <div>
         <div class="nm">{{ a.name }}</div>
-        <div class="tk">{{ a.ticker }}　T {{ a.T }}</div>
+        <div class="tk">{{ a.ticker }}　现价 {{ a.price }} <span class="{{ 'pos' if a.chg_good else 'neg' }}">{{ a.chg }}</span>　T {{ a.T }}</div>
       </div>
       <div class="arrow tag {{ a.arrow.cls }}" title="{{ a.arrow.label }}">{{ a.arrow.icon }} {{ a.arrow.label }}</div>
     </div>
@@ -238,13 +243,15 @@
     <table>
       <thead>
         <tr>
-          <th>个股</th><th>趋势状态</th><th>动量(12-1)</th><th>距52周高</th><th>风险旗标</th><th>当日提示</th>
+          <th>个股</th><th>现价</th><th>当日</th><th>趋势状态</th><th>动量(12-1)</th><th>距52周高</th><th>风险旗标</th><th>当日提示</th>
         </tr>
       </thead>
       <tbody>
         {% for s in stocks %}
         <tr>
           <td><b>{{ s.name }}</b> <span class="tk" style="color:var(--muted);font-size:12px">{{ s.ticker }}</span></td>
+          <td class="num"><b>{{ s.price }}</b></td>
+          <td class="num {{ 'pos' if s.chg_good else 'neg' }}">{{ s.chg }}</td>
           <td><span class="tag {{ s.trend.cls }}">{{ s.trend.icon }} {{ s.trend.label }}</span></td>
           <td class="num {{ 'pos' if s.mom_good else 'neg' }}">{{ s.mom }}</td>
           <td class="num">{{ s.dist_high }}</td>
