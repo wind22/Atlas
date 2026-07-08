@@ -1,5 +1,6 @@
 {
   "period": "max",
+  "cost_bps": 10.0,
   "tickers": {
     "SPY": {
       "overall": {
@@ -7,21 +8,46 @@
         "start": "1994-05-05",
         "end": "2026-07-07",
         "bars": 8096,
-        "bh_maxdd": 55.2,
-        "gated_maxdd": 19.5,
-        "bh_cagr": 11.1,
-        "gated_cagr": 9.8,
-        "bh_total": 2824.3,
-        "gated_total": 1906.6,
-        "defensive_episodes": 36,
-        "whipsaw_episodes": 16,
-        "time_pct": {
-          "risk_on": 71.5,
-          "caution": 10.0,
-          "risk_off": 18.3,
-          "oversold": 0.1
+        "cost_bps": 10.0,
+        "strategies": {
+          "buyhold": {
+            "total": 2824.3,
+            "cagr": 11.1,
+            "maxdd": 55.2,
+            "sharpe": 0.65,
+            "sortino": 0.83,
+            "ulcer": 14.7,
+            "mar": 0.2,
+            "label": "买入持有"
+          },
+          "atlas": {
+            "total": 1700.4,
+            "cagr": 9.4,
+            "maxdd": 20.5,
+            "sharpe": 0.82,
+            "sortino": 0.96,
+            "ulcer": 7.8,
+            "mar": 0.46,
+            "label": "制度调仓 (Atlas)",
+            "turnover": 108.5,
+            "defensive_episodes": 36,
+            "whipsaw_episodes": 16,
+            "time_off": 18.3
+          },
+          "naive200": {
+            "total": 1130.3,
+            "cagr": 8.1,
+            "maxdd": 30.8,
+            "sharpe": 0.7,
+            "sortino": 0.8,
+            "ulcer": 11.2,
+            "mar": 0.26,
+            "label": "裸 200 日线",
+            "turnover": 213.0
+          }
         },
-        "dd_saved": 35.7
+        "dd_saved": 34.7,
+        "atlas_vs_naive_dd": 10.3
       },
       "crises": [
         {
@@ -35,7 +61,7 @@
           "days_from_peak": 161,
           "drop_at_flip": -10.6,
           "avoided_after_flip": -41.3,
-          "gated_change": -11.3
+          "gated_change": -12.1
         },
         {
           "key": "2008",
@@ -48,7 +74,7 @@
           "days_from_peak": 59,
           "drop_at_flip": -6.9,
           "avoided_after_flip": -51.9,
-          "gated_change": -10.3
+          "gated_change": -10.7
         },
         {
           "key": "2018Q4",
@@ -61,7 +87,7 @@
           "days_from_peak": 58,
           "drop_at_flip": -9.2,
           "avoided_after_flip": -11.2,
-          "gated_change": -12.1
+          "gated_change": -12.4
         },
         {
           "key": "2020",
@@ -74,7 +100,7 @@
           "days_from_peak": 7,
           "drop_at_flip": -12.4,
           "avoided_after_flip": -24.3,
-          "gated_change": -12.4
+          "gated_change": -12.5
         },
         {
           "key": "2022",
@@ -87,7 +113,7 @@
           "days_from_peak": 35,
           "drop_at_flip": -11.7,
           "avoided_after_flip": -14.5,
-          "gated_change": -14.3
+          "gated_change": -14.8
         }
       ]
     },
@@ -97,21 +123,46 @@
         "start": "2000-06-13",
         "end": "2026-07-07",
         "bars": 6554,
-        "bh_maxdd": 80.5,
-        "gated_maxdd": 24.3,
-        "bh_cagr": 8.8,
-        "gated_cagr": 9.1,
-        "bh_total": 793.3,
-        "gated_total": 874.7,
-        "defensive_episodes": 45,
-        "whipsaw_episodes": 22,
-        "time_pct": {
-          "risk_on": 66.9,
-          "caution": 11.8,
-          "risk_off": 21.2,
-          "oversold": 0.1
+        "cost_bps": 10.0,
+        "strategies": {
+          "buyhold": {
+            "total": 793.3,
+            "cagr": 8.8,
+            "maxdd": 80.5,
+            "sharpe": 0.46,
+            "sortino": 0.6,
+            "ulcer": 40.6,
+            "mar": 0.11,
+            "label": "买入持有"
+          },
+          "atlas": {
+            "total": 768.4,
+            "cagr": 8.6,
+            "maxdd": 25.2,
+            "sharpe": 0.64,
+            "sortino": 0.73,
+            "ulcer": 11.4,
+            "mar": 0.34,
+            "label": "制度调仓 (Atlas)",
+            "turnover": 115.5,
+            "defensive_episodes": 45,
+            "whipsaw_episodes": 22,
+            "time_off": 21.2
+          },
+          "naive200": {
+            "total": 637.7,
+            "cagr": 8.0,
+            "maxdd": 44.9,
+            "sharpe": 0.58,
+            "sortino": 0.64,
+            "ulcer": 17.3,
+            "mar": 0.18,
+            "label": "裸 200 日线",
+            "turnover": 180.0
+          }
         },
-        "dd_saved": 56.2
+        "dd_saved": 55.3,
+        "atlas_vs_naive_dd": 19.7
       },
       "crises": [
         {
@@ -125,7 +176,7 @@
           "days_from_peak": 16,
           "drop_at_flip": -12.9,
           "avoided_after_flip": -77.6,
-          "gated_change": -17.1
+          "gated_change": -17.7
         },
         {
           "key": "2008",
@@ -138,7 +189,7 @@
           "days_from_peak": 49,
           "drop_at_flip": -14.4,
           "avoided_after_flip": -45.6,
-          "gated_change": -22.0
+          "gated_change": -22.5
         },
         {
           "key": "2018Q4",
@@ -151,7 +202,7 @@
           "days_from_peak": 42,
           "drop_at_flip": -12.4,
           "avoided_after_flip": -11.8,
-          "gated_change": -17.2
+          "gated_change": -17.6
         },
         {
           "key": "2020",
@@ -164,7 +215,7 @@
           "days_from_peak": 16,
           "drop_at_flip": -25.2,
           "avoided_after_flip": -4.5,
-          "gated_change": -19.1
+          "gated_change": -19.2
         },
         {
           "key": "2022",
@@ -177,7 +228,7 @@
           "days_from_peak": 21,
           "drop_at_flip": -14.6,
           "avoided_after_flip": -24.0,
-          "gated_change": -18.0
+          "gated_change": -18.5
         }
       ]
     }
