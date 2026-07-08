@@ -312,7 +312,9 @@ def write_dashboard(
     prev_report: DailyReport | None,
     path: str = config.DEFAULT_OUTPUT,
 ) -> None:
-    """渲染并写入 ``path``（UTF-8）。"""
+    """渲染并写入 ``path``（UTF-8）。若父目录不存在则自动创建。"""
     html = render_dashboard(report, prev_report)
+    parent = pathlib.Path(path).resolve().parent
+    parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(html)
