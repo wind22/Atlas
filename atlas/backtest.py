@@ -158,9 +158,17 @@ def regime_timeline(
         dates.append(df.index[i])
         rows.append({
             "close": float(df["Close"].iloc[i]),
+            "ma50": ind.ma50,
+            "ma200": ind.ma200,
             "T": result.T,
             "R": result.R,
             "raw_regime": raw.value,
+            # 关键节点（供详情页标注）
+            "broke_ma200": ind.broke_ma200,
+            "reclaimed_ma200": ind.reclaimed_ma200,
+            "golden_cross": ind.golden_cross,
+            "death_cross": ind.death_cross,
+            "new_high": ind.is_new_52w_high,
         })
 
     out = pd.DataFrame(rows, index=pd.DatetimeIndex(dates))

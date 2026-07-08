@@ -149,6 +149,8 @@
   tbody tr.tone-good td:first-child { box-shadow: inset 3px 0 var(--good); }
   tbody tr.tone-warn td:first-child { box-shadow: inset 3px 0 var(--warn); }
   tbody tr.tone-bad  td:first-child { box-shadow: inset 3px 0 var(--bad); }
+  a.tklink { color: var(--ink); text-decoration: none; border-bottom: 1px dashed var(--muted); }
+  a.tklink:hover { color: var(--good); border-color: var(--good); }
   .hintlist { display: flex; flex-wrap: wrap; gap: 4px; }
   .hint { padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 600; }
   .hint.risk { color: var(--bad); background: var(--bad-bg); }
@@ -272,7 +274,7 @@
       <tbody>
         {% for s in stocks %}
         <tr class="tone-{{ s.tone }}">
-          <td><b>{{ s.name }}</b> <span class="tk" style="color:var(--muted);font-size:12px">{{ s.ticker }}</span></td>
+          <td><b>{% if s.link %}<a class="tklink" href="{{ s.link }}">{{ s.name }} ›</a>{% else %}{{ s.name }}{% endif %}</b> <span class="tk" style="color:var(--muted);font-size:12px">{{ s.ticker }}</span></td>
           <td class="num"><b>{{ s.price }}</b></td>
           <td class="num {{ 'pos' if s.chg_good else 'neg' }}">{{ s.chg }}</td>
           <td><span class="tag {{ s.trend.cls }}">{{ s.trend.icon }} {{ s.trend.label }}</span></td>
