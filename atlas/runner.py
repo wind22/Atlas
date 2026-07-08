@@ -173,7 +173,8 @@ def run(
 
     # 9) Persist + render ---------------------------------------------------
     snapshot.save_report(report, db_path)
-    dashboard.write_dashboard(report, prev_report, output)
+    source = "合成数据（离线）" if offline else "yfinance（Yahoo）"
+    dashboard.write_dashboard(report, prev_report, output, source=source)
     return report
 
 

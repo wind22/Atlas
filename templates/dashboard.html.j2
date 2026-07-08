@@ -135,6 +135,12 @@
   th { color: var(--muted); font-weight: 600; font-size: 12px; background: var(--panel); }
   tr:last-child td { border-bottom: none; }
   td.num { font-variant-numeric: tabular-nums; }
+  tbody tr.tone-good { background: rgba(46,150,88,.06); }
+  tbody tr.tone-warn { background: rgba(201,138,18,.07); }
+  tbody tr.tone-bad  { background: rgba(207,59,59,.07); }
+  tbody tr.tone-good td:first-child { box-shadow: inset 3px 0 var(--good); }
+  tbody tr.tone-warn td:first-child { box-shadow: inset 3px 0 var(--warn); }
+  tbody tr.tone-bad  td:first-child { box-shadow: inset 3px 0 var(--bad); }
   .hintlist { display: flex; flex-wrap: wrap; gap: 4px; }
   .hint { padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 600; }
   .hint.risk { color: var(--bad); background: var(--bad-bg); }
@@ -167,7 +173,7 @@
   <header class="top">
     <div>
       <h1>Atlas · 市场风险与机会监控</h1>
-      <div class="sub">{{ date }}{% if prev_date %}　·　对比 {{ prev_date }}{% endif %}</div>
+      <div class="sub">截至 {{ date }} 收盘　·　数据 {{ source }}{% if prev_date %}　·　对比 {{ prev_date }}{% endif %}</div>
     </div>
     <div class="metrics">
       广度 <b>{{ breadth_pct }}</b>　·　VIX <b>{{ vix }}</b>
@@ -248,7 +254,7 @@
       </thead>
       <tbody>
         {% for s in stocks %}
-        <tr>
+        <tr class="tone-{{ s.tone }}">
           <td><b>{{ s.name }}</b> <span class="tk" style="color:var(--muted);font-size:12px">{{ s.ticker }}</span></td>
           <td class="num"><b>{{ s.price }}</b></td>
           <td class="num {{ 'pos' if s.chg_good else 'neg' }}">{{ s.chg }}</td>
@@ -294,6 +300,7 @@
   {% endif %}
 
   <footer>
+    数据来源 {{ source }}｜行情截至 {{ date }} 收盘｜报告生成于 {{ generated_at }}。<br>
     本仪表盘读的是市场情绪与风险状态，不预测顶底、不构成买卖建议。规则详见 architecture.md。<br>
     <a href="backtest.html" style="color:var(--good)">📊 生存回测报告</a>：系统在 2000/2008/2020/2022 大跌中是否及时转防御。
   </footer>

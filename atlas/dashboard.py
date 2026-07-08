@@ -11,6 +11,7 @@
 from __future__ import annotations
 
 import pathlib
+from datetime import datetime, timezone
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
@@ -217,6 +218,7 @@ def _stock_view(report: DailyReport) -> list[dict]:
             "ticker": r.ticker,
             "name": r.name,
             **_price_fields(r),
+            "tone": _status_tag(r)["cls"].removeprefix("tag-"),  # good/warn/bad 行着色
             "trend": _trend_status(r),
             "mom": _fmt_pct(ind.mom_12_1, signed=True),
             "mom_good": ind.mom_12_1 >= 0,
@@ -273,10 +275,19 @@ def _regime_view(report: DailyReport) -> dict:
     return view
 
 
-def _build_context(report: DailyReport, prev_report: DailyReport | None) -> dict:
+def _build_context(
+    report: DailyReport,
+    prev_report: DailyReport | None,
+    source: str | None,
+    generated_at: str | None,
+) -> dict:
+    if generated_at is None:
+        generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     return {
         "date": report.date,
         "prev_date": prev_report.date if prev_report else None,
+        "source": source or "yfinance",
+        "generated_at": generated_at,
         "regime": _regime_view(report),
         "breadth_pct": _fmt_pct(report.breadth_pct),
         "vix": _fmt_num(report.vix) if report.vix is not None else "—",
@@ -300,20 +311,29 @@ def _environment() -> Environment:
     )
 
 
-def render_dashboard(report: DailyReport, prev_report: DailyReport | None) -> str:
-    """渲染完整的自包含 HTML 字符串。"""
+def render_dashboard(
+    report: DailyReport,
+    prev_report: DailyReport | None,
+    *,
+    source: str | None = None,
+    generated_at: str | None = None,
+) -> str:
+    """渲染完整的自包含 HTML 字符串。source 为数据来源标注。"""
     env = _environment()
     template = env.get_template(_TEMPLATE_NAME)
-    return template.render(**_build_context(report, prev_report))
+    return template.render(**_build_context(report, prev_report, source, generated_at))
 
 
 def write_dashboard(
     report: DailyReport,
     prev_report: DailyReport | None,
     path: str = config.DEFAULT_OUTPUT,
+    *,
+    source: str | None = None,
+    generated_at: str | None = None,
 ) -> None:
     """渲染并写入 ``path``（UTF-8）。若父目录不存在则自动创建。"""
-    html = render_dashboard(report, prev_report)
+    html = render_dashboard(report, prev_report, source=source, generated_at=generated_at)
     parent = pathlib.Path(path).resolve().parent
     parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:
