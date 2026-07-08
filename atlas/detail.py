@@ -180,7 +180,8 @@ def _svg(tl: pd.DataFrame, name: str, ticker: str, chart_id: str = "ch") -> str:
     var br=box.getBoundingClientRect(), tx=ev.clientX-br.left+14, ty=ev.clientY-br.top+14;
     if(tx>br.width-170)tx-=190; tip.style.left=tx+"px"; tip.style.top=ty+"px";
   }}
-  function hide(){{cur.style.display="none"; tip.hidden=true;}}
+  // 触屏：手指抬起不隐藏（否则一点就闪没），只有鼠标移出才隐藏。
+  function hide(ev){{if(!ev||ev.pointerType==="mouse"){{cur.style.display="none"; tip.hidden=true;}}}}
   hit.addEventListener("pointermove",move);
   hit.addEventListener("pointerdown",move);
   hit.addEventListener("pointerleave",hide);
