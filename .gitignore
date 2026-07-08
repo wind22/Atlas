@@ -216,8 +216,3 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
-
-# Atlas runtime artifacts
-dashboard.html
-*.sqlite
-atlas_snapshots.sqlite
