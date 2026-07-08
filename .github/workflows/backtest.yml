@@ -16,6 +16,10 @@ on:
       period:
         description: "历史窗口"
         default: "max"
+  # Auto-rerun whenever the backtest logic changes (re-validate on every change).
+  push:
+    branches: [main]
+    paths: ["atlas/backtest.py"]
 
 permissions:
   contents: write
@@ -37,8 +41,8 @@ jobs:
       - name: Run backtest (real data)
         run: |
           python -m atlas.backtest --online \
-            --tickers "${{ github.event.inputs.tickers }}" \
-            --period "${{ github.event.inputs.period }}" \
+            --tickers "${{ github.event.inputs.tickers || 'SPY,QQQ' }}" \
+            --period "${{ github.event.inputs.period || 'max' }}" \
             --out reports
           test -s reports/backtest.html
 
@@ -57,6 +61,9 @@ jobs:
           if git diff --cached --quiet; then
             echo "report unchanged; nothing to commit"
           else
-            git commit -m "chore(backtest): 生存回测报告 $(date -u +%Y-%m-%d) [skip ci]"
+            # No [skip ci]: this commit intentionally triggers deploy-pages to
+            # publish the refreshed report. It doesn't touch atlas/backtest.py,
+            # so it does NOT re-trigger this backtest workflow (no loop).
+            git commit -m "chore(backtest): 生存回测报告 $(date -u +%Y-%m-%d)"
             git push origin HEAD:main
           fi
