@@ -1,0 +1,62 @@
+name: Run survival backtest
+
+# Manually-triggered survival backtest (architecture.md §9). Pulls real long
+# history via yfinance (GitHub runners can reach Yahoo), scores the regime on
+# every bar, and produces a report: did the system flip defensive before/early
+# in 2000 / 2008 / 2018Q4 / 2020 / 2022? The report is uploaded as an artifact
+# AND committed to reports/ so the Pages site can serve it (deploy-pages copies
+# reports/ into the published site). The commit carries [skip ci].
+
+on:
+  workflow_dispatch:
+    inputs:
+      tickers:
+        description: "标的（逗号分隔）"
+        default: "SPY,QQQ"
+      period:
+        description: "历史窗口"
+        default: "max"
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run backtest (real data)
+        run: |
+          python -m atlas.backtest --online \
+            --tickers "${{ github.event.inputs.tickers }}" \
+            --period "${{ github.event.inputs.period }}" \
+            --out reports
+          test -s reports/backtest.html
+
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: survival-backtest
+          path: reports/
+
+      - name: Commit report to repo
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f reports/backtest.html reports/backtest.json
+          if git diff --cached --quiet; then
+            echo "report unchanged; nothing to commit"
+          else
+            git commit -m "chore(backtest): 生存回测报告 $(date -u +%Y-%m-%d) [skip ci]"
+            git push origin HEAD:main
+          fi
