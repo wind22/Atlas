@@ -51,6 +51,29 @@ def _clamp(v: float, lo: float, hi: float) -> float:
     return lo if v < lo else hi if v > hi else v
 
 
+def _fmt_price(x: float) -> str:
+    """价格：两位小数、千分位分隔。"""
+    return f"{float(x):,.2f}"
+
+
+def _day_change(result: TickerResult) -> float:
+    """当日涨跌幅（最新收盘 vs 昨收），小数。"""
+    ind = result.indicators
+    if ind.prev_close:
+        return ind.close / ind.prev_close - 1.0
+    return 0.0
+
+
+def _price_fields(result: TickerResult) -> dict:
+    """现价 + 当日涨跌幅，供各板块统一复用。"""
+    chg = _day_change(result)
+    return {
+        "price": _fmt_price(result.indicators.close),
+        "chg": _fmt_pct(chg, signed=True),
+        "chg_good": chg >= 0,
+    }
+
+
 # --------------------------------------------------------------------------
 # 颜色 / 状态映射
 # --------------------------------------------------------------------------
@@ -152,6 +175,7 @@ def _market_view(report: DailyReport) -> list[dict]:
             "status": _status_tag(r),
             "dist200": _fmt_pct(d, signed=True),
             "dist200_good": d >= 0,
+            **_price_fields(r),
         })
     return out
 
@@ -165,6 +189,7 @@ def _sector_view(report: DailyReport) -> list[dict]:
         "T": _fmt_num(r.T),
         "style": _heat_style(r.T),
         "status": _status_tag(r),
+        **_price_fields(r),
     } for r in rows]
 
 
@@ -177,6 +202,7 @@ def _multi_asset_view(report: DailyReport) -> list[dict]:
         "name": r.name,
         "T": _fmt_num(r.T),
         "arrow": _arrow(r),
+        **_price_fields(r),
     } for r in rows]
 
 
@@ -190,6 +216,7 @@ def _stock_view(report: DailyReport) -> list[dict]:
         out.append({
             "ticker": r.ticker,
             "name": r.name,
+            **_price_fields(r),
             "trend": _trend_status(r),
             "mom": _fmt_pct(ind.mom_12_1, signed=True),
             "mom_good": ind.mom_12_1 >= 0,
