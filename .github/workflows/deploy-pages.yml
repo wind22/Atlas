@@ -50,6 +50,8 @@ jobs:
           python -m atlas --db data/atlas_snapshots.sqlite --output public/index.html \
             || python -m atlas --offline --db data/atlas_snapshots.sqlite --output public/index.html
           test -s public/index.html
+          # PWA assets (manifest, service worker, icons) so the page is installable.
+          cp -f web/* public/ 2>/dev/null || true
           # Publish the survival backtest report too, if it has been generated.
           cp -f reports/backtest.html public/backtest.html 2>/dev/null || true
           cp -f reports/backtest.json public/backtest.json 2>/dev/null || true

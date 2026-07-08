@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Atlas 市场风险监控 · {{ date }}</title>
+<meta name="theme-color" content="#0f131a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Atlas">
 <style>
   :root {
     --bg: #f4f6f9;
@@ -165,6 +173,15 @@
   .alert .who { color: var(--muted); font-size: 12px; margin-top: 2px; }
   .empty { color: var(--muted); font-size: 14px; padding: 8px 2px; }
   footer { margin-top: 40px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+  @media (max-width: 560px) {
+    .wrap { padding: 14px 10px 48px; }
+    h1 { font-size: 20px; }
+    .regime .dot { font-size: 40px; }
+    .kpi .val, .card .scores .val { font-size: 18px; }
+    table { font-size: 13px; }
+    th, td { padding: 6px 8px; }
+    .cards, .heat, .assets { gap: 8px; }
+  }
 </style>
 </head>
 <body>
@@ -306,5 +323,12 @@
   </footer>
 </div>
 
+<script>
+  if ('serviceWorker' in navigator) {
+    addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+</script>
 </body>
 </html>
