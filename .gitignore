@@ -221,3 +221,5 @@ __marimo__/
 dashboard.html
 *.sqlite
 atlas_snapshots.sqlite
+# ...but the CI-persisted daily snapshot DB IS tracked (day-over-day diff + confirmation).
+!data/atlas_snapshots.sqlite
