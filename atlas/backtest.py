@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 
 import pandas as pd
@@ -31,6 +32,10 @@ _EXPOSURE: dict[Regime, float] = {
     Regime.OVERSOLD: 0.5,
     Regime.RISK_OFF: 0.0,
 }
+
+# 每单位换手的成本（佣金 + 滑点近似）。10 bps = 0.1%：满仓→空仓收 0.1%。
+_DEFAULT_COST_BPS = 10.0
+_TRADING_DAYS_YEAR = 252
 
 # 需要有足够尾窗让所有回看（MA200、12-1 动量的 253 根、1 年波动 272 根）与
 # Wilder/EMA 收敛都成立。
@@ -79,6 +84,39 @@ def _cagr(equity: pd.Series, index: pd.DatetimeIndex) -> float:
     if years <= 0 or equity.iloc[0] <= 0:
         return 0.0
     return float((equity.iloc[-1] / equity.iloc[0]) ** (1.0 / years) - 1.0)
+
+
+def _metrics(ret: pd.Series, index: pd.DatetimeIndex) -> dict:
+    """风险 / 收益指标（无风险利率取 0；现金段计 0 收益，如实注明）。
+
+    Sharpe = 年化均值/年化波动；Sortino 只罚下行波动；Ulcer = 回撤深度与
+    持续时间的均方根（越低越好）；MAR = 年化 / 最大回撤。
+    """
+    equity = (1.0 + ret).cumprod()
+    mu, sd = float(ret.mean()), float(ret.std())
+    downside = ret[ret < 0]
+    dsd = float(downside.std()) if len(downside) > 1 else 0.0
+    maxdd = _max_drawdown(equity)
+    dd = (equity.cummax() - equity) / equity.cummax()
+    cagr = _cagr(equity, index)
+    ann = math.sqrt(_TRADING_DAYS_YEAR)
+    return {
+        "total": round((float(equity.iloc[-1]) - 1.0) * 100, 1),
+        "cagr": round(cagr * 100, 1),
+        "maxdd": round(maxdd * 100, 1),
+        "sharpe": round(mu / sd * ann, 2) if sd > 0 else 0.0,
+        "sortino": round(mu / dsd * ann, 2) if dsd > 0 else 0.0,
+        "ulcer": round(math.sqrt(float((dd ** 2).mean())) * 100, 1),
+        "mar": round(cagr / maxdd, 2) if maxdd > 0 else 0.0,
+    }
+
+
+def _gated_returns(exposure: pd.Series, asset_ret: pd.Series, cost_rate: float) -> tuple[pd.Series, float]:
+    """次日生效的敞口收益，扣除换手成本。返回 (净日收益, 总换手)。"""
+    prev = exposure.shift(1).fillna(0.0)          # 昨日持仓 → 今日收益
+    turnover = prev.sub(exposure.shift(2)).abs().fillna(0.0)  # 昨收盘的调仓量
+    net = prev * asset_ret - cost_rate * turnover
+    return net, float(turnover.sum())
 
 
 def regime_timeline(
@@ -132,11 +170,6 @@ def regime_timeline(
     confirmed = _confirm_series([Regime(v) for v in out["raw_regime"]])
     out["regime"] = [r.value for r in confirmed]
     out["exposure"] = [_EXPOSURE[r] for r in confirmed]
-
-    bh_ret = out["close"].pct_change().fillna(0.0)
-    gated_ret = out["exposure"].shift(1).fillna(0.0) * bh_ret  # 次日生效
-    out["bh_equity"] = (1.0 + bh_ret).cumprod()
-    out["gated_equity"] = (1.0 + gated_ret).cumprod()
     return out
 
 
@@ -215,9 +248,12 @@ def _crisis_metrics(out: pd.DataFrame) -> list[dict]:
 
 
 def run_backtest(
-    tickers: list[str], *, offline: bool = False, period: str = "max"
+    tickers: list[str], *, offline: bool = False, period: str = "max",
+    cost_bps: float = _DEFAULT_COST_BPS,
 ) -> dict:
-    """拉数据、对每个标的算制度时间线与指标，返回可渲染的 payload。"""
+    """拉数据，对每个标的算三套策略（买入持有 / 制度调仓 / 裸200日线），
+    全部**扣除换手成本**并计算风险调整指标，返回可渲染的 payload。"""
+    cost_rate = cost_bps / 10000.0
     need = list(dict.fromkeys(tickers + [config.BENCHMARK]))
     if offline:
         frames = data_fetch.synthetic_prices(need + [config.VIX_TICKER])
@@ -231,7 +267,7 @@ def run_backtest(
     if bench is None:
         raise RuntimeError(f"基准 {config.BENCHMARK} 数据缺失，无法回测")
 
-    payload: dict = {"period": period, "tickers": {}, "as_of": None}
+    payload: dict = {"period": period, "cost_bps": cost_bps, "tickers": {}, "as_of": None}
     for t in tickers:
         df = frames.get(t)
         if df is None or len(df) < _WINDOW:
@@ -241,26 +277,45 @@ def run_backtest(
         if out.empty:
             payload["tickers"][t] = {"error": "无有效制度序列"}
             continue
+
+        idx = out.index
+        r = out["close"].pct_change().fillna(0.0)
+        # 制度调仓（Atlas）
+        atlas_ret, atlas_turn = _gated_returns(out["exposure"], r, cost_rate)
+        # 裸 200 日线：收盘价在 200 日线上=满仓，下=空仓（同样次日生效、同样成本）
+        ma200 = df["Close"].rolling(config.MA_LONG).mean().reindex(idx)
+        naive_exp = (out["close"] > ma200).astype(float).fillna(0.0)
+        naive_ret, naive_turn = _gated_returns(naive_exp, r, cost_rate)
+
+        out["bh_equity"] = (1.0 + r).cumprod()
+        out["gated_equity"] = (1.0 + atlas_ret).cumprod()      # 供危机段与图表用
+        out["naive_equity"] = (1.0 + naive_ret).cumprod()
+
+        wt = _whipsaw_and_time(out)
+        strategies = {
+            "buyhold": {**_metrics(r, idx), "label": "买入持有"},
+            "atlas": {**_metrics(atlas_ret, idx), "label": "制度调仓 (Atlas)",
+                      "turnover": round(atlas_turn, 1),
+                      "defensive_episodes": wt["defensive_episodes"],
+                      "whipsaw_episodes": wt["whipsaw_episodes"],
+                      "time_off": wt["time_pct"].get("risk_off", 0)},
+            "naive200": {**_metrics(naive_ret, idx), "label": "裸 200 日线",
+                         "turnover": round(naive_turn, 1)},
+        }
         overall = {
             "name": config.name_of(t),
-            "start": str(out.index[0].date()),
-            "end": str(out.index[-1].date()),
-            "bars": int(len(out)),
-            "bh_maxdd": round(_max_drawdown(out["bh_equity"]) * 100, 1),
-            "gated_maxdd": round(_max_drawdown(out["gated_equity"]) * 100, 1),
-            "bh_cagr": round(_cagr(out["bh_equity"], out.index) * 100, 1),
-            "gated_cagr": round(_cagr(out["gated_equity"], out.index) * 100, 1),
-            "bh_total": round((out["bh_equity"].iloc[-1] - 1.0) * 100, 1),
-            "gated_total": round((out["gated_equity"].iloc[-1] - 1.0) * 100, 1),
-            **_whipsaw_and_time(out),
+            "start": str(idx[0].date()), "end": str(idx[-1].date()),
+            "bars": int(len(out)), "cost_bps": cost_bps,
+            "strategies": strategies,
+            "dd_saved": round(strategies["buyhold"]["maxdd"] - strategies["atlas"]["maxdd"], 1),
+            "atlas_vs_naive_dd": round(strategies["naive200"]["maxdd"] - strategies["atlas"]["maxdd"], 1),
         }
-        overall["dd_saved"] = round(overall["bh_maxdd"] - overall["gated_maxdd"], 1)
         payload["tickers"][t] = {
             "overall": overall,
             "crises": _crisis_metrics(out),
             "_chart": _svg_chart(out, config.name_of(t), t),
         }
-        payload["as_of"] = str(out.index[-1].date())
+        payload["as_of"] = str(idx[-1].date())
     return payload
 
 
@@ -309,20 +364,23 @@ def _svg_chart(out: pd.DataFrame, name: str, ticker: str) -> str:
 
     bh = list(d["bh_equity"])
     ga = list(d["gated_equity"])
-    allv = [math.log(max(1e-9, v)) for v in bh + ga]
+    nv = list(d["naive_equity"]) if "naive_equity" in d else ga
+    allv = [math.log(max(1e-9, v)) for v in bh + ga + nv]
     elo, ehi = min(allv), max(allv)
     espan = (ehi - elo) or 1.0
     top = Hp + 24
     bh_pts = " ".join(f"{xs[i]:.1f},{ey(bh[i],elo,espan,top):.1f}" for i in range(m))
     ga_pts = " ".join(f"{xs[i]:.1f},{ey(ga[i],elo,espan,top):.1f}" for i in range(m))
+    nv_pts = " ".join(f"{xs[i]:.1f},{ey(nv[i],elo,espan,top):.1f}" for i in range(m))
 
     yr0, yr1 = d.index[0].year, d.index[-1].year
     return f'''<svg viewBox="0 0 {W} {Hp+He+40}" width="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="{ticker} 制度与资金曲线">
   <text x="{pad}" y="16" font-size="13" font-weight="700" fill="currentColor">{name} {ticker} · 对数价格（红=确认防御区）· {yr0}–{yr1}</text>
   {''.join(shades)}
   <polyline points="{price_pts}" fill="none" stroke="#1f6feb" stroke-width="1.3"/>
-  <text x="{pad}" y="{Hp+18}" font-size="12" font-weight="700" fill="currentColor">资金曲线（对数）：<tspan fill="#8a94a3">灰=买入持有</tspan> · <tspan fill="#1f6feb">蓝=制度调仓</tspan></text>
+  <text x="{pad}" y="{Hp+18}" font-size="12" font-weight="700" fill="currentColor">资金曲线（对数，含成本）：<tspan fill="#8a94a3">灰=买入持有</tspan> · <tspan fill="#1f6feb">蓝=制度调仓</tspan> · <tspan fill="#c98a12">橙=裸200日线</tspan></text>
   <polyline points="{bh_pts}" fill="none" stroke="#8a94a3" stroke-width="1.2"/>
+  <polyline points="{nv_pts}" fill="none" stroke="#c98a12" stroke-width="1.1" stroke-dasharray="4 3"/>
   <polyline points="{ga_pts}" fill="none" stroke="#1f6feb" stroke-width="1.5"/>
 </svg>'''
 
@@ -358,17 +416,33 @@ def render_html(payload: dict) -> str:
             blocks.append(f'<section class="card"><h2>{t}</h2><p class="bad">{data["error"]}</p></section>')
             continue
         o = data["overall"]
+        s = o["strategies"]
+        bh, at, nv = s["buyhold"], s["atlas"], s["naive200"]
         saved_cls = "good" if o["dd_saved"] > 0 else "bad"
+        vn_cls = "good" if o["atlas_vs_naive_dd"] >= 0 else "bad"
+
+        def srow(m, hl=False):
+            c = ' class="hl"' if hl else ''
+            extra = f'{m.get("turnover","—")}' if "turnover" in m else "0"
+            return (f'<tr{c}><td><b>{m["label"]}</b></td>'
+                    f'<td class="num">{m["total"]}%</td><td class="num">{m["cagr"]}%</td>'
+                    f'<td class="num bad">{m["maxdd"]}%</td><td class="num">{m["ulcer"]}%</td>'
+                    f'<td class="num">{m["sharpe"]}</td><td class="num">{m["sortino"]}</td>'
+                    f'<td class="num">{m["mar"]}</td><td class="num">{extra}</td></tr>')
+
         blocks.append(f'''<section class="card">
-      <h2>{o["name"]} · {t} <span class="muted">{o["start"]} → {o["end"]}（{o["bars"]} 交易日）</span></h2>
+      <h2>{o["name"]} · {t} <span class="muted">{o["start"]} → {o["end"]}（{o["bars"]} 交易日 · 成本 {o["cost_bps"]:g}bps/换手）</span></h2>
       <div class="kpis">
-        <div class="kpi"><div class="lab">买入持有 最大回撤</div><div class="val bad">{o["bh_maxdd"]}%</div></div>
-        <div class="kpi"><div class="lab">制度调仓 最大回撤</div><div class="val good">{o["gated_maxdd"]}%</div></div>
-        <div class="kpi"><div class="lab">回撤改善</div><div class="val {saved_cls}">{o["dd_saved"]:+} pp</div></div>
-        <div class="kpi"><div class="lab">防御时间占比</div><div class="val">{o["time_pct"].get("risk_off",0)}%</div></div>
-        <div class="kpi"><div class="lab">假信号(短促防御)</div><div class="val">{o["whipsaw_episodes"]} / {o["defensive_episodes"]}</div></div>
-        <div class="kpi"><div class="lab">年化 持有 / 调仓</div><div class="val small">{o["bh_cagr"]}% / {o["gated_cagr"]}%</div></div>
+        <div class="kpi"><div class="lab">回撤改善 vs 买入持有</div><div class="val {saved_cls}">{o["dd_saved"]:+} pp</div></div>
+        <div class="kpi"><div class="lab">回撤 vs 裸200日线</div><div class="val {vn_cls}">{o["atlas_vs_naive_dd"]:+} pp</div></div>
+        <div class="kpi"><div class="lab">防御时间占比</div><div class="val">{at["time_off"]}%</div></div>
+        <div class="kpi"><div class="lab">假信号(短促防御)</div><div class="val">{at["whipsaw_episodes"]} / {at["defensive_episodes"]}</div></div>
       </div>
+      <table>
+        <thead><tr><th>策略</th><th>总收益</th><th>年化</th><th>最大回撤</th><th>Ulcer</th><th>Sharpe</th><th>Sortino</th><th>MAR</th><th>总换手</th></tr></thead>
+        <tbody>{srow(bh)}{srow(at, hl=True)}{srow(nv)}</tbody>
+      </table>
+      <h3 class="sub2">逐次大跌（制度调仓 vs 买入持有）</h3>
       <table>
         <thead><tr><th>大跌事件</th><th>买入持有<br>峰→谷</th><th>制度调仓<br>同期</th><th>转防御时点</th><th>转防御后<br>指数又跌(避开)</th></tr></thead>
         <tbody>{_crisis_rows(data["crises"])}</tbody>
@@ -399,16 +473,20 @@ def render_html(payload: dict) -> str:
   table{{width:100%;border-collapse:collapse;margin:8px 0 16px;font-size:14px}}
   th,td{{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}}
   th{{font-size:12px;color:var(--muted);font-weight:600}} td.num{{text-align:right;font-variant-numeric:tabular-nums}}
+  tr.hl td{{background:rgba(31,111,235,.09)}}
+  .sub2{{font-size:14px;margin:18px 0 4px;color:var(--muted)}}
   svg{{background:var(--bg);border:1px solid var(--line);border-radius:10px;margin-top:8px;color:var(--ink)}}
   footer{{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.7}}
 </style></head><body><div class="wrap">
   <h1>Atlas · 生存回测报告</h1>
   <div class="sub">验证系统能否在历次大跌中<b>及时转防御</b>——评估的是「避开深跌」，不是收益。数据截至 {payload.get("as_of","")}</div>
   <div class="method">
-    <b>方法学</b>：逐交易日用<b>固定行业标准参数</b>（200/50 日、ADX 25、VIX 20 …，不做历史最优化）重算趋势分 T 与风险分 R →
-    四制度 + {config.REGIME_CONFIRM_DAYS} 日确认。敞口映射：进攻 1.0 / 警戒·超卖 0.5 / 防御 0.0，<b>次日生效</b>（无前视）。
-    风险分喂入<b>真实 VIX</b>。广度维度置为中性（回测缺行业 ETF 历史成分），故制度主要由价格 / 均线 / 回撤 / 波动 / VIX 驱动。
-    数据源：yfinance（Yahoo）。「转防御后指数又跌」即系统<b>降敞口后避开的那段下跌</b>。
+    <b>方法学</b>：逐交易日用<b>固定行业标准参数</b>（200/50 日、ADX 25、VIX 20 …，不做历史最优化）重算 T/R →
+    四制度 + {config.REGIME_CONFIRM_DAYS} 日确认。敞口：进攻 1.0 / 警戒·超卖 0.5 / 防御 0.0，<b>次日生效</b>（无前视）。风险分喂入<b>真实 VIX</b>。<br>
+    <b>本版新增严格性</b>：① 每次换手扣 <b>{payload.get("cost_bps",0):g} bps</b>（佣金+滑点近似）；
+    ② 对照<b>裸 200 日线</b>基准（价格在 200 日线上=满仓、下=空仓，同样成本）——检验五维度的复杂度是否赚回了自己；
+    ③ 风险调整指标 <b>Sharpe / Sortino / Ulcer / MAR</b>（无风险利率取 0，防御期现金计 0 收益——这对制度调仓偏保守）。<br>
+    <b>局限</b>：广度维度置中性（缺历史成分）；未计税；样本仅 ~5 次独立大跌（n 小）；只能防「有过程」的下跌，防不住隔夜跳空。
   </div>
   {''.join(blocks)}
   <footer>本报告为方法示例，不构成投资建议。回测存在前视/幸存者偏差与实现摩擦（滑点、成本）未计入；
@@ -440,21 +518,27 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--tickers", default="SPY,QQQ", help="逗号分隔，默认 SPY,QQQ")
     p.add_argument("--online", action="store_true", help="用 yfinance 真实数据（默认离线合成）")
     p.add_argument("--period", default="max", help="在线历史窗口（默认 max）")
+    p.add_argument("--cost-bps", type=float, default=_DEFAULT_COST_BPS,
+                   help=f"每次换手成本(bps)，默认 {_DEFAULT_COST_BPS:g}")
     p.add_argument("--out", default="reports", help="报告输出目录（默认 reports/）")
     args = p.parse_args(argv)
 
     tickers = [t.strip().upper() for t in args.tickers.split(",") if t.strip()]
-    payload = run_backtest(tickers, offline=not args.online, period=args.period)
+    payload = run_backtest(tickers, offline=not args.online, period=args.period, cost_bps=args.cost_bps)
     html_path, json_path = write_report(payload, args.out)
 
-    print(f"=== Atlas 生存回测（数据截至 {payload.get('as_of')}）===")
+    print(f"=== Atlas 生存回测（数据截至 {payload.get('as_of')}，成本 {payload.get('cost_bps')}bps）===")
     for t, d in payload["tickers"].items():
         if "error" in d:
             print(f"  {t}: {d['error']}")
             continue
         o = d["overall"]
-        print(f"  {t} {o['start']}→{o['end']}: 买入持有回撤 {o['bh_maxdd']}% vs 制度调仓 {o['gated_maxdd']}% "
-              f"(改善 {o['dd_saved']:+}pp) · 假信号 {o['whipsaw_episodes']}/{o['defensive_episodes']}")
+        s = o["strategies"]
+        for k in ("buyhold", "atlas", "naive200"):
+            m = s[k]
+            print(f"  {t} {m['label']:14}: 总收益 {m['total']:>8}% | 年化 {m['cagr']:>5}% | "
+                  f"最大回撤 {m['maxdd']:>5}% | Sharpe {m['sharpe']:>4} | Sortino {m['sortino']:>4} | Ulcer {m['ulcer']}")
+        print(f"    → 回撤: 制度调仓比买入持有改善 {o['dd_saved']:+}pp,比裸200日线 {o['atlas_vs_naive_dd']:+}pp")
         for c in d["crises"]:
             if c.get("flipped"):
                 print(f"     {c['name']}: 买入持有 {c['bh_drop']}% | 峰后{c['days_from_peak']}日转防御, 避开随后 {c['avoided_after_flip']}%")

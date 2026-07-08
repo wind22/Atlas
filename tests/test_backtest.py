@@ -3,16 +3,31 @@ from atlas import backtest
 
 
 def test_run_backtest_offline_structure():
-    payload = backtest.run_backtest(["SPY", "QQQ"], offline=True)
+    payload = backtest.run_backtest(["SPY", "QQQ"], offline=True, cost_bps=10)
     assert set(payload["tickers"]) == {"SPY", "QQQ"}
+    assert payload["cost_bps"] == 10
     for t in ("SPY", "QQQ"):
         o = payload["tickers"][t]["overall"]
+        s = o["strategies"]
+        assert set(s) == {"buyhold", "atlas", "naive200"}
+        bh, at = s["buyhold"], s["atlas"]
         # drawdowns are non-negative percentages; gating never deepens the drawdown
-        assert 0 <= o["gated_maxdd"] <= 100
-        assert 0 <= o["bh_maxdd"] <= 100
-        assert o["gated_maxdd"] <= o["bh_maxdd"] + 1e-6
-        assert o["dd_saved"] == round(o["bh_maxdd"] - o["gated_maxdd"], 1)
+        assert 0 <= at["maxdd"] <= 100 and 0 <= bh["maxdd"] <= 100
+        assert at["maxdd"] <= bh["maxdd"] + 1e-6
+        assert o["dd_saved"] == round(bh["maxdd"] - at["maxdd"], 1)
+        # every strategy carries the full risk-adjusted metric set
+        for m in s.values():
+            assert {"total", "cagr", "maxdd", "sharpe", "sortino", "ulcer", "mar"} <= set(m)
         assert "crises" in payload["tickers"][t]
+
+
+def test_transaction_cost_reduces_gated_return():
+    """Higher per-switch cost must not increase the gated strategy's return."""
+    cheap = backtest.run_backtest(["QQQ"], offline=True, cost_bps=0)
+    dear = backtest.run_backtest(["QQQ"], offline=True, cost_bps=50)
+    a0 = cheap["tickers"]["QQQ"]["overall"]["strategies"]["atlas"]["total"]
+    a1 = dear["tickers"]["QQQ"]["overall"]["strategies"]["atlas"]["total"]
+    assert a1 <= a0 + 1e-6
 
 
 def test_render_html_is_self_contained():
