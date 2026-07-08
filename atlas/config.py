@@ -56,9 +56,19 @@ MULTI_ASSET_TICKERS: dict[str, str] = {
 
 DEFAULT_STOCKS: dict[str, str] = {
     "AAPL": "苹果",
-    "NVDA": "英伟达",
     "MSFT": "微软",
+    "NVDA": "英伟达",
+    "GOOG": "谷歌",
+    "META": "Meta",
+    "AMD": "AMD",
+    "TSLA": "特斯拉",
+    "PDD": "拼多多",
+    "CLSK": "CleanSpark",
+    "1810.HK": "小米集团",   # 港股
+    "159605.SZ": "159605",   # 深证 ETF
 }
+# 注：港股 / A股 ETF 的「相对 SPY 强度」为跨市场近似口径，仅供参考。
+# NASDAQ 为指数（已由市场层 QQQ 代表），未纳入个股表；如需可加 "^IXIC"。
 
 BENCHMARK: str = "SPY"        # relative-strength benchmark
 VIX_TICKER: str = "^VIX"      # market-fear gauge
