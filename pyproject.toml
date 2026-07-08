@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "atlas-monitor"
+version = "1.0.0"
+description = "Atlas — 趋势风险与机会监控系统 (trend-based risk & opportunity monitor)"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "yfinance>=0.2.40",
+    "Jinja2>=3.1",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7.4"]
+
+[project.scripts]
+atlas = "atlas.runner:main"
+
+[tool.setuptools]
+packages = ["atlas"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
