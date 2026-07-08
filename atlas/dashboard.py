@@ -207,7 +207,8 @@ def _multi_asset_view(report: DailyReport) -> list[dict]:
     } for r in rows]
 
 
-def _stock_view(report: DailyReport) -> list[dict]:
+def _stock_view(report: DailyReport, detail_links: dict[str, str] | None = None) -> list[dict]:
+    links = detail_links or {}
     rows = _by_layer(report, Layer.STOCK)
     out = []
     for r in rows:
@@ -217,6 +218,7 @@ def _stock_view(report: DailyReport) -> list[dict]:
         out.append({
             "ticker": r.ticker,
             "name": r.name,
+            "link": links.get(r.ticker),
             **_price_fields(r),
             "tone": _status_tag(r)["cls"].removeprefix("tag-"),  # good/warn/bad 行着色
             "trend": _trend_status(r),
@@ -280,6 +282,7 @@ def _build_context(
     prev_report: DailyReport | None,
     source: str | None,
     generated_at: str | None,
+    detail_links: dict[str, str] | None,
 ) -> dict:
     if generated_at is None:
         generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -294,7 +297,7 @@ def _build_context(
         "markets": _market_view(report),
         "sectors": _sector_view(report),
         "multi_assets": _multi_asset_view(report),
-        "stocks": _stock_view(report),
+        "stocks": _stock_view(report, detail_links),
         "alerts": _alert_view(report),
     }
 
@@ -317,11 +320,14 @@ def render_dashboard(
     *,
     source: str | None = None,
     generated_at: str | None = None,
+    detail_links: dict[str, str] | None = None,
 ) -> str:
-    """渲染完整的自包含 HTML 字符串。source 为数据来源标注。"""
+    """渲染完整的自包含 HTML 字符串。source 为数据来源标注，detail_links 为个股详情页链接。"""
     env = _environment()
     template = env.get_template(_TEMPLATE_NAME)
-    return template.render(**_build_context(report, prev_report, source, generated_at))
+    return template.render(
+        **_build_context(report, prev_report, source, generated_at, detail_links)
+    )
 
 
 def write_dashboard(
@@ -331,9 +337,12 @@ def write_dashboard(
     *,
     source: str | None = None,
     generated_at: str | None = None,
+    detail_links: dict[str, str] | None = None,
 ) -> None:
     """渲染并写入 ``path``（UTF-8）。若父目录不存在则自动创建。"""
-    html = render_dashboard(report, prev_report, source=source, generated_at=generated_at)
+    html = render_dashboard(
+        report, prev_report, source=source, generated_at=generated_at, detail_links=detail_links
+    )
     parent = pathlib.Path(path).resolve().parent
     parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:

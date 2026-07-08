@@ -14,12 +14,12 @@ def test_snapshots_accumulate_and_enable_confirmation(tmp_path):
     out = str(tmp_path / "dash.html")
 
     # Day 1: cold DB → a "first record", no previous regime.
-    r1 = runner.run(offline=True, db_path=db, output=out, as_of="2026-07-06")
+    r1 = runner.run(offline=True, write_details=False, db_path=db, output=out, as_of="2026-07-06")
     assert r1.market_regime.prev_regime is None
     assert "首次记录" in r1.market_regime.reason
 
     # Day 2: same DB → the run must SEE day 1 as its previous snapshot.
-    r2 = runner.run(offline=True, db_path=db, output=out, as_of="2026-07-07")
+    r2 = runner.run(offline=True, write_details=False, db_path=db, output=out, as_of="2026-07-07")
 
     # Both days persisted.
     assert snapshot.load_report("2026-07-06", db) is not None
@@ -38,8 +38,8 @@ def test_run_reuses_prior_db_file(tmp_path):
     """A second process pointed at the same file keeps accumulating rows."""
     db = str(tmp_path / "snap.sqlite")
     out = str(tmp_path / "dash.html")
-    runner.run(offline=True, db_path=db, output=out, as_of="2026-07-01")
-    runner.run(offline=True, db_path=db, output=out, as_of="2026-07-02")
-    runner.run(offline=True, db_path=db, output=out, as_of="2026-07-03")
+    runner.run(offline=True, write_details=False, db_path=db, output=out, as_of="2026-07-01")
+    runner.run(offline=True, write_details=False, db_path=db, output=out, as_of="2026-07-02")
+    runner.run(offline=True, write_details=False, db_path=db, output=out, as_of="2026-07-03")
     recent = snapshot.load_recent("2026-07-04", 10, db)
     assert [r.date for r in recent] == ["2026-07-03", "2026-07-02", "2026-07-01"]

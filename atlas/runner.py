@@ -11,12 +11,14 @@ and online (yfinance) paths run through the identical scoring code.
 from __future__ import annotations
 
 import argparse
+import os
 import sys
+from datetime import datetime, timezone
 
 import pandas as pd
 
 from . import config
-from . import data_fetch, indicators, scoring, alerts, snapshot, dashboard
+from . import data_fetch, indicators, scoring, alerts, snapshot, dashboard, detail
 from . import regime as regime_mod
 from .config import Layer
 from .types import (
@@ -67,6 +69,7 @@ def run(
     db_path: str = config.DEFAULT_DB,
     output: str = config.DEFAULT_OUTPUT,
     as_of: str | None = None,
+    write_details: bool = True,
 ) -> DailyReport:
     """Run the full monitor pipeline and return the assembled DailyReport."""
     stocks = stocks or dict(config.DEFAULT_STOCKS)
@@ -174,7 +177,24 @@ def run(
     # 9) Persist + render ---------------------------------------------------
     snapshot.save_report(report, db_path)
     source = "合成数据（离线）" if offline else "yfinance（Yahoo）"
-    dashboard.write_dashboard(report, prev_report, output, source=source)
+    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
+    # 每只自选股一页历史详情（价格趋势 + 制度底色 + 关键节点）。
+    detail_links: dict[str, str] = {}
+    if write_details:
+        site_dir = os.path.dirname(os.path.abspath(output))
+        try:
+            detail_links = detail.render_detail_pages(
+                frames, benchmark_df, vix_frame["Close"] if vix_frame is not None and "Close" in vix_frame else None,
+                stocks, site_dir, results, source=source, generated_at=generated_at,
+            )
+        except Exception as exc:  # noqa: BLE001 — 详情页失败不影响看板
+            _warn(f"个股详情页生成失败（{exc!r}）")
+
+    dashboard.write_dashboard(
+        report, prev_report, output,
+        source=source, generated_at=generated_at, detail_links=detail_links,
+    )
     return report
 
 
@@ -206,6 +226,8 @@ def main(argv: list[str] | None = None) -> int:
                         help=f"看板 HTML 输出路径（默认 {config.DEFAULT_OUTPUT}）")
     parser.add_argument("--date", default=None,
                         help="覆盖 as_of 日期（YYYY-MM-DD）")
+    parser.add_argument("--no-details", action="store_true",
+                        help="不生成每只自选股的历史详情页")
     args = parser.parse_args(argv)
 
     try:
@@ -216,6 +238,7 @@ def main(argv: list[str] | None = None) -> int:
             db_path=args.db,
             output=args.output,
             as_of=args.date,
+            write_details=not args.no_details,
         )
     except Exception as exc:  # noqa: BLE001 — surface failure as a clean exit code
         _warn(f"运行失败：{exc!r}")

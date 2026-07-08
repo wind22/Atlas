@@ -47,7 +47,7 @@ jobs:
         # the checked-in snapshot from previous runs → confirmation/diff work.
         run: |
           mkdir -p public data
-          python -m atlas --db data/atlas_snapshots.sqlite --output public/index.html \
+          python -m atlas --period 3y --db data/atlas_snapshots.sqlite --output public/index.html \
             || python -m atlas --offline --db data/atlas_snapshots.sqlite --output public/index.html
           test -s public/index.html
           # PWA assets (manifest, service worker, icons) so the page is installable.
