@@ -1,0 +1,72 @@
+name: Deploy dashboard to GitHub Pages
+
+# Builds the Atlas dashboard (a self-contained HTML page) and publishes it to
+# GitHub Pages. Uses the modern Actions-based Pages flow — no gh-pages branch.
+#
+# NOTE: `schedule` and `workflow_dispatch` only take effect once this file is on
+# the default branch (a GitHub constraint). The `push` trigger runs on the
+# branches listed below so the build can be exercised before the PR is merged.
+# The final deploy step targets the `github-pages` environment, which GitHub
+# restricts to the default branch by default — so the live deploy lands once
+# this is merged to `main` (or after allowing the branch in the environment).
+
+on:
+  push:
+    branches:
+      - main
+      - claude/architecture-first-principles-etlhxm
+  workflow_dispatch:
+  schedule:
+    # ~16:30 US Eastern on weekdays (after market close). UTC; effective on main.
+    - cron: "30 21 * * 1-5"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; let a newer run supersede an in-progress one.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build dashboard
+        # Try live data (GitHub runners can reach Yahoo Finance); fall back to
+        # deterministic offline data so the page always builds green.
+        run: |
+          mkdir -p public
+          python -m atlas --stocks AAPL,NVDA,MSFT --output public/index.html \
+            || python -m atlas --offline --output public/index.html
+          test -s public/index.html
+
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
