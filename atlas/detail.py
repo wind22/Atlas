@@ -8,6 +8,7 @@
 """
 from __future__ import annotations
 
+import json
 import os
 
 import pandas as pd
@@ -67,7 +68,7 @@ def _collect_events(tl: pd.DataFrame) -> list[dict]:
 # --------------------------------------------------------------------------
 # SVG 图
 # --------------------------------------------------------------------------
-def _svg(tl: pd.DataFrame, name: str, ticker: str) -> str:
+def _svg(tl: pd.DataFrame, name: str, ticker: str, chart_id: str = "ch") -> str:
     W, H, pad = 900, 320, 12
     n = len(tl)
     step = max(1, n // 480)   # 控制点数；典型 <480 时 step=1，不丢事件
@@ -105,8 +106,9 @@ def _svg(tl: pd.DataFrame, name: str, ticker: str) -> str:
         da = f' stroke-dasharray="{dash}"' if dash else ""
         return f'<polyline points="{pts}" fill="none" stroke="{stroke}" stroke-width="{w}"{da}/>'
 
-    # 事件标记（圆点，带 tooltip）
+    # 事件标记（圆点）+ 每点事件标签（供交互提示）
     marks = []
+    ev_labels: list[str] = []
     prev_nh = False
     for k in range(m):
         row = d.iloc[k]
@@ -123,19 +125,67 @@ def _svg(tl: pd.DataFrame, name: str, ticker: str) -> str:
         if ev is None and nh and not prev_nh:
             ev = (_WARN, "创52周新高")
         prev_nh = nh
+        ev_labels.append(ev[1] if ev else "")
         if ev:
             marks.append(f'<circle cx="{xs[k]:.1f}" cy="{y(close[k]):.1f}" r="3.6" '
                          f'fill="{ev[0]}" stroke="#fff" stroke-width="0.8"><title>{ev[1]}</title></circle>')
 
     yr0, yr1 = d.index[0].date(), d.index[-1].date()
-    return f'''<svg viewBox="0 0 {W} {H + 8}" width="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="{name} {ticker} 历史趋势">
+
+    # 交互所需的紧凑数据（供内嵌 JS 做十字光标 + 悬浮提示）
+    data = {
+        "t": [str(dt.date()) for dt in d.index],
+        "c": [round(float(v), 2) for v in close],
+        "a": [round(float(v), 2) for v in ma50],
+        "b": [round(float(v), 2) for v in ma200],
+        "g": list(regs),
+        "e": ev_labels,
+        "geom": {"W": W, "H": H, "pad": pad, "lo": round(lo, 4), "span": round(span, 4)},
+    }
+    payload = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+
+    return f'''<div class="chart" id="{chart_id}">
+<svg viewBox="0 0 {W} {H + 8}" width="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="{name} {ticker} 历史趋势">
   {''.join(bands)}
   {poly(ma200, _WARN, 1.1)}
   {poly(ma50, "#8a94a3", 1.0, "3 3")}
   {poly(close, "#1f6feb", 1.7)}
   {''.join(marks)}
+  <g class="cursor" style="display:none">
+    <line class="cvl" y1="{pad}" y2="{H - pad}" stroke="currentColor" stroke-opacity=".4" stroke-width="1"/>
+    <circle class="cdot" r="4" fill="#1f6feb" stroke="#fff" stroke-width="1.2"/>
+  </g>
+  <rect class="hit" x="{pad}" y="{pad}" width="{W - 2 * pad}" height="{H - 2 * pad}" fill="transparent" style="cursor:crosshair"/>
   <text x="{pad}" y="{H + 4}" font-size="11" fill="currentColor">{yr0} → {yr1}　·　<tspan fill="#1f6feb">价格</tspan> <tspan fill="{_WARN}">MA200</tspan> <tspan fill="#8a94a3">MA50</tspan>　·　背景色=当时制度</text>
-</svg>'''
+</svg>
+<div class="tip" hidden></div>
+<script>(function(){{
+  var D={payload}, G=D.geom, m=D.t.length, plotW=G.W-2*G.pad;
+  var RM={{risk_on:"🟢 进攻",caution:"🟡 警戒",risk_off:"🔴 防御",oversold:"🟠 超卖观察"}};
+  var box=document.getElementById("{chart_id}"), svg=box.querySelector("svg");
+  var hit=box.querySelector(".hit"), cur=box.querySelector(".cursor");
+  var vl=box.querySelector(".cvl"), dot=box.querySelector(".cdot"), tip=box.querySelector(".tip");
+  function xOf(i){{return G.pad+plotW*i/(m-1);}}
+  function yOf(v){{return G.pad+(G.H-2*G.pad)*(1-(v-G.lo)/G.span);}}
+  function move(ev){{
+    var r=svg.getBoundingClientRect();
+    var i=Math.round(((ev.clientX-r.left)/r.width*G.W-G.pad)/plotW*(m-1));
+    if(i<0)i=0; if(i>m-1)i=m-1;
+    var x=xOf(i), yv=yOf(D.c[i]);
+    vl.setAttribute("x1",x); vl.setAttribute("x2",x);
+    dot.setAttribute("cx",x); dot.setAttribute("cy",yv); cur.style.display="";
+    var h="<b>"+D.t[i]+"</b><br>价 "+D.c[i].toFixed(2)+"　MA50 "+D.a[i].toFixed(2)+"　MA200 "+D.b[i].toFixed(2)+"<br>"+(RM[D.g[i]]||D.g[i]);
+    if(D.e[i])h+="<br>★ "+D.e[i];
+    tip.innerHTML=h; tip.hidden=false;
+    var br=box.getBoundingClientRect(), tx=ev.clientX-br.left+14, ty=ev.clientY-br.top+14;
+    if(tx>br.width-170)tx-=190; tip.style.left=tx+"px"; tip.style.top=ty+"px";
+  }}
+  function hide(){{cur.style.display="none"; tip.hidden=true;}}
+  hit.addEventListener("pointermove",move);
+  hit.addEventListener("pointerdown",move);
+  hit.addEventListener("pointerleave",hide);
+}})();</script>
+</div>'''
 
 
 # --------------------------------------------------------------------------
@@ -184,7 +234,12 @@ def render_detail_page(
   .r-off{{background:rgba(207,59,59,.16);color:var(--bad)}} .r-os{{background:rgba(214,140,40,.18);color:var(--warn)}}
   .scores{{color:var(--muted);font-size:14px}}
   .panel{{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:18px}}
-  svg{{background:var(--bg);border-radius:10px;color:var(--ink)}}
+  .chart{{position:relative}}
+  .tip{{position:absolute;pointer-events:none;z-index:5;background:var(--panel);border:1px solid var(--line);
+    border-radius:8px;padding:6px 9px;font-size:12px;line-height:1.5;white-space:nowrap;
+    box-shadow:0 2px 8px rgba(0,0,0,.18)}}
+  .tip[hidden]{{display:none}}
+  svg{{background:var(--bg);border-radius:10px;color:var(--ink);touch-action:none}}
   table{{width:100%;border-collapse:collapse;font-size:14px}}
   th,td{{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left}}
   th{{font-size:12px;color:var(--muted)}} td.num{{text-align:right;font-variant-numeric:tabular-nums}}
