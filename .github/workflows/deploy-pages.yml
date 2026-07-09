@@ -19,8 +19,9 @@ on:
   # Publish after the backtest workflow finishes: its report commit is made with
   # GITHUB_TOKEN and thus can't trigger a workflow via `push`, so we chain here.
   # Note: the Pages `deploy` job depends on GitHub's hosted-runner pool; a
-  # transient outage there fails only the deploy (build + artifact are fine), and
-  # the next push/schedule re-publishes the already-committed report.
+  # transient outage there ("job was not acquired by Runner") fails only the
+  # deploy (build + artifact are fine), and the next push/schedule re-publishes
+  # the already-committed report — no rebuild needed.
   workflow_run:
     workflows: ["Run survival backtest"]
     types: [completed]
