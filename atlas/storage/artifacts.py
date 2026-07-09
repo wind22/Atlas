@@ -82,12 +82,14 @@ def build_report_envelope(
     *,
     source: str | None,
     generated_at: str | None,
+    explain: dict | None = None,
 ) -> dict:
     """把 ``DailyReport.to_dict()`` 包成对外的稳定信封。
 
-    ``explain`` / ``state`` 字段留给方案 §5/§6（Phase 3/4）填充，本阶段不产出。
+    ``explain`` 为解释层摘要（方案 §5）；``state`` 留给制度状态机（§6，Phase 4）。
+    两者由 runner 计算后传入，本模块只负责嵌入 —— storage 层保持纯序列化。
     """
-    return {
+    envelope = {
         "schema_version": SCHEMA_VERSION,
         "meta": {
             "date": report.date,
@@ -97,6 +99,9 @@ def build_report_envelope(
         },
         "report": report.to_dict(),
     }
+    if explain is not None:
+        envelope["explain"] = explain
+    return envelope
 
 
 # --------------------------------------------------------------------------
@@ -232,6 +237,7 @@ def write_artifacts(
     generated_at: str | None = None,
     stocks: dict[str, str] | None = None,
     recent_reports: list[DailyReport] | None = None,
+    explain: dict | None = None,
 ) -> dict[str, str]:
     """把 ``report`` 发布成 ``data_dir`` 下的整套 JSON 契约。
 
@@ -242,7 +248,7 @@ def write_artifacts(
     daily_dir = os.path.join(data_dir, "daily")
 
     envelope = build_report_envelope(
-        report, prev_report, source=source, generated_at=generated_at
+        report, prev_report, source=source, generated_at=generated_at, explain=explain
     )
     history = build_regime_history(
         report, _read_json(os.path.join(data_dir, "regime_history.json")), recent_reports

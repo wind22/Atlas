@@ -283,6 +283,7 @@ def _build_context(
     source: str | None,
     generated_at: str | None,
     detail_links: dict[str, str] | None,
+    explain: dict | None,
 ) -> dict:
     if generated_at is None:
         generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -292,6 +293,7 @@ def _build_context(
         "source": source or "yfinance",
         "generated_at": generated_at,
         "regime": _regime_view(report),
+        "explain": explain,
         "breadth_pct": _fmt_pct(report.breadth_pct),
         "vix": _fmt_num(report.vix) if report.vix is not None else "—",
         "markets": _market_view(report),
@@ -321,12 +323,14 @@ def render_dashboard(
     source: str | None = None,
     generated_at: str | None = None,
     detail_links: dict[str, str] | None = None,
+    explain: dict | None = None,
 ) -> str:
-    """渲染完整的自包含 HTML 字符串。source 为数据来源标注，detail_links 为个股详情页链接。"""
+    """渲染完整的自包含 HTML 字符串。source 为数据来源标注，detail_links 为个股详情页链接，
+    explain 为解释层摘要（可选，缺省时看板不显示摘要块）。"""
     env = _environment()
     template = env.get_template(_TEMPLATE_NAME)
     return template.render(
-        **_build_context(report, prev_report, source, generated_at, detail_links)
+        **_build_context(report, prev_report, source, generated_at, detail_links, explain)
     )
 
 
@@ -338,10 +342,12 @@ def write_dashboard(
     source: str | None = None,
     generated_at: str | None = None,
     detail_links: dict[str, str] | None = None,
+    explain: dict | None = None,
 ) -> None:
     """渲染并写入 ``path``（UTF-8）。若父目录不存在则自动创建。"""
     html = render_dashboard(
-        report, prev_report, source=source, generated_at=generated_at, detail_links=detail_links
+        report, prev_report, source=source, generated_at=generated_at,
+        detail_links=detail_links, explain=explain,
     )
     parent = pathlib.Path(path).resolve().parent
     parent.mkdir(parents=True, exist_ok=True)

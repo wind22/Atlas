@@ -21,7 +21,7 @@ test = ["pytest>=7.4"]
 atlas = "atlas.runner:main"
 
 [tool.setuptools]
-packages = ["atlas", "atlas.storage"]
+packages = ["atlas", "atlas.storage", "atlas.report"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

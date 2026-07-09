@@ -81,6 +81,24 @@
   .regime-caution { background: var(--warn-bg); border-color: var(--warn); }
   .regime-off { background: var(--bad-bg); border-color: var(--bad); }
   .regime-oversold { background: var(--warn-bg); border-color: #d98a2b; }
+
+  /* ---- explain summary（今日结论 / 风险 / 机会 / 变化） ---- */
+  .explain { margin-top: 14px; }
+  .explain .headline { font-size: 16px; font-weight: 700; margin: 0 0 10px; }
+  .explain .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .explain .box {
+    border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px;
+    background: var(--panel); box-shadow: var(--shadow);
+  }
+  .explain .box h3 { margin: 0 0 6px; font-size: 13px; font-weight: 600; }
+  .explain .box.risk h3 { color: var(--bad); }
+  .explain .box.opp h3 { color: var(--good); }
+  .explain ul { margin: 0; padding-left: 18px; }
+  .explain li { font-size: 13.5px; margin: 3px 0; }
+  .explain .empty { color: var(--muted); font-size: 13px; }
+  .explain .delta { margin-top: 12px; font-size: 13.5px; }
+  .explain .delta b { color: var(--ink); }
+  @media (max-width: 640px) { .explain .cols { grid-template-columns: 1fr; } }
   .change-badge {
     display: inline-block; margin-top: 8px; padding: 4px 10px; border-radius: 999px;
     background: var(--panel); border: 1px solid var(--line); font-size: 13px; font-weight: 600;
@@ -211,6 +229,34 @@
       {% endif %}
     </div>
   </section>
+
+  {# ---------- 1b) 今日结论摘要（解释层） ---------- #}
+  {% if explain %}
+  <section class="explain">
+    <div class="headline">今日结论：{{ explain.headline }}</div>
+    <div class="cols">
+      <div class="box risk">
+        <h3>⚠️ 主要风险</h3>
+        {% if explain.top_risks %}
+        <ul>{% for r in explain.top_risks %}<li>{{ r }}</li>{% endfor %}</ul>
+        {% else %}
+        <div class="empty">暂无风险类提示</div>
+        {% endif %}
+      </div>
+      <div class="box opp">
+        <h3>✨ 主要机会</h3>
+        {% if explain.top_opportunities %}
+        <ul>{% for o in explain.top_opportunities %}<li>{{ o }}</li>{% endfor %}</ul>
+        {% else %}
+        <div class="empty">暂无机会类提示</div>
+        {% endif %}
+      </div>
+    </div>
+    {% if explain.delta_from_yesterday %}
+    <div class="delta"><b>较昨日变化：</b>{{ explain.delta_from_yesterday | join('；') }}</div>
+    {% endif %}
+  </section>
+  {% endif %}
 
   {# ---------- 2) 大盘卡片区 ---------- #}
   <h2>大盘</h2>
