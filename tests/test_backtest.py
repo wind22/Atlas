@@ -21,6 +21,23 @@ def test_run_backtest_offline_structure():
         assert "crises" in payload["tickers"][t]
 
 
+def test_max_drawdown_clamped_to_100pct():
+    import pandas as pd
+    # a corrupt equity path (bad tick → negative) must not report >100% drawdown
+    assert backtest._max_drawdown(pd.Series([1.0, 5.0, -2.0, 3.0])) == 1.0
+    assert 0.0 <= backtest._max_drawdown(pd.Series([1.0, 2.0, 0.001, 1.5])) <= 1.0
+
+
+def test_clean_prices_removes_isolated_spike():
+    import pandas as pd
+    idx = pd.bdate_range("2024-01-01", periods=30)
+    df = pd.DataFrame({"Open": 100.0, "High": 101.0, "Low": 99.0,
+                       "Close": 100.0, "Volume": 1.0}, index=idx)
+    df.iloc[15, df.columns.get_loc("Close")] = 1000.0   # 10x bad tick
+    cleaned = backtest._clean_prices(df)
+    assert cleaned["Close"].max() < 200                 # spike interpolated away
+
+
 def test_multi_ticker_report_has_nav_and_anchors():
     payload = backtest.run_backtest(["SPY", "QQQ", "AAPL", "MSFT"], offline=True)
     html = backtest.render_html(payload)

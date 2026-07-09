@@ -58,7 +58,38 @@ def _max_drawdown(equity: pd.Series) -> float:
     if equity is None or len(equity) == 0:
         return 0.0
     peak = equity.cummax()
-    return float(((peak - equity) / peak).max())
+    dd = ((peak - equity) / peak).replace([float("inf"), float("-inf")], float("nan")).dropna()
+    if len(dd) == 0:
+        return 0.0
+    return float(min(1.0, max(0.0, dd.max())))  # 多头/空仓策略回撤上限 100%
+
+
+def _clean_prices(df: pd.DataFrame) -> pd.DataFrame:
+    """去除明显坏点：非正/缺失价，以及孤立价格尖峰（数据源错误，如某韩股）。
+
+    以 5 日滚动中位数为参照，偏离 >4× 或 <1/4× 的收盘视为坏点，用相邻有效值
+    线性插值替换（当天 OHLC 一并用修正收盘，视为无有效日内区间）。
+    """
+    import numpy as np
+
+    df = df[df["Close"].notna() & (df["Close"] > 0)].copy()
+    if len(df) < 7:
+        return df
+    c = df["Close"].to_numpy(dtype=float)
+    med = pd.Series(c).rolling(5, center=True, min_periods=3).median().to_numpy()
+    with np.errstate(divide="ignore", invalid="ignore"):
+        ratio = np.where(med > 0, c / med, 1.0)
+    bad = (ratio > 4.0) | (ratio < 0.25)
+    if bad.any() and (~bad).sum() >= 2:
+        i = np.arange(len(c))
+        good = ~bad
+        fixed = np.interp(i, i[good], c[good])
+        for col in ("Open", "High", "Low", "Close"):
+            if col in df.columns:
+                arr = df[col].to_numpy(dtype=float, copy=True)
+                arr[bad] = fixed[bad]
+                df[col] = arr
+    return df
 
 
 def _confirm_series(raw: list[Regime]) -> list[Regime]:
@@ -129,6 +160,7 @@ def regime_timeline(
     name = config.name_of(ticker)
     layer = config.layer_of(ticker)
 
+    df = _clean_prices(df)
     bench = bench.reindex(df.index).ffill().bfill()
     vix_aligned = (
         vix.reindex(df.index).ffill() if vix is not None else pd.Series(index=df.index, dtype=float)
@@ -281,6 +313,7 @@ def run_backtest(
         if df is None or len(df) < _WINDOW:
             payload["tickers"][t] = {"error": "数据不足"}
             continue
+        df = _clean_prices(df)   # 去坏点后再算裸200线基准，与制度时间线一致
         out = regime_timeline(t, df, bench, vix)
         if out.empty:
             payload["tickers"][t] = {"error": "无有效制度序列"}

@@ -16,6 +16,11 @@ on:
   schedule:
     # ~16:30 US Eastern on weekdays (after market close). UTC.
     - cron: "30 21 * * 1-5"
+  # Publish after the backtest workflow finishes: its report commit is made with
+  # GITHUB_TOKEN and thus can't trigger a workflow via `push`, so we chain here.
+  workflow_run:
+    workflows: ["Run survival backtest"]
+    types: [completed]
 
 permissions:
   contents: write   # push the daily snapshot DB back to the repo
