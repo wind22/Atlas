@@ -42,8 +42,22 @@ def test_multi_ticker_report_has_nav_and_anchors():
     payload = backtest.run_backtest(["SPY", "QQQ", "AAPL", "MSFT"], offline=True)
     html = backtest.render_html(payload)
     assert 'class="nav"' in html                       # index shown for many tickers
-    assert html.count('class="card" id="bt-') == 4     # one anchored section per ticker
+    for t in ("SPY", "QQQ", "AAPL", "MSFT"):           # one anchored section per ticker
+        assert f'id="{backtest._anchor(t)}"' in html
     assert 'href="index.html"' in html                 # back to dashboard
+
+
+def test_tradeoff_overview_present_for_multi_ticker():
+    payload = backtest.run_backtest(["SPY", "QQQ", "AAPL", "MSFT"], offline=True)
+    html = backtest.render_html(payload)
+    # 收益 vs 回撤总览：仅多标的时出现，含散点图与汇总
+    assert 'id="bt-tradeoff"' in html
+    assert "收益 vs 回撤" in html and "回撤改善" in html
+    assert html.count("<svg") >= 5          # 4 只资金曲线 + 1 张权衡散点图
+    assert 'href="#bt-tradeoff"' in html     # 导航可跳转（>3 标的时显示索引）
+    # 单标的不渲染总览
+    solo = backtest.render_html(backtest.run_backtest(["SPY"], offline=True))
+    assert 'id="bt-tradeoff"' not in solo
 
 
 def test_transaction_cost_reduces_gated_return():
