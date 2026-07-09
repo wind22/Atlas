@@ -562,10 +562,10 @@ def _tradeoff_overview(payload: dict) -> str:
         <div class="kpi"><div class="lab">风险调整(Sharpe)变好</div><div class="val">{better_sharpe} / {n}</div></div>
       </div>
       {scatter}
-      <table>
+      <div class="tscroll"><table>
         <thead><tr><th>标的</th><th>买入持有<br>年化</th><th>制度调仓<br>年化</th><th>收益差</th><th>回撤改善</th><th>Sharpe 差</th></tr></thead>
         <tbody>{''.join(trs)}</tbody>
-      </table>
+      </table></div>
       <p class="muted" style="font-size:13px">读法：<b>右上角</b>=既省回撤又不亏收益的「免费午餐」（多为经历过深熊的高波动股，少亏即多赚）；
       <b>右下角</b>=用一部分收益换生存的常态（宽基指数代价极小，特斯拉这类深 V 暴涨股代价最大）。
       系统的目标不是收益最大化，而是<b>以尽量小的收益代价，换尽量大的避坑能力</b>——铁律 Ⅰ「生存优先」。</p>
@@ -608,15 +608,15 @@ def render_html(payload: dict) -> str:
         <div class="kpi"><div class="lab">防御时间占比</div><div class="val">{at["time_off"]}%</div></div>
         <div class="kpi"><div class="lab">假信号(短促防御)</div><div class="val">{at["whipsaw_episodes"]} / {at["defensive_episodes"]}</div></div>
       </div>
-      <table>
+      <div class="tscroll"><table>
         <thead><tr><th>策略</th><th>总收益</th><th>年化</th><th>最大回撤</th><th>Ulcer</th><th>Sharpe</th><th>Sortino</th><th>MAR</th><th>总换手</th></tr></thead>
         <tbody>{srow(bh)}{srow(at, hl=True)}{srow(nv)}</tbody>
-      </table>
+      </table></div>
       <h3 class="sub2">逐次大跌（制度调仓 vs 买入持有）</h3>
-      <table>
+      <div class="tscroll"><table>
         <thead><tr><th>大跌事件</th><th>买入持有<br>峰→谷</th><th>制度调仓<br>同期</th><th>转防御时点</th><th>转防御后<br>指数又跌(避开)</th></tr></thead>
         <tbody>{_crisis_rows(data["crises"])}</tbody>
-      </table>
+      </table></div>
       {data["_chart"]}
     </section>''')
 
@@ -644,13 +644,26 @@ def render_html(payload: dict) -> str:
   .kpi{{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}}
   .kpi .lab{{font-size:11px;color:var(--muted)}} .kpi .val{{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}}
   .kpi .val.small{{font-size:16px}}
+  /* 表格在窄屏横向滚动，而非挤压变形 */
+  .tscroll{{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:10px;margin:8px 0 16px}}
+  .tscroll table{{margin:0;border:0}}
   table{{width:100%;border-collapse:collapse;margin:8px 0 16px;font-size:14px}}
-  th,td{{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}}
+  th,td{{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;white-space:nowrap}}
   th{{font-size:12px;color:var(--muted);font-weight:600}} td.num{{text-align:right;font-variant-numeric:tabular-nums}}
   tr.hl td{{background:rgba(31,111,235,.09)}}
   .sub2{{font-size:14px;margin:18px 0 4px;color:var(--muted)}}
-  svg{{background:var(--bg);border:1px solid var(--line);border-radius:10px;margin-top:8px;color:var(--ink)}}
+  svg{{display:block;max-width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;margin-top:8px;color:var(--ink)}}
   footer{{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.7}}
+  @media (max-width:560px){{
+    .wrap{{padding:16px 10px 48px}}
+    h1{{font-size:20px}} h2{{font-size:16px}}
+    .card{{padding:14px;border-radius:12px}}
+    .method{{padding:12px;font-size:12px}}
+    .kpis{{grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px}}
+    .kpi .val{{font-size:18px}}
+    table{{font-size:13px}} th,td{{padding:6px 8px}}
+    .nav{{line-height:1.9}}
+  }}
 </style></head><body><div class="wrap">
   <a class="back" href="index.html">← 返回看板</a>
   <h1>Atlas · 生存回测报告</h1>
