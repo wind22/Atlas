@@ -21,6 +21,14 @@ def test_run_backtest_offline_structure():
         assert "crises" in payload["tickers"][t]
 
 
+def test_multi_ticker_report_has_nav_and_anchors():
+    payload = backtest.run_backtest(["SPY", "QQQ", "AAPL", "MSFT"], offline=True)
+    html = backtest.render_html(payload)
+    assert 'class="nav"' in html                       # index shown for many tickers
+    assert html.count('class="card" id="bt-') == 4     # one anchored section per ticker
+    assert 'href="index.html"' in html                 # back to dashboard
+
+
 def test_transaction_cost_reduces_gated_return():
     """Higher per-switch cost must not increase the gated strategy's return."""
     cheap = backtest.run_backtest(["QQQ"], offline=True, cost_bps=0)
