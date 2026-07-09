@@ -241,7 +241,7 @@
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 551744.1,
+            "total": 551744.3,
             "cagr": 21.5,
             "maxdd": 81.8,
             "sharpe": 0.67,
@@ -251,21 +251,21 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 57933.8,
-            "cagr": 15.4,
+            "total": 59270.1,
+            "cagr": 15.5,
             "maxdd": 82.6,
             "sharpe": 0.62,
             "sortino": 0.71,
-            "ulcer": 43.6,
+            "ulcer": 43.1,
             "mar": 0.19,
             "label": "制度调仓 (Atlas)",
-            "turnover": 264.0,
-            "defensive_episodes": 109,
-            "whipsaw_episodes": 49,
+            "turnover": 263.0,
+            "defensive_episodes": 107,
+            "whipsaw_episodes": 47,
             "time_off": 24.1
           },
           "naive200": {
-            "total": 159602.5,
+            "total": 159602.2,
             "cagr": 18.1,
             "maxdd": 91.6,
             "sharpe": 0.69,
@@ -356,7 +356,7 @@
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 174876.5,
+            "total": 174876.4,
             "cagr": 21.1,
             "maxdd": 69.4,
             "sharpe": 0.75,
@@ -366,17 +366,17 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 28075.8,
+            "total": 27579.9,
             "cagr": 15.5,
             "maxdd": 56.1,
             "sharpe": 0.72,
             "sortino": 0.87,
-            "ulcer": 26.4,
+            "ulcer": 26.6,
             "mar": 0.28,
             "label": "制度调仓 (Atlas)",
-            "turnover": 220.0,
-            "defensive_episodes": 83,
-            "whipsaw_episodes": 42,
+            "turnover": 219.0,
+            "defensive_episodes": 82,
+            "whipsaw_episodes": 41,
             "time_off": 18.8
           },
           "naive200": {
@@ -461,7 +461,7 @@
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 117340.7,
+            "total": 117340.8,
             "cagr": 31.0,
             "maxdd": 89.7,
             "sharpe": 0.76,
@@ -471,7 +471,7 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 133334.3,
+            "total": 134023.4,
             "cagr": 31.6,
             "maxdd": 57.0,
             "sharpe": 0.89,
@@ -1121,21 +1121,21 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 33539.7,
-            "cagr": 15.3,
+            "total": 34296.0,
+            "cagr": 15.4,
             "maxdd": 76.5,
             "sharpe": 0.56,
             "sortino": 0.67,
-            "ulcer": 50.6,
+            "ulcer": 50.5,
             "mar": 0.2,
             "label": "制度调仓 (Atlas)",
-            "turnover": 240.5,
-            "defensive_episodes": 120,
+            "turnover": 239.5,
+            "defensive_episodes": 119,
             "whipsaw_episodes": 49,
             "time_off": 34.4
           },
           "naive200": {
-            "total": 60243.4,
+            "total": 60243.3,
             "cagr": 17.0,
             "maxdd": 80.0,
             "sharpe": 0.59,
@@ -1226,8 +1226,8 @@
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 176.8,
-            "cagr": 16.4,
+            "total": 178.1,
+            "cagr": 16.5,
             "maxdd": 76.1,
             "sharpe": 0.57,
             "sortino": 0.92,
@@ -1297,8 +1297,8 @@
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 5.0,
-            "cagr": 1.5,
+            "total": 5.2,
+            "cagr": 1.6,
             "maxdd": 45.4,
             "sharpe": 0.2,
             "sortino": 0.35,
@@ -1346,7 +1346,7 @@
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 9081.5,
+            "total": 9056.8,
             "cagr": 19.6,
             "maxdd": 47.3,
             "sharpe": 0.71,
@@ -1356,33 +1356,33 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 1360.4,
-            "cagr": 11.2,
-            "maxdd": 42.5,
+            "total": 1397.8,
+            "cagr": 11.3,
+            "maxdd": 41.4,
             "sharpe": 0.56,
-            "sortino": 0.69,
-            "ulcer": 21.7,
-            "mar": 0.26,
+            "sortino": 0.7,
+            "ulcer": 21.4,
+            "mar": 0.27,
             "label": "制度调仓 (Atlas)",
-            "turnover": 170.0,
-            "defensive_episodes": 71,
-            "whipsaw_episodes": 34,
-            "time_off": 25.4
+            "turnover": 169.0,
+            "defensive_episodes": 70,
+            "whipsaw_episodes": 33,
+            "time_off": 25.3
           },
           "naive200": {
-            "total": 1518.6,
+            "total": 1514.2,
             "cagr": 11.6,
             "maxdd": 48.6,
             "sharpe": 0.56,
-            "sortino": 0.67,
+            "sortino": 0.66,
             "ulcer": 23.6,
             "mar": 0.24,
             "label": "裸 200 日线",
             "turnover": 213.0
           }
         },
-        "dd_saved": 4.8,
-        "atlas_vs_naive_dd": 6.1
+        "dd_saved": 5.9,
+        "atlas_vs_naive_dd": 7.2
       },
       "crises": [
         {
@@ -1461,7 +1461,7 @@
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 28301.3,
+            "total": 28133.4,
             "cagr": 28.8,
             "maxdd": 84.6,
             "sharpe": 0.78,
@@ -1471,22 +1471,22 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 9123.1,
+            "total": 9111.5,
             "cagr": 22.5,
-            "maxdd": 46.6,
+            "maxdd": 45.6,
             "sharpe": 0.77,
             "sortino": 0.97,
             "ulcer": 23.0,
-            "mar": 0.48,
+            "mar": 0.49,
             "label": "制度调仓 (Atlas)",
             "turnover": 152.5,
-            "defensive_episodes": 62,
+            "defensive_episodes": 61,
             "whipsaw_episodes": 35,
             "time_off": 23.4
           },
           "naive200": {
-            "total": 3958.9,
-            "cagr": 18.1,
+            "total": 3934.9,
+            "cagr": 18.0,
             "maxdd": 57.6,
             "sharpe": 0.65,
             "sortino": 0.79,
@@ -1496,8 +1496,8 @@
             "turnover": 184.0
           }
         },
-        "dd_saved": 38.0,
-        "atlas_vs_naive_dd": 11.0
+        "dd_saved": 39.0,
+        "atlas_vs_naive_dd": 12.0
       },
       "crises": [
         {
@@ -1511,7 +1511,7 @@
           "days_from_peak": 2,
           "drop_at_flip": -4.8,
           "avoided_after_flip": -81.5,
-          "gated_change": -23.4
+          "gated_change": -19.4
         },
         {
           "key": "2018Q4",
