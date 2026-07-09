@@ -11,8 +11,8 @@
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 2798.2,
-            "cagr": 11.0,
+            "total": 2815.3,
+            "cagr": 11.1,
             "maxdd": 55.2,
             "sharpe": 0.65,
             "sortino": 0.83,
@@ -21,7 +21,7 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 1684.3,
+            "total": 1694.8,
             "cagr": 9.4,
             "maxdd": 20.5,
             "sharpe": 0.82,
@@ -35,7 +35,7 @@
             "time_off": 18.3
           },
           "naive200": {
-            "total": 1119.3,
+            "total": 1126.5,
             "cagr": 8.1,
             "maxdd": 30.8,
             "sharpe": 0.7,
@@ -126,20 +126,20 @@
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 785.7,
-            "cagr": 8.7,
+            "total": 795.8,
+            "cagr": 8.8,
             "maxdd": 80.5,
-            "sharpe": 0.45,
+            "sharpe": 0.46,
             "sortino": 0.6,
             "ulcer": 40.6,
             "mar": 0.11,
             "label": "买入持有"
           },
           "atlas": {
-            "total": 761.0,
-            "cagr": 8.6,
+            "total": 770.8,
+            "cagr": 8.7,
             "maxdd": 25.2,
-            "sharpe": 0.63,
+            "sharpe": 0.64,
             "sortino": 0.73,
             "ulcer": 11.4,
             "mar": 0.34,
@@ -150,11 +150,11 @@
             "time_off": 21.2
           },
           "naive200": {
-            "total": 631.4,
-            "cagr": 7.9,
+            "total": 639.8,
+            "cagr": 8.0,
             "maxdd": 44.9,
             "sharpe": 0.58,
-            "sortino": 0.64,
+            "sortino": 0.65,
             "ulcer": 17.3,
             "mar": 0.18,
             "label": "裸 200 日线",
@@ -231,7 +231,1332 @@
           "gated_change": -18.5
         }
       ]
+    },
+    "AAPL": {
+      "overall": {
+        "name": "苹果",
+        "start": "1982-03-19",
+        "end": "2026-07-08",
+        "bars": 11164,
+        "cost_bps": 10.0,
+        "strategies": {
+          "buyhold": {
+            "total": 551744.5,
+            "cagr": 21.5,
+            "maxdd": 81.8,
+            "sharpe": 0.67,
+            "sortino": 0.92,
+            "ulcer": 38.1,
+            "mar": 0.26,
+            "label": "买入持有"
+          },
+          "atlas": {
+            "total": 59515.8,
+            "cagr": 15.5,
+            "maxdd": 82.6,
+            "sharpe": 0.63,
+            "sortino": 0.71,
+            "ulcer": 43.6,
+            "mar": 0.19,
+            "label": "制度调仓 (Atlas)",
+            "turnover": 263.0,
+            "defensive_episodes": 108,
+            "whipsaw_episodes": 48,
+            "time_off": 24.1
+          },
+          "naive200": {
+            "total": 159601.3,
+            "cagr": 18.1,
+            "maxdd": 91.6,
+            "sharpe": 0.69,
+            "sortino": 0.81,
+            "ulcer": 48.9,
+            "mar": 0.2,
+            "label": "裸 200 日线",
+            "turnover": 265.0
+          }
+        },
+        "dd_saved": -0.8,
+        "atlas_vs_naive_dd": 9.0
+      },
+      "crises": [
+        {
+          "key": "2000",
+          "name": "2000 互联网泡沫",
+          "peak_date": "2000-03-22",
+          "trough_date": "2002-10-09",
+          "bh_drop": -81.1,
+          "flipped": true,
+          "flip_date": "2000-07-25",
+          "days_from_peak": 86,
+          "drop_at_flip": -30.6,
+          "avoided_after_flip": -72.9,
+          "gated_change": -80.8
+        },
+        {
+          "key": "2008",
+          "name": "2008 金融危机",
+          "peak_date": "2007-12-28",
+          "trough_date": "2009-01-20",
+          "bh_drop": -60.9,
+          "flipped": true,
+          "flip_date": "2008-01-24",
+          "days_from_peak": 17,
+          "drop_at_flip": -32.1,
+          "avoided_after_flip": -42.3,
+          "gated_change": -38.5
+        },
+        {
+          "key": "2018Q4",
+          "name": "2018Q4 急跌",
+          "peak_date": "2018-10-03",
+          "trough_date": "2019-01-03",
+          "bh_drop": -38.5,
+          "flipped": true,
+          "flip_date": "2018-11-15",
+          "days_from_peak": 31,
+          "drop_at_flip": -17.2,
+          "avoided_after_flip": -25.7,
+          "gated_change": -18.3
+        },
+        {
+          "key": "2020",
+          "name": "2020 疫情崩盘",
+          "peak_date": "2020-02-12",
+          "trough_date": "2020-03-23",
+          "bh_drop": -31.4,
+          "flipped": true,
+          "flip_date": "2020-03-19",
+          "days_from_peak": 25,
+          "drop_at_flip": -25.2,
+          "avoided_after_flip": -8.3,
+          "gated_change": -17.5
+        },
+        {
+          "key": "2022",
+          "name": "2022 加息熊市",
+          "peak_date": "2022-01-03",
+          "trough_date": "2022-06-16",
+          "bh_drop": -28.3,
+          "flipped": true,
+          "flip_date": "2022-05-06",
+          "days_from_peak": 86,
+          "drop_at_flip": -13.3,
+          "avoided_after_flip": -17.3,
+          "gated_change": -13.6
+        }
+      ]
+    },
+    "MSFT": {
+      "overall": {
+        "name": "微软",
+        "start": "1987-06-17",
+        "end": "2026-07-08",
+        "bars": 9838,
+        "cost_bps": 10.0,
+        "strategies": {
+          "buyhold": {
+            "total": 174876.4,
+            "cagr": 21.1,
+            "maxdd": 69.4,
+            "sharpe": 0.75,
+            "sortino": 1.04,
+            "ulcer": 29.9,
+            "mar": 0.3,
+            "label": "买入持有"
+          },
+          "atlas": {
+            "total": 27550.3,
+            "cagr": 15.5,
+            "maxdd": 56.1,
+            "sharpe": 0.72,
+            "sortino": 0.87,
+            "ulcer": 26.6,
+            "mar": 0.28,
+            "label": "制度调仓 (Atlas)",
+            "turnover": 219.0,
+            "defensive_episodes": 82,
+            "whipsaw_episodes": 41,
+            "time_off": 18.8
+          },
+          "naive200": {
+            "total": 7480.0,
+            "cagr": 11.7,
+            "maxdd": 68.3,
+            "sharpe": 0.57,
+            "sortino": 0.65,
+            "ulcer": 40.1,
+            "mar": 0.17,
+            "label": "裸 200 日线",
+            "turnover": 305.0
+          }
+        },
+        "dd_saved": 13.3,
+        "atlas_vs_naive_dd": 12.2
+      },
+      "crises": [
+        {
+          "key": "2000",
+          "name": "2000 互联网泡沫",
+          "peak_date": "2000-03-23",
+          "trough_date": "2000-12-20",
+          "bh_drop": -62.9,
+          "flipped": true,
+          "flip_date": "2000-04-04",
+          "days_from_peak": 8,
+          "drop_at_flip": -20.8,
+          "avoided_after_flip": -53.1,
+          "gated_change": -8.3
+        },
+        {
+          "key": "2008",
+          "name": "2008 金融危机",
+          "peak_date": "2007-11-01",
+          "trough_date": "2009-03-09",
+          "bh_drop": -57.9,
+          "flipped": true,
+          "flip_date": "2008-02-04",
+          "days_from_peak": 63,
+          "drop_at_flip": -18.3,
+          "avoided_after_flip": -48.5,
+          "gated_change": -21.5
+        },
+        {
+          "key": "2018Q4",
+          "name": "2018Q4 急跌",
+          "peak_date": "2018-10-01",
+          "trough_date": "2018-12-24",
+          "bh_drop": -18.2,
+          "flipped": false
+        },
+        {
+          "key": "2020",
+          "name": "2020 疫情崩盘",
+          "peak_date": "2020-02-10",
+          "trough_date": "2020-03-16",
+          "bh_drop": -28.0,
+          "flipped": false
+        },
+        {
+          "key": "2022",
+          "name": "2022 加息熊市",
+          "peak_date": "2021-11-19",
+          "trough_date": "2022-10-11",
+          "bh_drop": -33.9,
+          "flipped": true,
+          "flip_date": "2022-02-14",
+          "days_from_peak": 58,
+          "drop_at_flip": -14.0,
+          "avoided_after_flip": -23.1,
+          "gated_change": -18.0
+        }
+      ]
+    },
+    "NVDA": {
+      "overall": {
+        "name": "英伟达",
+        "start": "2000-04-27",
+        "end": "2026-07-08",
+        "bars": 6587,
+        "cost_bps": 10.0,
+        "strategies": {
+          "buyhold": {
+            "total": 117340.7,
+            "cagr": 31.0,
+            "maxdd": 89.7,
+            "sharpe": 0.76,
+            "sortino": 1.08,
+            "ulcer": 46.1,
+            "mar": 0.35,
+            "label": "买入持有"
+          },
+          "atlas": {
+            "total": 133481.3,
+            "cagr": 31.6,
+            "maxdd": 57.0,
+            "sharpe": 0.89,
+            "sortino": 1.21,
+            "ulcer": 28.3,
+            "mar": 0.55,
+            "label": "制度调仓 (Atlas)",
+            "turnover": 121.0,
+            "defensive_episodes": 44,
+            "whipsaw_episodes": 15,
+            "time_off": 22.0
+          },
+          "naive200": {
+            "total": 213944.0,
+            "cagr": 34.0,
+            "maxdd": 55.2,
+            "sharpe": 0.92,
+            "sortino": 1.19,
+            "ulcer": 27.0,
+            "mar": 0.62,
+            "label": "裸 200 日线",
+            "turnover": 120.0
+          }
+        },
+        "dd_saved": 32.7,
+        "atlas_vs_naive_dd": -1.8
+      },
+      "crises": [
+        {
+          "key": "2000",
+          "name": "2000 互联网泡沫",
+          "peak_date": "2002-01-03",
+          "trough_date": "2002-10-09",
+          "bh_drop": -89.7,
+          "flipped": true,
+          "flip_date": "2002-05-01",
+          "days_from_peak": 81,
+          "drop_at_flip": -50.6,
+          "avoided_after_flip": -79.2,
+          "gated_change": -39.8
+        },
+        {
+          "key": "2008",
+          "name": "2008 金融危机",
+          "peak_date": "2007-10-17",
+          "trough_date": "2008-11-20",
+          "bh_drop": -85.1,
+          "flipped": true,
+          "flip_date": "2008-01-16",
+          "days_from_peak": 62,
+          "drop_at_flip": -40.0,
+          "avoided_after_flip": -75.1,
+          "gated_change": -29.9
+        },
+        {
+          "key": "2018Q4",
+          "name": "2018Q4 急跌",
+          "peak_date": "2018-10-01",
+          "trough_date": "2018-12-24",
+          "bh_drop": -56.0,
+          "flipped": true,
+          "flip_date": "2018-10-17",
+          "days_from_peak": 12,
+          "drop_at_flip": -16.0,
+          "avoided_after_flip": -47.7,
+          "gated_change": -15.6
+        },
+        {
+          "key": "2020",
+          "name": "2020 疫情崩盘",
+          "peak_date": "2020-02-19",
+          "trough_date": "2020-03-16",
+          "bh_drop": -37.6,
+          "flipped": false
+        },
+        {
+          "key": "2022",
+          "name": "2022 加息熊市",
+          "peak_date": "2021-11-29",
+          "trough_date": "2022-10-14",
+          "bh_drop": -66.3,
+          "flipped": true,
+          "flip_date": "2022-03-07",
+          "days_from_peak": 67,
+          "drop_at_flip": -36.0,
+          "avoided_after_flip": -47.4,
+          "gated_change": -42.3
+        }
+      ]
+    },
+    "GOOG": {
+      "overall": {
+        "name": "谷歌",
+        "start": "2005-11-22",
+        "end": "2026-07-08",
+        "bars": 5186,
+        "cost_bps": 10.0,
+        "strategies": {
+          "buyhold": {
+            "total": 3388.6,
+            "cagr": 18.8,
+            "maxdd": 65.3,
+            "sharpe": 0.73,
+            "sortino": 1.02,
+            "ulcer": 18.9,
+            "mar": 0.29,
+            "label": "买入持有"
+          },
+          "atlas": {
+            "total": 1170.1,
+            "cagr": 13.1,
+            "maxdd": 37.6,
+            "sharpe": 0.69,
+            "sortino": 0.86,
+            "ulcer": 17.1,
+            "mar": 0.35,
+            "label": "制度调仓 (Atlas)",
+            "turnover": 102.0,
+            "defensive_episodes": 36,
+            "whipsaw_episodes": 14,
+            "time_off": 17.1
+          },
+          "naive200": {
+            "total": 1213.3,
+            "cagr": 13.3,
+            "maxdd": 35.0,
+            "sharpe": 0.67,
+            "sortino": 0.81,
+            "ulcer": 16.1,
+            "mar": 0.38,
+            "label": "裸 200 日线",
+            "turnover": 122.0
+          }
+        },
+        "dd_saved": 27.7,
+        "atlas_vs_naive_dd": -2.6
+      },
+      "crises": [
+        {
+          "key": "2008",
+          "name": "2008 金融危机",
+          "peak_date": "2007-11-06",
+          "trough_date": "2008-11-24",
+          "bh_drop": -65.3,
+          "flipped": true,
+          "flip_date": "2008-01-28",
+          "days_from_peak": 55,
+          "drop_at_flip": -25.0,
+          "avoided_after_flip": -53.7,
+          "gated_change": -37.2
+        },
+        {
+          "key": "2018Q4",
+          "name": "2018Q4 急跌",
+          "peak_date": "2018-08-29",
+          "trough_date": "2018-12-24",
+          "bh_drop": -21.9,
+          "flipped": true,
+          "flip_date": "2018-10-26",
+          "days_from_peak": 41,
+          "drop_at_flip": -14.2,
+          "avoided_after_flip": -8.9,
+          "gated_change": -13.4
+        },
+        {
+          "key": "2020",
+          "name": "2020 疫情崩盘",
+          "peak_date": "2020-02-19",
+          "trough_date": "2020-03-23",
+          "bh_drop": -30.8,
+          "flipped": true,
+          "flip_date": "2020-03-12",
+          "days_from_peak": 16,
+          "drop_at_flip": -27.0,
+          "avoided_after_flip": -5.2,
+          "gated_change": -19.8
+        },
+        {
+          "key": "2022",
+          "name": "2022 加息熊市",
+          "peak_date": "2021-11-19",
+          "trough_date": "2022-09-30",
+          "bh_drop": -35.9,
+          "flipped": true,
+          "flip_date": "2022-02-14",
+          "days_from_peak": 58,
+          "drop_at_flip": -9.8,
+          "avoided_after_flip": -28.9,
+          "gated_change": -21.6
+        }
+      ]
+    },
+    "META": {
+      "overall": {
+        "name": "Meta",
+        "start": "2013-08-27",
+        "end": "2026-07-08",
+        "bars": 3234,
+        "cost_bps": 10.0,
+        "strategies": {
+          "buyhold": {
+            "total": 1434.9,
+            "cagr": 23.7,
+            "maxdd": 76.7,
+            "sharpe": 0.76,
+            "sortino": 0.99,
+            "ulcer": 21.4,
+            "mar": 0.31,
+            "label": "买入持有"
+          },
+          "atlas": {
+            "total": 960.0,
+            "cagr": 20.1,
+            "maxdd": 33.7,
+            "sharpe": 0.8,
+            "sortino": 1.0,
+            "ulcer": 16.4,
+            "mar": 0.6,
+            "label": "制度调仓 (Atlas)",
+            "turnover": 60.0,
+            "defensive_episodes": 23,
+            "whipsaw_episodes": 10,
+            "time_off": 16.9
+          },
+          "naive200": {
+            "total": 1340.0,
+            "cagr": 23.0,
+            "maxdd": 34.9,
+            "sharpe": 0.87,
+            "sortino": 1.11,
+            "ulcer": 14.9,
+            "mar": 0.66,
+            "label": "裸 200 日线",
+            "turnover": 63.0
+          }
+        },
+        "dd_saved": 43.0,
+        "atlas_vs_naive_dd": 1.2
+      },
+      "crises": [
+        {
+          "key": "2018Q4",
+          "name": "2018Q4 急跌",
+          "peak_date": "2018-08-06",
+          "trough_date": "2018-12-24",
+          "bh_drop": -33.2,
+          "flipped": true,
+          "flip_date": "2018-08-06",
+          "days_from_peak": 0,
+          "drop_at_flip": 0.0,
+          "avoided_after_flip": -33.2,
+          "gated_change": -3.2
+        },
+        {
+          "key": "2020",
+          "name": "2020 疫情崩盘",
+          "peak_date": "2020-01-29",
+          "trough_date": "2020-03-16",
+          "bh_drop": -34.6,
+          "flipped": true,
+          "flip_date": "2020-03-06",
+          "days_from_peak": 26,
+          "drop_at_flip": -18.9,
+          "avoided_after_flip": -19.4,
+          "gated_change": -14.6
+        },
+        {
+          "key": "2022",
+          "name": "2022 加息熊市",
+          "peak_date": "2021-12-28",
+          "trough_date": "2022-10-14",
+          "bh_drop": -63.4,
+          "flipped": true,
+          "flip_date": "2022-01-06",
+          "days_from_peak": 7,
+          "drop_at_flip": -4.0,
+          "avoided_after_flip": -61.9,
+          "gated_change": -17.9
+        }
+      ]
+    },
+    "AMD": {
+      "overall": {
+        "name": "AMD",
+        "start": "1981-06-22",
+        "end": "2026-07-08",
+        "bars": 11352,
+        "cost_bps": 10.0,
+        "strategies": {
+          "buyhold": {
+            "total": 13397.7,
+            "cagr": 11.5,
+            "maxdd": 96.6,
+            "sharpe": 0.48,
+            "sortino": 0.71,
+            "ulcer": 61.9,
+            "mar": 0.12,
+            "label": "买入持有"
+          },
+          "atlas": {
+            "total": 106258.1,
+            "cagr": 16.7,
+            "maxdd": 76.8,
+            "sharpe": 0.59,
+            "sortino": 0.69,
+            "ulcer": 40.6,
+            "mar": 0.22,
+            "label": "制度调仓 (Atlas)",
+            "turnover": 275.0,
+            "defensive_episodes": 119,
+            "whipsaw_episodes": 47,
+            "time_off": 35.7
+          },
+          "naive200": {
+            "total": 47381.4,
+            "cagr": 14.7,
+            "maxdd": 77.2,
+            "sharpe": 0.54,
+            "sortino": 0.6,
+            "ulcer": 42.5,
+            "mar": 0.19,
+            "label": "裸 200 日线",
+            "turnover": 297.0
+          }
+        },
+        "dd_saved": 19.8,
+        "atlas_vs_naive_dd": 0.4
+      },
+      "crises": [
+        {
+          "key": "2000",
+          "name": "2000 互联网泡沫",
+          "peak_date": "2000-06-21",
+          "trough_date": "2002-10-07",
+          "bh_drop": -93.3,
+          "flipped": true,
+          "flip_date": "2000-10-04",
+          "days_from_peak": 73,
+          "drop_at_flip": -48.4,
+          "avoided_after_flip": -86.9,
+          "gated_change": -71.5
+        },
+        {
+          "key": "2008",
+          "name": "2008 金融危机",
+          "peak_date": "2007-10-18",
+          "trough_date": "2008-11-25",
+          "bh_drop": -87.6,
+          "flipped": true,
+          "flip_date": "2007-10-18",
+          "days_from_peak": 0,
+          "drop_at_flip": 0.0,
+          "avoided_after_flip": -87.6,
+          "gated_change": -10.7
+        },
+        {
+          "key": "2018Q4",
+          "name": "2018Q4 急跌",
+          "peak_date": "2018-09-14",
+          "trough_date": "2018-12-24",
+          "bh_drop": -49.1,
+          "flipped": false
+        },
+        {
+          "key": "2020",
+          "name": "2020 疫情崩盘",
+          "peak_date": "2020-02-19",
+          "trough_date": "2020-03-16",
+          "bh_drop": -34.3,
+          "flipped": false
+        },
+        {
+          "key": "2022",
+          "name": "2022 加息熊市",
+          "peak_date": "2021-11-29",
+          "trough_date": "2022-10-14",
+          "bh_drop": -65.4,
+          "flipped": true,
+          "flip_date": "2022-03-04",
+          "days_from_peak": 66,
+          "drop_at_flip": -33.0,
+          "avoided_after_flip": -48.4,
+          "gated_change": -53.1
+        }
+      ]
+    },
+    "TSLA": {
+      "overall": {
+        "name": "特斯拉",
+        "start": "2011-10-03",
+        "end": "2026-07-08",
+        "bars": 3711,
+        "cost_bps": 10.0,
+        "strategies": {
+          "buyhold": {
+            "total": 24809.0,
+            "cagr": 45.3,
+            "maxdd": 73.6,
+            "sharpe": 0.94,
+            "sortino": 1.4,
+            "ulcer": 27.6,
+            "mar": 0.62,
+            "label": "买入持有"
+          },
+          "atlas": {
+            "total": 2368.4,
+            "cagr": 24.3,
+            "maxdd": 59.6,
+            "sharpe": 0.71,
+            "sortino": 0.92,
+            "ulcer": 38.0,
+            "mar": 0.41,
+            "label": "制度调仓 (Atlas)",
+            "turnover": 121.5,
+            "defensive_episodes": 44,
+            "whipsaw_episodes": 24,
+            "time_off": 24.3
+          },
+          "naive200": {
+            "total": 832.9,
+            "cagr": 16.3,
+            "maxdd": 73.0,
+            "sharpe": 0.56,
+            "sortino": 0.66,
+            "ulcer": 41.9,
+            "mar": 0.22,
+            "label": "裸 200 日线",
+            "turnover": 162.0
+          }
+        },
+        "dd_saved": 14.0,
+        "atlas_vs_naive_dd": 13.4
+      },
+      "crises": [
+        {
+          "key": "2018Q4",
+          "name": "2018Q4 急跌",
+          "peak_date": "2018-08-07",
+          "trough_date": "2018-10-08",
+          "bh_drop": -34.0,
+          "flipped": true,
+          "flip_date": "2018-08-20",
+          "days_from_peak": 9,
+          "drop_at_flip": -18.7,
+          "avoided_after_flip": -18.8,
+          "gated_change": -13.4
+        },
+        {
+          "key": "2020",
+          "name": "2020 疫情崩盘",
+          "peak_date": "2020-02-19",
+          "trough_date": "2020-03-18",
+          "bh_drop": -60.6,
+          "flipped": false
+        },
+        {
+          "key": "2022",
+          "name": "2022 加息熊市",
+          "peak_date": "2022-01-03",
+          "trough_date": "2022-10-14",
+          "bh_drop": -48.7,
+          "flipped": true,
+          "flip_date": "2022-05-17",
+          "days_from_peak": 93,
+          "drop_at_flip": -36.5,
+          "avoided_after_flip": -19.3,
+          "gated_change": -48.5
+        }
+      ]
+    },
+    "PDD": {
+      "overall": {
+        "name": "拼多多",
+        "start": "2019-10-31",
+        "end": "2026-07-08",
+        "bars": 1678,
+        "cost_bps": 10.0,
+        "strategies": {
+          "buyhold": {
+            "total": 107.3,
+            "cagr": 11.5,
+            "maxdd": 87.4,
+            "sharpe": 0.49,
+            "sortino": 0.74,
+            "ulcer": 47.9,
+            "mar": 0.13,
+            "label": "买入持有"
+          },
+          "atlas": {
+            "total": 65.1,
+            "cagr": 7.8,
+            "maxdd": 60.2,
+            "sharpe": 0.39,
+            "sortino": 0.44,
+            "ulcer": 39.9,
+            "mar": 0.13,
+            "label": "制度调仓 (Atlas)",
+            "turnover": 44.0,
+            "defensive_episodes": 20,
+            "whipsaw_episodes": 7,
+            "time_off": 33.1
+          },
+          "naive200": {
+            "total": 26.4,
+            "cagr": 3.6,
+            "maxdd": 72.8,
+            "sharpe": 0.31,
+            "sortino": 0.32,
+            "ulcer": 51.8,
+            "mar": 0.05,
+            "label": "裸 200 日线",
+            "turnover": 51.0
+          }
+        },
+        "dd_saved": 27.2,
+        "atlas_vs_naive_dd": 12.6
+      },
+      "crises": [
+        {
+          "key": "2020",
+          "name": "2020 疫情崩盘",
+          "peak_date": "2020-01-07",
+          "trough_date": "2020-03-18",
+          "bh_drop": -22.9,
+          "flipped": false
+        },
+        {
+          "key": "2022",
+          "name": "2022 加息熊市",
+          "peak_date": "2021-11-19",
+          "trough_date": "2022-03-14",
+          "bh_drop": -68.8,
+          "flipped": true,
+          "flip_date": "2021-11-19",
+          "days_from_peak": 0,
+          "drop_at_flip": 0.0,
+          "avoided_after_flip": -68.8,
+          "gated_change": -14.1
+        }
+      ]
+    },
+    "CLSK": {
+      "overall": {
+        "name": "CleanSpark",
+        "start": "2018-02-26",
+        "end": "2026-07-08",
+        "bars": 2102,
+        "cost_bps": 10.0,
+        "strategies": {
+          "buyhold": {
+            "total": -22.0,
+            "cagr": -2.9,
+            "maxdd": 98.6,
+            "sharpe": 0.57,
+            "sortino": 1.38,
+            "ulcer": 81.4,
+            "mar": -0.03,
+            "label": "买入持有"
+          },
+          "atlas": {
+            "total": 34.9,
+            "cagr": 3.6,
+            "maxdd": 79.8,
+            "sharpe": 0.41,
+            "sortino": 0.66,
+            "ulcer": 61.6,
+            "mar": 0.05,
+            "label": "制度调仓 (Atlas)",
+            "turnover": 52.0,
+            "defensive_episodes": 27,
+            "whipsaw_episodes": 8,
+            "time_off": 47.7
+          },
+          "naive200": {
+            "total": -84.8,
+            "cagr": -20.2,
+            "maxdd": 95.4,
+            "sharpe": 0.14,
+            "sortino": 0.13,
+            "ulcer": 81.3,
+            "mar": -0.21,
+            "label": "裸 200 日线",
+            "turnover": 68.0
+          }
+        },
+        "dd_saved": 18.8,
+        "atlas_vs_naive_dd": 15.6
+      },
+      "crises": [
+        {
+          "key": "2018Q4",
+          "name": "2018Q4 急跌",
+          "peak_date": "2018-09-19",
+          "trough_date": "2018-11-19",
+          "bh_drop": -82.5,
+          "flipped": true,
+          "flip_date": "2018-11-15",
+          "days_from_peak": 41,
+          "drop_at_flip": -80.1,
+          "avoided_after_flip": -11.7,
+          "gated_change": -52.5
+        },
+        {
+          "key": "2020",
+          "name": "2020 疫情崩盘",
+          "peak_date": "2020-01-08",
+          "trough_date": "2020-04-02",
+          "bh_drop": -80.2,
+          "flipped": true,
+          "flip_date": "2020-01-08",
+          "days_from_peak": 0,
+          "drop_at_flip": 0.0,
+          "avoided_after_flip": -80.2,
+          "gated_change": -9.5
+        },
+        {
+          "key": "2022",
+          "name": "2022 加息熊市",
+          "peak_date": "2021-11-24",
+          "trough_date": "2022-10-14",
+          "bh_drop": -84.3,
+          "flipped": true,
+          "flip_date": "2021-11-29",
+          "days_from_peak": 2,
+          "drop_at_flip": -1.7,
+          "avoided_after_flip": -84.1,
+          "gated_change": -16.0
+        }
+      ]
+    },
+    "MU": {
+      "overall": {
+        "name": "美光",
+        "start": "1985-09-05",
+        "end": "2026-07-08",
+        "bars": 10287,
+        "cost_bps": 10.0,
+        "strategies": {
+          "buyhold": {
+            "total": 130021.6,
+            "cagr": 19.2,
+            "maxdd": 98.2,
+            "sharpe": 0.59,
+            "sortino": 0.9,
+            "ulcer": 63.0,
+            "mar": 0.2,
+            "label": "买入持有"
+          },
+          "atlas": {
+            "total": 33838.5,
+            "cagr": 15.3,
+            "maxdd": 76.5,
+            "sharpe": 0.56,
+            "sortino": 0.67,
+            "ulcer": 50.6,
+            "mar": 0.2,
+            "label": "制度调仓 (Atlas)",
+            "turnover": 241.5,
+            "defensive_episodes": 121,
+            "whipsaw_episodes": 51,
+            "time_off": 34.5
+          },
+          "naive200": {
+            "total": 60243.3,
+            "cagr": 17.0,
+            "maxdd": 80.0,
+            "sharpe": 0.59,
+            "sortino": 0.69,
+            "ulcer": 49.3,
+            "mar": 0.21,
+            "label": "裸 200 日线",
+            "turnover": 295.0
+          }
+        },
+        "dd_saved": 21.7,
+        "atlas_vs_naive_dd": 3.5
+      },
+      "crises": [
+        {
+          "key": "2000",
+          "name": "2000 互联网泡沫",
+          "peak_date": "2000-07-14",
+          "trough_date": "2002-10-07",
+          "bh_drop": -87.8,
+          "flipped": true,
+          "flip_date": "2000-10-23",
+          "days_from_peak": 70,
+          "drop_at_flip": -62.4,
+          "avoided_after_flip": -67.6,
+          "gated_change": -73.9
+        },
+        {
+          "key": "2008",
+          "name": "2008 金融危机",
+          "peak_date": "2007-10-02",
+          "trough_date": "2008-11-20",
+          "bh_drop": -85.7,
+          "flipped": true,
+          "flip_date": "2007-10-02",
+          "days_from_peak": 0,
+          "drop_at_flip": 0.0,
+          "avoided_after_flip": -85.7,
+          "gated_change": 5.4
+        },
+        {
+          "key": "2018Q4",
+          "name": "2018Q4 急跌",
+          "peak_date": "2018-08-08",
+          "trough_date": "2018-12-24",
+          "bh_drop": -45.6,
+          "flipped": true,
+          "flip_date": "2018-09-25",
+          "days_from_peak": 33,
+          "drop_at_flip": -16.4,
+          "avoided_after_flip": -35.0,
+          "gated_change": -19.9
+        },
+        {
+          "key": "2020",
+          "name": "2020 疫情崩盘",
+          "peak_date": "2020-02-19",
+          "trough_date": "2020-03-16",
+          "bh_drop": -42.5,
+          "flipped": true,
+          "flip_date": "2020-03-12",
+          "days_from_peak": 16,
+          "drop_at_flip": -35.3,
+          "avoided_after_flip": -11.2,
+          "gated_change": -35.4
+        },
+        {
+          "key": "2022",
+          "name": "2022 加息熊市",
+          "peak_date": "2022-01-14",
+          "trough_date": "2022-09-26",
+          "bh_drop": -49.6,
+          "flipped": true,
+          "flip_date": "2022-03-08",
+          "days_from_peak": 35,
+          "drop_at_flip": -20.7,
+          "avoided_after_flip": -36.4,
+          "gated_change": -23.3
+        }
+      ]
+    },
+    "1810.HK": {
+      "overall": {
+        "name": "小米集团",
+        "start": "2019-10-23",
+        "end": "2026-07-09",
+        "bars": 1649,
+        "cost_bps": 10.0,
+        "strategies": {
+          "buyhold": {
+            "total": 179.6,
+            "cagr": 16.6,
+            "maxdd": 76.1,
+            "sharpe": 0.57,
+            "sortino": 0.92,
+            "ulcer": 44.6,
+            "mar": 0.22,
+            "label": "买入持有"
+          },
+          "atlas": {
+            "total": 322.3,
+            "cagr": 23.9,
+            "maxdd": 56.2,
+            "sharpe": 0.8,
+            "sortino": 0.97,
+            "ulcer": 32.4,
+            "mar": 0.43,
+            "label": "制度调仓 (Atlas)",
+            "turnover": 41.0,
+            "defensive_episodes": 18,
+            "whipsaw_episodes": 5,
+            "time_off": 31.9
+          },
+          "naive200": {
+            "total": 424.6,
+            "cagr": 28.0,
+            "maxdd": 52.5,
+            "sharpe": 0.87,
+            "sortino": 1.04,
+            "ulcer": 28.4,
+            "mar": 0.53,
+            "label": "裸 200 日线",
+            "turnover": 50.0
+          }
+        },
+        "dd_saved": 19.9,
+        "atlas_vs_naive_dd": -3.7
+      },
+      "crises": [
+        {
+          "key": "2020",
+          "name": "2020 疫情崩盘",
+          "peak_date": "2020-01-22",
+          "trough_date": "2020-03-23",
+          "bh_drop": -31.7,
+          "flipped": false
+        },
+        {
+          "key": "2022",
+          "name": "2022 加息熊市",
+          "peak_date": "2021-11-19",
+          "trough_date": "2022-10-13",
+          "bh_drop": -59.7,
+          "flipped": true,
+          "flip_date": "2021-11-19",
+          "days_from_peak": 0,
+          "drop_at_flip": 0.0,
+          "avoided_after_flip": -59.7,
+          "gated_change": -17.9
+        }
+      ]
+    },
+    "159605.SZ": {
+      "overall": {
+        "name": "159605",
+        "start": "2023-03-22",
+        "end": "2026-07-09",
+        "bars": 798,
+        "cost_bps": 10.0,
+        "strategies": {
+          "buyhold": {
+            "total": 5.6,
+            "cagr": 1.7,
+            "maxdd": 45.4,
+            "sharpe": 0.21,
+            "sortino": 0.36,
+            "ulcer": 15.9,
+            "mar": 0.04,
+            "label": "买入持有"
+          },
+          "atlas": {
+            "total": -1.8,
+            "cagr": -0.5,
+            "maxdd": 26.8,
+            "sharpe": 0.09,
+            "sortino": 0.11,
+            "ulcer": 14.8,
+            "mar": -0.02,
+            "label": "制度调仓 (Atlas)",
+            "turnover": 22.5,
+            "defensive_episodes": 10,
+            "whipsaw_episodes": 4,
+            "time_off": 30.5
+          },
+          "naive200": {
+            "total": 1.9,
+            "cagr": 0.6,
+            "maxdd": 25.3,
+            "sharpe": 0.14,
+            "sortino": 0.19,
+            "ulcer": 16.3,
+            "mar": 0.02,
+            "label": "裸 200 日线",
+            "turnover": 38.0
+          }
+        },
+        "dd_saved": 18.6,
+        "atlas_vs_naive_dd": -1.5
+      },
+      "crises": []
+    },
+    "005930.KS": {
+      "overall": {
+        "name": "三星电子",
+        "start": "2001-03-26",
+        "end": "2026-07-09",
+        "bars": 6310,
+        "cost_bps": 10.0,
+        "strategies": {
+          "buyhold": {
+            "total": 8990.9,
+            "cagr": 19.5,
+            "maxdd": 47.3,
+            "sharpe": 0.71,
+            "sortino": 1.08,
+            "ulcer": 18.2,
+            "mar": 0.41,
+            "label": "买入持有"
+          },
+          "atlas": {
+            "total": 1384.3,
+            "cagr": 11.3,
+            "maxdd": 41.4,
+            "sharpe": 0.56,
+            "sortino": 0.69,
+            "ulcer": 21.4,
+            "mar": 0.27,
+            "label": "制度调仓 (Atlas)",
+            "turnover": 170.0,
+            "defensive_episodes": 71,
+            "whipsaw_episodes": 34,
+            "time_off": 25.2
+          },
+          "naive200": {
+            "total": 1502.6,
+            "cagr": 11.6,
+            "maxdd": 48.6,
+            "sharpe": 0.56,
+            "sortino": 0.66,
+            "ulcer": 23.6,
+            "mar": 0.24,
+            "label": "裸 200 日线",
+            "turnover": 213.0
+          }
+        },
+        "dd_saved": 5.9,
+        "atlas_vs_naive_dd": 7.2
+      },
+      "crises": [
+        {
+          "key": "2000",
+          "name": "2000 互联网泡沫",
+          "peak_date": "2002-04-24",
+          "trough_date": "2002-10-10",
+          "bh_drop": -36.7,
+          "flipped": true,
+          "flip_date": "2002-10-02",
+          "days_from_peak": 115,
+          "drop_at_flip": -30.7,
+          "avoided_after_flip": -8.7,
+          "gated_change": -34.0
+        },
+        {
+          "key": "2008",
+          "name": "2008 金融危机",
+          "peak_date": "2008-05-15",
+          "trough_date": "2008-10-24",
+          "bh_drop": -47.3,
+          "flipped": true,
+          "flip_date": "2008-08-11",
+          "days_from_peak": 62,
+          "drop_at_flip": -23.4,
+          "avoided_after_flip": -31.3,
+          "gated_change": -30.6
+        },
+        {
+          "key": "2018Q4",
+          "name": "2018Q4 急跌",
+          "peak_date": "2018-08-31",
+          "trough_date": "2019-01-03",
+          "bh_drop": -21.1,
+          "flipped": true,
+          "flip_date": "2018-09-07",
+          "days_from_peak": 5,
+          "drop_at_flip": -7.3,
+          "avoided_after_flip": -14.8,
+          "gated_change": -4.5
+        },
+        {
+          "key": "2020",
+          "name": "2020 疫情崩盘",
+          "peak_date": "2020-01-20",
+          "trough_date": "2020-03-23",
+          "bh_drop": -31.9,
+          "flipped": true,
+          "flip_date": "2020-03-16",
+          "days_from_peak": 38,
+          "drop_at_flip": -21.6,
+          "avoided_after_flip": -13.1,
+          "gated_change": -19.2
+        },
+        {
+          "key": "2022",
+          "name": "2022 加息熊市",
+          "peak_date": "2021-12-24",
+          "trough_date": "2022-09-28",
+          "bh_drop": -33.2,
+          "flipped": true,
+          "flip_date": "2022-01-19",
+          "days_from_peak": 16,
+          "drop_at_flip": -4.8,
+          "avoided_after_flip": -29.9,
+          "gated_change": -6.0
+        }
+      ]
+    },
+    "000660.KS": {
+      "overall": {
+        "name": "SK海力士",
+        "start": "2001-03-26",
+        "end": "2026-07-09",
+        "bars": 6310,
+        "cost_bps": 10.0,
+        "strategies": {
+          "buyhold": {
+            "total": -6198.2,
+            "cagr": NaN,
+            "maxdd": 6298.6,
+            "sharpe": 0.37,
+            "sortino": 0.38,
+            "ulcer": 543.3,
+            "mar": NaN,
+            "label": "买入持有"
+          },
+          "atlas": {
+            "total": -2436.1,
+            "cagr": NaN,
+            "maxdd": 2704.5,
+            "sharpe": 0.27,
+            "sortino": 0.22,
+            "ulcer": 292.5,
+            "mar": NaN,
+            "label": "制度调仓 (Atlas)",
+            "turnover": 171.5,
+            "defensive_episodes": 62,
+            "whipsaw_episodes": 36,
+            "time_off": 20.6
+          },
+          "naive200": {
+            "total": -1421.3,
+            "cagr": NaN,
+            "maxdd": 1443.1,
+            "sharpe": 0.24,
+            "sortino": 0.2,
+            "ulcer": 204.3,
+            "mar": NaN,
+            "label": "裸 200 日线",
+            "turnover": 196.0
+          }
+        },
+        "dd_saved": 3594.1,
+        "atlas_vs_naive_dd": -1261.4
+      },
+      "crises": [
+        {
+          "key": "2000",
+          "name": "2000 互联网泡沫",
+          "peak_date": "2002-06-26",
+          "trough_date": "2002-07-19",
+          "bh_drop": 267.5,
+          "flipped": false
+        },
+        {
+          "key": "2008",
+          "name": "2008 金融危机",
+          "peak_date": "2007-08-27",
+          "trough_date": "2008-11-24",
+          "bh_drop": -82.4,
+          "flipped": true,
+          "flip_date": "2007-08-29",
+          "days_from_peak": 2,
+          "drop_at_flip": -4.8,
+          "avoided_after_flip": -81.5,
+          "gated_change": -19.4
+        },
+        {
+          "key": "2018Q4",
+          "name": "2018Q4 急跌",
+          "peak_date": "2018-08-27",
+          "trough_date": "2018-12-20",
+          "bh_drop": -29.8,
+          "flipped": true,
+          "flip_date": "2018-09-10",
+          "days_from_peak": 10,
+          "drop_at_flip": -8.4,
+          "avoided_after_flip": -23.4,
+          "gated_change": -4.0
+        },
+        {
+          "key": "2020",
+          "name": "2020 疫情崩盘",
+          "peak_date": "2020-02-17",
+          "trough_date": "2020-03-19",
+          "bh_drop": -34.3,
+          "flipped": false
+        },
+        {
+          "key": "2022",
+          "name": "2022 加息熊市",
+          "peak_date": "2022-02-17",
+          "trough_date": "2022-09-29",
+          "bh_drop": -38.7,
+          "flipped": true,
+          "flip_date": "2022-04-07",
+          "days_from_peak": 33,
+          "drop_at_flip": -14.4,
+          "avoided_after_flip": -28.3,
+          "gated_change": -10.6
+        }
+      ]
     }
   },
-  "as_of": "2026-07-08"
+  "as_of": "2026-07-09"
 }
