@@ -241,7 +241,7 @@
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 551744.5,
+            "total": 551744.3,
             "cagr": 21.5,
             "maxdd": 81.8,
             "sharpe": 0.67,
@@ -251,21 +251,21 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 59515.8,
-            "cagr": 15.5,
+            "total": 56774.4,
+            "cagr": 15.4,
             "maxdd": 82.6,
-            "sharpe": 0.63,
+            "sharpe": 0.62,
             "sortino": 0.71,
             "ulcer": 43.6,
             "mar": 0.19,
             "label": "制度调仓 (Atlas)",
-            "turnover": 263.0,
-            "defensive_episodes": 108,
-            "whipsaw_episodes": 48,
+            "turnover": 262.0,
+            "defensive_episodes": 107,
+            "whipsaw_episodes": 47,
             "time_off": 24.1
           },
           "naive200": {
-            "total": 159601.3,
+            "total": 159601.5,
             "cagr": 18.1,
             "maxdd": 91.6,
             "sharpe": 0.69,
@@ -356,7 +356,7 @@
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 174876.4,
+            "total": 174876.3,
             "cagr": 21.1,
             "maxdd": 69.4,
             "sharpe": 0.75,
@@ -366,17 +366,17 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 27550.3,
+            "total": 28045.7,
             "cagr": 15.5,
             "maxdd": 56.1,
             "sharpe": 0.72,
             "sortino": 0.87,
-            "ulcer": 26.6,
+            "ulcer": 26.4,
             "mar": 0.28,
             "label": "制度调仓 (Atlas)",
-            "turnover": 219.0,
-            "defensive_episodes": 82,
-            "whipsaw_episodes": 41,
+            "turnover": 220.0,
+            "defensive_episodes": 83,
+            "whipsaw_episodes": 42,
             "time_off": 18.8
           },
           "naive200": {
@@ -471,7 +471,7 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 133481.3,
+            "total": 133481.5,
             "cagr": 31.6,
             "maxdd": 57.0,
             "sharpe": 0.89,
@@ -485,7 +485,7 @@
             "time_off": 22.0
           },
           "naive200": {
-            "total": 213944.0,
+            "total": 213943.3,
             "cagr": 34.0,
             "maxdd": 55.2,
             "sharpe": 0.92,
@@ -1121,9 +1121,9 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 33838.5,
+            "total": 33491.7,
             "cagr": 15.3,
-            "maxdd": 76.5,
+            "maxdd": 76.7,
             "sharpe": 0.56,
             "sortino": 0.67,
             "ulcer": 50.6,
@@ -1132,10 +1132,10 @@
             "turnover": 241.5,
             "defensive_episodes": 121,
             "whipsaw_episodes": 51,
-            "time_off": 34.5
+            "time_off": 34.4
           },
           "naive200": {
-            "total": 60243.3,
+            "total": 60243.2,
             "cagr": 17.0,
             "maxdd": 80.0,
             "sharpe": 0.59,
@@ -1146,8 +1146,8 @@
             "turnover": 295.0
           }
         },
-        "dd_saved": 21.7,
-        "atlas_vs_naive_dd": 3.5
+        "dd_saved": 21.5,
+        "atlas_vs_naive_dd": 3.3
       },
       "crises": [
         {
@@ -1174,7 +1174,7 @@
           "days_from_peak": 0,
           "drop_at_flip": 0.0,
           "avoided_after_flip": -85.7,
-          "gated_change": 5.4
+          "gated_change": 4.3
         },
         {
           "key": "2018Q4",
@@ -1293,7 +1293,7 @@
         "name": "159605",
         "start": "2023-03-22",
         "end": "2026-07-09",
-        "bars": 798,
+        "bars": 799,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
@@ -1302,7 +1302,7 @@
             "maxdd": 45.4,
             "sharpe": 0.21,
             "sortino": 0.36,
-            "ulcer": 15.9,
+            "ulcer": 16.0,
             "mar": 0.04,
             "label": "买入持有"
           },
@@ -1346,7 +1346,7 @@
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 8990.9,
+            "total": 8974.5,
             "cagr": 19.5,
             "maxdd": 47.3,
             "sharpe": 0.71,
@@ -1356,21 +1356,21 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 1384.3,
+            "total": 1395.5,
             "cagr": 11.3,
             "maxdd": 41.4,
             "sharpe": 0.56,
-            "sortino": 0.69,
-            "ulcer": 21.4,
+            "sortino": 0.7,
+            "ulcer": 21.3,
             "mar": 0.27,
             "label": "制度调仓 (Atlas)",
-            "turnover": 170.0,
-            "defensive_episodes": 71,
-            "whipsaw_episodes": 34,
+            "turnover": 168.0,
+            "defensive_episodes": 70,
+            "whipsaw_episodes": 33,
             "time_off": 25.2
           },
           "naive200": {
-            "total": 1502.6,
+            "total": 1499.7,
             "cagr": 11.6,
             "maxdd": 48.6,
             "sharpe": 0.56,
@@ -1455,59 +1455,51 @@
     "000660.KS": {
       "overall": {
         "name": "SK海力士",
-        "start": "2001-03-26",
+        "start": "2004-03-18",
         "end": "2026-07-09",
-        "bars": 6310,
+        "bars": 5532,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": -6198.2,
-            "cagr": NaN,
-            "maxdd": 6298.6,
-            "sharpe": 0.37,
-            "sortino": 0.38,
-            "ulcer": 543.3,
-            "mar": NaN,
+            "total": 27758.9,
+            "cagr": 28.7,
+            "maxdd": 84.6,
+            "sharpe": 0.78,
+            "sortino": 1.18,
+            "ulcer": 27.0,
+            "mar": 0.34,
             "label": "买入持有"
           },
           "atlas": {
-            "total": -2436.1,
-            "cagr": NaN,
-            "maxdd": 2704.5,
-            "sharpe": 0.27,
-            "sortino": 0.22,
-            "ulcer": 292.5,
-            "mar": NaN,
+            "total": 9043.3,
+            "cagr": 22.4,
+            "maxdd": 45.7,
+            "sharpe": 0.77,
+            "sortino": 0.97,
+            "ulcer": 23.0,
+            "mar": 0.49,
             "label": "制度调仓 (Atlas)",
-            "turnover": 171.5,
-            "defensive_episodes": 62,
-            "whipsaw_episodes": 36,
-            "time_off": 20.6
+            "turnover": 152.5,
+            "defensive_episodes": 61,
+            "whipsaw_episodes": 35,
+            "time_off": 23.4
           },
           "naive200": {
-            "total": -1421.3,
-            "cagr": NaN,
-            "maxdd": 1443.1,
-            "sharpe": 0.24,
-            "sortino": 0.2,
-            "ulcer": 204.3,
-            "mar": NaN,
+            "total": 3881.4,
+            "cagr": 18.0,
+            "maxdd": 57.6,
+            "sharpe": 0.64,
+            "sortino": 0.79,
+            "ulcer": 32.1,
+            "mar": 0.31,
             "label": "裸 200 日线",
-            "turnover": 196.0
+            "turnover": 184.0
           }
         },
-        "dd_saved": 3594.1,
-        "atlas_vs_naive_dd": -1261.4
+        "dd_saved": 38.9,
+        "atlas_vs_naive_dd": 11.9
       },
       "crises": [
-        {
-          "key": "2000",
-          "name": "2000 互联网泡沫",
-          "peak_date": "2002-06-26",
-          "trough_date": "2002-07-19",
-          "bh_drop": 267.5,
-          "flipped": false
-        },
         {
           "key": "2008",
           "name": "2008 金融危机",
