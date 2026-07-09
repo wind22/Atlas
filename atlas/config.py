@@ -64,10 +64,13 @@ DEFAULT_STOCKS: dict[str, str] = {
     "TSLA": "特斯拉",
     "PDD": "拼多多",
     "CLSK": "CleanSpark",
-    "1810.HK": "小米集团",   # 港股
-    "159605.SZ": "159605",   # 深证 ETF
+    "MU": "美光",             # 存储芯片
+    "1810.HK": "小米集团",     # 港股
+    "159605.SZ": "159605",     # 深证 ETF
+    "005930.KS": "三星电子",   # 韩股
+    "000660.KS": "SK海力士",   # 韩股
 }
-# 注：港股 / A股 ETF 的「相对 SPY 强度」为跨市场近似口径，仅供参考。
+# 注：港股 / A股 / 韩股的「相对 SPY 强度」为跨市场近似口径，仅供参考。
 # NASDAQ 为指数（已由市场层 QQQ 代表），未纳入个股表；如需可加 "^IXIC"。
 
 BENCHMARK: str = "SPY"        # relative-strength benchmark
