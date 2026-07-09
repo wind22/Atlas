@@ -450,6 +450,128 @@ def _crisis_rows(crises: list[dict]) -> str:
     return "".join(out)
 
 
+def _tradeoff_overview(payload: dict) -> str:
+    """收益 vs 回撤权衡总览：散点图 + 汇总表 + 头条 KPI。
+
+    横轴＝回撤改善（pp，越右越能避坑），纵轴＝年化收益差（制度−买入持有，越上越好）。
+    右上=既省回撤又不亏收益的「免费午餐」，右下=用收益换生存的常态。铁律 Ⅰ 的可视化。
+    """
+    rows = []
+    for t, data in payload["tickers"].items():
+        if "error" in data:
+            continue
+        s = data["overall"]["strategies"]
+        bh, at = s["buyhold"], s["atlas"]
+        rows.append({
+            "name": data["overall"]["name"], "t": t,
+            "bh_cagr": bh["cagr"], "at_cagr": at["cagr"],
+            "dcagr": round(at["cagr"] - bh["cagr"], 1),
+            "dd_saved": data["overall"]["dd_saved"],
+            "dsharpe": round(at["sharpe"] - bh["sharpe"], 2),
+        })
+    if len(rows) < 2:
+        return ""
+
+    n = len(rows)
+    avg_cost = round(sum(r["dcagr"] for r in rows) / n, 1)
+    avg_saved = round(sum(r["dd_saved"] for r in rows) / n, 1)
+    free = sum(1 for r in rows if r["dcagr"] >= 0)
+    better_sharpe = sum(1 for r in rows if r["dsharpe"] >= 0)
+
+    def tone(dc):
+        return "#2e9658" if dc >= 0 else ("#d99a2b" if dc >= -3 else "#cf3b3b")
+
+    # --- 散点图 ---
+    W, H, ml, mr, mt, mb = 880, 440, 52, 18, 40, 46
+    xs_v = [r["dd_saved"] for r in rows]
+    ys_v = [r["dcagr"] for r in rows]
+    xmin, xmax = min(0, min(xs_v)), max(xs_v)
+    ymin, ymax = min(ys_v), max(ys_v)
+    xpad = max(2.0, (xmax - xmin) * 0.08)
+    ypad = max(2.0, (ymax - ymin) * 0.12)
+    xlo, xhi = xmin - xpad, xmax + xpad
+    ylo, yhi = ymin - ypad, ymax + ypad
+    xspan = (xhi - xlo) or 1.0
+    yspan = (yhi - ylo) or 1.0
+
+    def px(v):
+        return ml + (W - ml - mr) * (v - xlo) / xspan
+
+    def py(v):
+        return mt + (H - mt - mb) * (1 - (v - ylo) / yspan)
+
+    # 网格 + 轴刻度
+    grid, label = [], []
+    xt0 = int(math.floor(xlo / 10) * 10)
+    for gx in range(xt0, int(math.ceil(xhi)) + 1, 10):
+        if gx < xlo or gx > xhi:
+            continue
+        X = px(gx)
+        grid.append(f'<line x1="{X:.1f}" y1="{mt}" x2="{X:.1f}" y2="{H-mb}" stroke="var(--line)" stroke-width="1"/>')
+        label.append(f'<text x="{X:.1f}" y="{H-mb+18}" font-size="11" text-anchor="middle" fill="var(--muted)">{gx}</text>')
+    yt0 = int(math.floor(ylo / 5) * 5)
+    for gy in range(yt0, int(math.ceil(yhi)) + 1, 5):
+        if gy < ylo or gy > yhi:
+            continue
+        Y = py(gy)
+        grid.append(f'<line x1="{ml}" y1="{Y:.1f}" x2="{W-mr}" y2="{Y:.1f}" stroke="var(--line)" stroke-width="1"/>')
+        label.append(f'<text x="{ml-8}" y="{Y+4:.1f}" font-size="11" text-anchor="end" fill="var(--muted)">{gy:+d}</text>')
+
+    # 强调 y=0（收益不亏的分界线）
+    y0 = py(0)
+    zero = (f'<line x1="{ml}" y1="{y0:.1f}" x2="{W-mr}" y2="{y0:.1f}" stroke="var(--good)" '
+            f'stroke-width="1.4" stroke-dasharray="5 4"/>'
+            f'<text x="{W-mr}" y="{y0-6:.1f}" font-size="11" text-anchor="end" fill="var(--good)">↑ 此线以上=收益不降反升（免费午餐）</text>')
+
+    dots, tags = [], []
+    for r in rows:
+        cx, cy = px(r["dd_saved"]), py(r["dcagr"])
+        c = tone(r["dcagr"])
+        dots.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="5.5" fill="{c}" fill-opacity="0.85" stroke="var(--panel)" stroke-width="1"/>')
+        tags.append(f'<text x="{cx+8:.1f}" y="{cy+4:.1f}" font-size="11" fill="currentColor">{r["name"]}</text>')
+
+    scatter = f'''<svg viewBox="0 0 {W} {H}" width="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="收益代价 vs 回撤改善散点图">
+  <text x="{ml}" y="20" font-size="13" font-weight="700" fill="currentColor">收益代价 × 回撤改善（每点一只标的）</text>
+  {''.join(grid)}
+  {zero}
+  {''.join(dots)}{''.join(tags)}
+  {''.join(label)}
+  <text x="{(ml+W-mr)/2:.0f}" y="{H-6}" font-size="12" text-anchor="middle" fill="var(--muted)">→ 回撤改善（pp，越右越能避开深跌）</text>
+  <text x="14" y="{(mt+H-mb)/2:.0f}" font-size="12" text-anchor="middle" fill="var(--muted)" transform="rotate(-90 14 {(mt+H-mb)/2:.0f})">↑ 年化收益差（制度−买入持有，%）</text>
+</svg>'''
+
+    # --- 汇总表（按收益差降序：免费午餐在前，最贵的在后）---
+    trs = []
+    for r in sorted(rows, key=lambda x: -x["dcagr"]):
+        dc_cls = "good" if r["dcagr"] >= 0 else ("bad" if r["dcagr"] < -3 else "")
+        ds_cls = "good" if r["dsharpe"] >= 0 else "bad"
+        trs.append(
+            f'<tr><td><b>{r["name"]}</b> <span class="muted">{r["t"]}</span></td>'
+            f'<td class="num">{r["bh_cagr"]}%</td><td class="num">{r["at_cagr"]}%</td>'
+            f'<td class="num {dc_cls}">{r["dcagr"]:+}%</td>'
+            f'<td class="num good">{r["dd_saved"]:+} pp</td>'
+            f'<td class="num {ds_cls}">{r["dsharpe"]:+}</td></tr>'
+        )
+
+    return f'''<section class="card" id="bt-tradeoff">
+      <h2>收益 vs 回撤：这套「刹车」到底花了多少收益？</h2>
+      <div class="kpis">
+        <div class="kpi"><div class="lab">平均年化收益代价</div><div class="val {'good' if avg_cost>=0 else 'bad'}">{avg_cost:+}%</div></div>
+        <div class="kpi"><div class="lab">平均回撤改善</div><div class="val good">{avg_saved:+} pp</div></div>
+        <div class="kpi"><div class="lab">收益不降反升的标的</div><div class="val">{free} / {n}</div></div>
+        <div class="kpi"><div class="lab">风险调整(Sharpe)变好</div><div class="val">{better_sharpe} / {n}</div></div>
+      </div>
+      {scatter}
+      <table>
+        <thead><tr><th>标的</th><th>买入持有<br>年化</th><th>制度调仓<br>年化</th><th>收益差</th><th>回撤改善</th><th>Sharpe 差</th></tr></thead>
+        <tbody>{''.join(trs)}</tbody>
+      </table>
+      <p class="muted" style="font-size:13px">读法：<b>右上角</b>=既省回撤又不亏收益的「免费午餐」（多为经历过深熊的高波动股，少亏即多赚）；
+      <b>右下角</b>=用一部分收益换生存的常态（宽基指数代价极小，特斯拉这类深 V 暴涨股代价最大）。
+      系统的目标不是收益最大化，而是<b>以尽量小的收益代价，换尽量大的避坑能力</b>——铁律 Ⅰ「生存优先」。</p>
+    </section>'''
+
+
 def _anchor(t: str) -> str:
     return "bt-" + "".join(c if c.isalnum() else "_" for c in t)
 
@@ -541,7 +663,8 @@ def render_html(payload: dict) -> str:
     ③ 风险调整指标 <b>Sharpe / Sortino / Ulcer / MAR</b>（无风险利率取 0，防御期现金计 0 收益——这对制度调仓偏保守）。<br>
     <b>局限</b>：广度维度置中性（缺历史成分）；未计税；样本仅 ~5 次独立大跌（n 小）；只能防「有过程」的下跌，防不住隔夜跳空。
   </div>
-  {f'<div class="nav">跳转：{chr(10).join(nav)}</div>' if len(nav) > 3 else ''}
+  {f'<div class="nav">跳转：<a href="#bt-tradeoff">收益 vs 回撤总览</a>{chr(10).join(nav)}</div>' if len(nav) > 3 else ''}
+  {_tradeoff_overview(payload)}
   {''.join(blocks)}
   <footer>本报告为方法示例，不构成投资建议。回测存在前视/幸存者偏差与实现摩擦（滑点、成本）未计入；
   制度调仓在震荡市会有假信号、在 V 型底反应滞后——这是「避开深熊」所付的保费。历史表现不代表未来。</footer>
