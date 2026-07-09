@@ -16,11 +16,16 @@ on:
       period:
         description: "历史窗口"
         default: "max"
-  # Auto-rerun when the backtest logic, the universe, or this workflow changes.
-  # config.py defines the --watchlist universe, so editing it re-validates too.
+  # Auto-rerun when the backtest logic, the universe, the data layer, or this
+  # workflow changes. config.py defines the --watchlist universe and
+  # data_fetch.py governs price correctness (splits/除权) — both re-validate.
   push:
     branches: [main]
-    paths: ["atlas/backtest.py", "atlas/config.py", ".github/workflows/backtest.yml"]
+    paths:
+      - "atlas/backtest.py"
+      - "atlas/config.py"
+      - "atlas/data_fetch.py"
+      - ".github/workflows/backtest.yml"
 
 permissions:
   contents: write

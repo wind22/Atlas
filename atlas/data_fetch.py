@@ -49,6 +49,46 @@ def _stable_hash(text: str) -> int:
     return int(digest[:8], 16)
 
 
+# A股/沪深 ETF 有 ±10%(主板)~±20% 日涨跌停：单日收盘价跳变若远超此幅度，
+# 只可能是除权除息(送股/转增/拆分/大比例分红)，不可能是正常成交。此时把跳变
+# 之前的价格按台阶比例「反向复权」拼接为连续序列——这正是 auto_adjust 应做、
+# 但数据源偶尔漏记 A 股公司行为时的兜底。仅对沪深后缀生效，绝不误伤美股/港股
+# 的真实暴跌(它们没有涨跌停，大跌是真风险，铁律 Ⅰ 必须保留)。
+_LIMIT_SUFFIXES = (".SS", ".SZ")
+
+
+def _backadjust_corporate_actions(df: pd.DataFrame, ticker: str) -> pd.DataFrame:
+    """沪深标的：反向复权掉除权跳变(送股/转增/拆分)，使价格序列连续。"""
+    if not ticker.upper().endswith(_LIMIT_SUFFIXES) or len(df) < 6:
+        return df
+    c = df["Close"].to_numpy(dtype=float)
+    n = len(c)
+    factor = np.ones(n)
+    events: list[tuple] = []
+    for i in range(1, n):
+        if c[i - 1] <= 0 or c[i] <= 0:
+            continue
+        r = c[i] / c[i - 1]
+        if 0.79 < r < 1.27:          # 在 ±~25% 内 → A股涨跌停内的正常波动，跳过
+            continue
+        pre = float(np.median(c[max(0, i - 4):i]))
+        post = float(np.median(c[i:min(n, i + 4)]))
+        if pre <= 0 or post <= 0:
+            continue
+        step = post / pre
+        if 0.85 < step < 1.18:       # 台阶不持续 → 孤立坏点，留给 _clean_prices
+            continue
+        factor[:i] *= step           # 把该日之前的价格缩放到除权后的量纲
+        events.append((str(df.index[i].date()), round(step, 4)))
+    if events:
+        df = df.copy()
+        for col in ("Open", "High", "Low", "Close"):
+            if col in df.columns:
+                df[col] = df[col].to_numpy(dtype=float) * factor
+        _warn(f"{ticker}: 检测到 {len(events)} 次除权跳变，已反向复权拼接 {events}")
+    return df
+
+
 def _normalize(df: pd.DataFrame, ticker: str) -> pd.DataFrame | None:
     """Coerce a raw yfinance frame into ascending OHLCV; None if unusable."""
     if df is None or len(df) == 0:
@@ -81,6 +121,8 @@ def _normalize(df: pd.DataFrame, ticker: str) -> pd.DataFrame | None:
     df = df.dropna(subset=["Close"])
     if len(df) == 0:
         return None
+    # 兜底：数据源漏记的沪深除权(送股/转增/拆分)跳变，反向复权为连续序列。
+    df = _backadjust_corporate_actions(df, ticker)
     return df
 
 
