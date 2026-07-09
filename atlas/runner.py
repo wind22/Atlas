@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 import pandas as pd
 
 from . import config
-from . import data_fetch, indicators, scoring, alerts, snapshot, dashboard, detail
+from . import data_fetch, indicators, scoring, alerts, snapshot, dashboard, detail, about
 from . import regime as regime_mod
 from .config import Layer
 from .types import (
@@ -179,10 +179,18 @@ def run(
     source = "合成数据（离线）" if offline else "yfinance（Yahoo）"
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
+    site_dir = os.path.dirname(os.path.abspath(output))
+
+    # 算法原理页（数据无关，总是生成）。
+    try:
+        about.write_about_page(os.path.join(site_dir, "about.html"),
+                               source=source, generated_at=generated_at)
+    except Exception as exc:  # noqa: BLE001
+        _warn(f"算法原理页生成失败（{exc!r}）")
+
     # 每只自选股一页历史详情（价格趋势 + 制度底色 + 关键节点）。
     detail_links: dict[str, str] = {}
     if write_details:
-        site_dir = os.path.dirname(os.path.abspath(output))
         try:
             detail_links = detail.render_detail_pages(
                 frames, benchmark_df, vix_frame["Close"] if vix_frame is not None and "Close" in vix_frame else None,
