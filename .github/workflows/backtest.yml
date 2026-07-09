@@ -11,8 +11,8 @@ on:
   workflow_dispatch:
     inputs:
       tickers:
-        description: "标的（逗号分隔）"
-        default: "SPY,QQQ"
+        description: "标的（逗号分隔；留空=SPY,QQQ+全部自选）"
+        default: ""
       period:
         description: "历史窗口"
         default: "max"
@@ -39,9 +39,12 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run backtest (real data)
+        # Default: SPY,QQQ + the full watchlist (--watchlist). A non-empty
+        # dispatch "tickers" input overrides with an explicit list instead.
         run: |
-          python -m atlas.backtest --online \
-            --tickers "${{ github.event.inputs.tickers || 'SPY,QQQ' }}" \
+          TK="${{ github.event.inputs.tickers }}"
+          if [ -n "$TK" ]; then SEL="--tickers $TK"; else SEL="--watchlist"; fi
+          python -m atlas.backtest --online $SEL \
             --period "${{ github.event.inputs.period || 'max' }}" \
             --out reports
           test -s reports/backtest.html

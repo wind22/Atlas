@@ -417,11 +417,18 @@ def _crisis_rows(crises: list[dict]) -> str:
     return "".join(out)
 
 
+def _anchor(t: str) -> str:
+    return "bt-" + "".join(c if c.isalnum() else "_" for c in t)
+
+
 def render_html(payload: dict) -> str:
     blocks = []
+    nav = []
     for t, data in payload["tickers"].items():
+        nm = data.get("overall", {}).get("name", t) if "error" not in data else t
+        nav.append(f'<a href="#{_anchor(t)}">{nm} <span class="muted">{t}</span></a>')
         if "error" in data:
-            blocks.append(f'<section class="card"><h2>{t}</h2><p class="bad">{data["error"]}</p></section>')
+            blocks.append(f'<section class="card" id="{_anchor(t)}"><h2>{t}</h2><p class="bad">{data["error"]}</p></section>')
             continue
         o = data["overall"]
         s = o["strategies"]
@@ -438,7 +445,7 @@ def render_html(payload: dict) -> str:
                     f'<td class="num">{m["sharpe"]}</td><td class="num">{m["sortino"]}</td>'
                     f'<td class="num">{m["mar"]}</td><td class="num">{extra}</td></tr>')
 
-        blocks.append(f'''<section class="card">
+        blocks.append(f'''<section class="card" id="{_anchor(t)}">
       <h2>{o["name"]} · {t} <span class="muted">{o["start"]} → {o["end"]}（{o["bars"]} 交易日 · 成本 {o["cost_bps"]:g}bps/换手）</span></h2>
       <div class="kpis">
         <div class="kpi"><div class="lab">回撤改善 vs 买入持有</div><div class="val {saved_cls}">{o["dd_saved"]:+} pp</div></div>
@@ -471,7 +478,11 @@ def render_html(payload: dict) -> str:
   .sub{{color:var(--muted);margin-bottom:20px}}
   .method{{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:20px;font-size:13px;color:var(--muted)}}
   .method b{{color:var(--ink)}}
-  .card{{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:22px}}
+  a.back{{color:var(--muted);text-decoration:none;font-size:14px}} a.back:hover{{color:var(--ink)}}
+  .nav{{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:20px;font-size:13px;line-height:2.1}}
+  .nav a{{color:var(--good);text-decoration:none;margin-right:6px;white-space:nowrap}}
+  .nav a:hover{{text-decoration:underline}} .nav .muted{{font-size:11px}}
+  .card{{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:22px;scroll-margin-top:12px}}
   .muted{{color:var(--muted);font-weight:400;font-size:13px}}
   .good{{color:var(--good)}} .bad{{color:var(--bad)}}
   .kpis{{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}}
@@ -486,6 +497,7 @@ def render_html(payload: dict) -> str:
   svg{{background:var(--bg);border:1px solid var(--line);border-radius:10px;margin-top:8px;color:var(--ink)}}
   footer{{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.7}}
 </style></head><body><div class="wrap">
+  <a class="back" href="index.html">← 返回看板</a>
   <h1>Atlas · 生存回测报告</h1>
   <div class="sub">验证系统能否在历次大跌中<b>及时转防御</b>——评估的是「避开深跌」，不是收益。数据截至 {payload.get("as_of","")}</div>
   <div class="method">
@@ -496,6 +508,7 @@ def render_html(payload: dict) -> str:
     ③ 风险调整指标 <b>Sharpe / Sortino / Ulcer / MAR</b>（无风险利率取 0，防御期现金计 0 收益——这对制度调仓偏保守）。<br>
     <b>局限</b>：广度维度置中性（缺历史成分）；未计税；样本仅 ~5 次独立大跌（n 小）；只能防「有过程」的下跌，防不住隔夜跳空。
   </div>
+  {f'<div class="nav">跳转：{chr(10).join(nav)}</div>' if len(nav) > 3 else ''}
   {''.join(blocks)}
   <footer>本报告为方法示例，不构成投资建议。回测存在前视/幸存者偏差与实现摩擦（滑点、成本）未计入；
   制度调仓在震荡市会有假信号、在 V 型底反应滞后——这是「避开深熊」所付的保费。历史表现不代表未来。</footer>
@@ -524,6 +537,8 @@ def write_report(payload: dict, out_dir: str = "reports") -> tuple[str, str]:
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Atlas 生存回测 — 验证避开大跌，非收益。")
     p.add_argument("--tickers", default="SPY,QQQ", help="逗号分隔，默认 SPY,QQQ")
+    p.add_argument("--watchlist", action="store_true",
+                   help="回测市场基准(SPY,QQQ) + 全部自选个股（config.DEFAULT_STOCKS）")
     p.add_argument("--online", action="store_true", help="用 yfinance 真实数据（默认离线合成）")
     p.add_argument("--period", default="max", help="在线历史窗口（默认 max）")
     p.add_argument("--cost-bps", type=float, default=_DEFAULT_COST_BPS,
@@ -531,7 +546,10 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--out", default="reports", help="报告输出目录（默认 reports/）")
     args = p.parse_args(argv)
 
-    tickers = [t.strip().upper() for t in args.tickers.split(",") if t.strip()]
+    if args.watchlist:
+        tickers = list(dict.fromkeys(["SPY", "QQQ"] + list(config.DEFAULT_STOCKS)))
+    else:
+        tickers = [t.strip().upper() for t in args.tickers.split(",") if t.strip()]
     payload = run_backtest(tickers, offline=not args.online, period=args.period, cost_bps=args.cost_bps)
     html_path, json_path = write_report(payload, args.out)
 
