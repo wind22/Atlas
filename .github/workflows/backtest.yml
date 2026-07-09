@@ -74,8 +74,9 @@ jobs:
           # publish the refreshed report. It touches only reports/, so it does
           # NOT re-trigger this backtest workflow (no loop).
           git commit -m "chore(backtest): 生存回测报告 $(date -u +%Y-%m-%d)"
-          # Robust push: another workflow (deploy-pages snapshot) may push to
-          # main concurrently, so rebase-and-retry instead of failing the race.
+          # This is now the only workflow that writes main (daily state moved to
+          # the `data` branch), so a race is unlikely — but keep a light
+          # rebase-and-retry to survive a concurrent human push to main.
           for i in 1 2 3 4 5; do
             if git push origin HEAD:main; then echo "pushed"; exit 0; fi
             echo "push rejected (attempt $i) — rebasing onto latest main"

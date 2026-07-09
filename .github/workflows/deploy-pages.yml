@@ -1,13 +1,16 @@
 name: Deploy dashboard to GitHub Pages
 
-# Builds the Atlas dashboard (a self-contained HTML page) and publishes it to
-# GitHub Pages. Uses the modern Actions-based Pages flow — no gh-pages branch.
+# Builds the Atlas dashboard + data contract and publishes to GitHub Pages
+# (modern Actions-based flow — no gh-pages branch).
 #
-# The daily snapshot DB (data/atlas_snapshots.sqlite) is committed back to the
-# repo after each run so the NEXT run can load yesterday's snapshot. That is what
-# makes the 2-day regime confirmation, 「较昨日变化」 highlight, and incremental
-# alerts actually work — the CI container is otherwise ephemeral. The persist
-# commit carries [skip ci] so it never re-triggers this workflow.
+# STATE LIVES ON A DEDICATED `data` BRANCH, NOT main (Static-first v3, 方案 §3).
+# The CI container is ephemeral, so continuity (2-day regime confirmation,
+# 「较昨日变化」, incremental alerts, accumulating public/data/daily/*.json) needs
+# yesterday's state restored at build start and today's state pushed back at the
+# end. Keeping that state on a machine-owned `data` branch — instead of committing
+# it back to main — means this workflow is the ONLY writer of `data`, so there is
+# no push race with the backtest workflow (which writes reports/ to main). That is
+# why the old [skip ci] + rebase-and-retry dance is gone.
 
 on:
   push:
@@ -20,18 +23,18 @@ on:
   # GITHUB_TOKEN and thus can't trigger a workflow via `push`, so we chain here.
   # Note: the Pages `deploy` job depends on GitHub's hosted-runner pool; a
   # transient outage there ("job was not acquired by Runner") fails only the
-  # deploy (build + artifact are fine), and the next push/schedule re-publishes
-  # the already-committed report — no rebuild needed.
+  # deploy (build + artifact are fine), and the next push/schedule re-publishes.
   workflow_run:
     workflows: ["Run survival backtest"]
     types: [completed]
 
 permissions:
-  contents: write   # push the daily snapshot DB back to the repo
+  contents: write   # push today's state to the `data` branch
   pages: write
   id-token: write
 
-# One deploy at a time; let a newer run supersede an in-progress one.
+# One deploy at a time; let a newer run supersede an in-progress one. This also
+# serializes the `data`-branch push, so a plain (non-force) append never races.
 concurrency:
   group: pages
   cancel-in-progress: true
@@ -50,15 +53,35 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Restore prior state from data branch
+        # Pull yesterday's SQLite + published data/ so continuity works. First run
+        # (no `data` branch yet) is a clean cold start — the pipeline degrades
+        # gracefully to 「首次记录」.
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p data public/data
+          url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git ls-remote --exit-code --heads "$url" data >/dev/null 2>&1; then
+            tmp="$(mktemp -d)"
+            git clone -q --depth 1 --branch data "$url" "$tmp"
+            cp -f "$tmp/atlas_snapshots.sqlite" data/atlas_snapshots.sqlite 2>/dev/null || true
+            cp -a "$tmp/site-data/." public/data/ 2>/dev/null || true
+            echo "restored state from data branch"
+          else
+            echo "no data branch yet — cold start"
+          fi
+
       - name: Build dashboard
         # Try live data (GitHub runners can reach Yahoo Finance); fall back to
-        # deterministic offline data so the page always builds green. The DB is
-        # the checked-in snapshot from previous runs → confirmation/diff work.
+        # deterministic offline data so the page always builds green. The DB was
+        # restored above → confirmation/diff work. Writes public/index.html AND the
+        # public/data/*.json contract.
         run: |
-          mkdir -p public data
           python -m atlas --period 3y --db data/atlas_snapshots.sqlite --output public/index.html \
             || python -m atlas --offline --db data/atlas_snapshots.sqlite --output public/index.html
           test -s public/index.html
+          test -s public/data/latest.json
           # PWA assets (manifest, service worker, icons) so the page is installable.
           cp -f web/* public/ 2>/dev/null || true
           # Publish the survival backtest report too, if it has been generated.
@@ -73,26 +96,35 @@ jobs:
         with:
           path: public
 
-      - name: Persist snapshot DB
-        # Commit today's snapshot back so the next run sees it. [skip ci] avoids
-        # re-triggering. continue-on-error so a push race never fails the deploy.
+      - name: Persist state to data branch
+        # Push today's SQLite + published data/ to the machine-owned `data` branch.
+        # This workflow is the branch's only writer and `concurrency: pages`
+        # serializes runs, so a plain append needs no [skip ci] and no rebase race
+        # handling. continue-on-error so a persist hiccup never fails the deploy.
         if: github.ref == 'refs/heads/main'
         continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          tmp="$(mktemp -d)"
+          if ! git clone -q --depth 1 --branch data "$url" "$tmp" 2>/dev/null; then
+            git init -q "$tmp"
+            git -C "$tmp" checkout -q -b data
+          fi
+          cp -f data/atlas_snapshots.sqlite "$tmp/atlas_snapshots.sqlite" 2>/dev/null || true
+          rm -rf "$tmp/site-data"
+          mkdir -p "$tmp/site-data"
+          cp -a public/data/. "$tmp/site-data/"
+          cd "$tmp"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f data/atlas_snapshots.sqlite
+          git add -A
           if git diff --cached --quiet; then
-            echo "snapshot unchanged; nothing to commit"; exit 0
+            echo "state unchanged; nothing to persist"; exit 0
           fi
-          git commit -m "chore(data): 每日快照 $(date -u +%Y-%m-%d) [skip ci]"
-          # Rebase-and-retry: a concurrent push (e.g. backtest report) may win the race.
-          for i in 1 2 3 4 5; do
-            if git push origin HEAD:main; then echo "pushed"; exit 0; fi
-            echo "push rejected (attempt $i) — rebasing"; git fetch origin main && git rebase origin/main || git rebase --abort
-            sleep 3
-          done
-          echo "snapshot push kept losing the race; will retry next run"
+          git commit -q -m "chore(data): 每日状态 $(date -u +%Y-%m-%d)"
+          git push -q "$url" HEAD:data && echo "state persisted to data branch"
 
   deploy:
     needs: build

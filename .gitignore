@@ -221,5 +221,10 @@ __marimo__/
 dashboard.html
 *.sqlite
 atlas_snapshots.sqlite
-# ...but the CI-persisted daily snapshot DB IS tracked (day-over-day diff + confirmation).
+# The generated static site + data contract (public/data/*.json) are build
+# artifacts — published to GitHub Pages, never committed to main.
+public/
+# The daily state (SQLite + published data/) now lives on the machine-owned
+# `data` branch (Static-first v3). The copy tracked here is a frozen seed that
+# bootstraps the first post-migration run before the `data` branch exists.
 !data/atlas_snapshots.sqlite
