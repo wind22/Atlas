@@ -193,3 +193,4 @@ REGIME_CONFIRM_DAYS = 2     # a switch confirms only after N consecutive days
 DEFAULT_PERIOD = "2y"       # yfinance history window (need >1y for MA200 + vol)
 DEFAULT_DB = "atlas_snapshots.sqlite"
 DEFAULT_OUTPUT = "dashboard.html"
+HISTORY_MAX_DAYS = 750      # cap for regime_history backfill from recent snapshots

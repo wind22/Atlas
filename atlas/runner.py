@@ -20,6 +20,7 @@ import pandas as pd
 from . import config
 from . import data_fetch, indicators, scoring, alerts, snapshot, dashboard, detail, about
 from . import regime as regime_mod
+from .storage import artifacts
 from .config import Layer
 from .types import (
     REGIME_LIGHT,
@@ -180,6 +181,19 @@ def run(
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
     site_dir = os.path.dirname(os.path.abspath(output))
+
+    # 数据产物层：把今日报告发布成 public/data/*.json 公开契约（方案 §2）。
+    # 静态页面消费这些 JSON，而非直接依赖 Python 对象。失败不影响看板生成。
+    try:
+        recent = snapshot.load_recent(as_of, config.HISTORY_MAX_DAYS, db_path)
+        artifacts.write_artifacts(
+            report, prev_report,
+            data_dir=os.path.join(site_dir, "data"),
+            source=source, generated_at=generated_at,
+            stocks=stocks, recent_reports=recent,
+        )
+    except Exception as exc:  # noqa: BLE001 — 数据产物失败不影响看板
+        _warn(f"数据产物生成失败（{exc!r}）")
 
     # 算法原理页（数据无关，总是生成）。
     try:
