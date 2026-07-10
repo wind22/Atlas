@@ -2,7 +2,7 @@
   "date": "2026-07-10",
   "prev_date": "2026-07-09",
   "source": "yfinance（Yahoo）",
-  "generated_at": "2026-07-10 22:31 UTC",
+  "generated_at": "2026-07-10 22:40 UTC",
   "regime": {
     "light": "🟢",
     "label": "进攻区 Risk-On",
@@ -43,12 +43,19 @@
   },
   "breadth_pct": "90.9%",
   "vix": "15.0",
+  "risk_legend": "风险档位：🟢 R≤30 · 🟡 30–60 · 🔴 R≥60，以档位与触发条目为准",
   "markets": [
     {
       "ticker": "SPY",
       "name": "标普500",
       "T": "84",
       "R": "0",
+      "risk": {
+        "label": "低风险",
+        "icon": "🟢",
+        "cls": "tag-good"
+      },
+      "risk_flags": [],
       "status": {
         "label": "强势",
         "icon": "🟢",
@@ -65,6 +72,14 @@
       "name": "纳指100",
       "T": "85",
       "R": "20",
+      "risk": {
+        "label": "低风险",
+        "icon": "🟢",
+        "cls": "tag-good"
+      },
+      "risk_flags": [
+        "波动骤放"
+      ],
       "status": {
         "label": "强势",
         "icon": "🟢",
@@ -81,6 +96,12 @@
       "name": "罗素2000",
       "T": "85",
       "R": "0",
+      "risk": {
+        "label": "低风险",
+        "icon": "🟢",
+        "cls": "tag-good"
+      },
+      "risk_flags": [],
       "status": {
         "label": "强势",
         "icon": "🟢",
@@ -97,6 +118,12 @@
       "name": "道指",
       "T": "77",
       "R": "0",
+      "risk": {
+        "label": "低风险",
+        "icon": "🟢",
+        "cls": "tag-good"
+      },
+      "risk_flags": [],
       "status": {
         "label": "强势",
         "icon": "🟢",
@@ -367,6 +394,9 @@
         "icon": "🟢",
         "cls": "tag-good"
       },
+      "risk_flags": [
+        "波动骤放"
+      ],
       "hints": [
         {
           "title": "波动率突破近一年上沿",
@@ -395,6 +425,12 @@
         "icon": "🔴",
         "cls": "tag-bad"
       },
+      "risk_flags": [
+        "跌破200日均线",
+        "死叉：50日<200日",
+        "自高点回撤 >10%",
+        "波动骤放"
+      ],
       "hints": [
         {
           "title": "波动率突破近一年上沿",
@@ -423,6 +459,9 @@
         "icon": "🟢",
         "cls": "tag-good"
       },
+      "risk_flags": [
+        "自高点回撤 >10%"
+      ],
       "hints": []
     },
     {
@@ -446,6 +485,9 @@
         "icon": "🟢",
         "cls": "tag-good"
       },
+      "risk_flags": [
+        "自高点回撤 >10%"
+      ],
       "hints": []
     },
     {
@@ -469,6 +511,10 @@
         "icon": "🟡",
         "cls": "tag-warn"
       },
+      "risk_flags": [
+        "死叉：50日<200日",
+        "波动骤放"
+      ],
       "hints": [
         {
           "title": "重新站上200日均线",
@@ -501,6 +547,7 @@
         "icon": "🟢",
         "cls": "tag-good"
       },
+      "risk_flags": [],
       "hints": []
     },
     {
@@ -524,6 +571,10 @@
         "icon": "🟡",
         "cls": "tag-warn"
       },
+      "risk_flags": [
+        "跌破200日均线",
+        "死叉：50日<200日"
+      ],
       "hints": []
     },
     {
@@ -547,6 +598,11 @@
         "icon": "🟡",
         "cls": "tag-warn"
       },
+      "risk_flags": [
+        "跌破200日均线",
+        "死叉：50日<200日",
+        "自高点回撤 >10%"
+      ],
       "hints": []
     },
     {
@@ -570,6 +626,11 @@
         "icon": "🟡",
         "cls": "tag-warn"
       },
+      "risk_flags": [
+        "跌破200日均线",
+        "自高点回撤 >10%",
+        "自高点回撤 >20%"
+      ],
       "hints": [
         {
           "title": "深度回撤>20%",
@@ -598,6 +659,10 @@
         "icon": "🟡",
         "cls": "tag-warn"
       },
+      "risk_flags": [
+        "自高点回撤 >10%",
+        "波动骤放"
+      ],
       "hints": [
         {
           "title": "波动率突破近一年上沿",
@@ -626,6 +691,13 @@
         "icon": "🔴",
         "cls": "tag-bad"
       },
+      "risk_flags": [
+        "跌破200日均线",
+        "死叉：50日<200日",
+        "自高点回撤 >10%",
+        "自高点回撤 >20%",
+        "波动骤放"
+      ],
       "hints": [
         {
           "title": "深度回撤>20%",
@@ -658,6 +730,11 @@
         "icon": "🟡",
         "cls": "tag-warn"
       },
+      "risk_flags": [
+        "跌破200日均线",
+        "死叉：50日<200日",
+        "自高点回撤 >10%"
+      ],
       "hints": []
     },
     {
@@ -681,6 +758,11 @@
         "icon": "🟡",
         "cls": "tag-warn"
       },
+      "risk_flags": [
+        "自高点回撤 >10%",
+        "自高点回撤 >20%",
+        "波动骤放"
+      ],
       "hints": [
         {
           "title": "深度回撤>20%",
@@ -713,6 +795,11 @@
         "icon": "🟡",
         "cls": "tag-warn"
       },
+      "risk_flags": [
+        "自高点回撤 >10%",
+        "自高点回撤 >20%",
+        "波动骤放"
+      ],
       "hints": [
         {
           "title": "深度回撤>20%",
@@ -745,6 +832,11 @@
         "icon": "🟡",
         "cls": "tag-warn"
       },
+      "risk_flags": [
+        "自高点回撤 >10%",
+        "自高点回撤 >20%",
+        "波动骤放"
+      ],
       "hints": [
         {
           "title": "深度回撤>20%",
@@ -777,6 +869,9 @@
         "icon": "🟢",
         "cls": "tag-good"
       },
+      "risk_flags": [
+        "波动骤放"
+      ],
       "hints": [
         {
           "title": "波动率突破近一年上沿",
