@@ -111,6 +111,9 @@ def render_about_page(*, source: str | None = None, generated_at: str | None = N
   <h2>三、风险分 R（0–100，越高越危险）</h2>
   <p class="muted" style="margin:2px 0">独立计算，用作「刹车」。这是芒格式的<b>否决清单</b>——先问「什么情况下会受伤」。任一条件成立即累加，上限 {c.RISK_CAP}。</p>
   <div class="card"><table>{risk}</table></div>
+  <div class="note"><b>怎么读 R</b>：制度判定只用两个阈值——R ≤ {c.R_LOW} 视为低风险、R ≥ {c.R_HIGH} 触发防御，中间为过渡带。
+  否决清单的各分项在熊市中常同时触发（跌破 200 线、死叉、回撤往往结伴而来），分数会快速饱和，
+  所以<b>中段数字仅供参考</b>：看档位（🟢 低 / 🟡 中 / 🔴 高）与具体触发条目，比比较 40 和 55 更有意义。</div>
 
   <h2>四、市场制度（一盏灯）</h2>
   <p class="muted" style="margin:2px 0">把 T 和 R 映射到四种制度。<b>防御优先于进攻</b>：R 高（或 T 弱）时一律防御，无论 T 多高。</p>

@@ -134,9 +134,15 @@
   .card .head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
   .card .nm { font-weight: 700; font-size: 15px; }
   .card .tk { color: var(--muted); font-size: 12px; font-weight: 500; }
-  .card .scores { display: flex; gap: 16px; margin: 10px 0 6px; }
+  .card .scores { display: flex; gap: 16px; margin: 10px 0 6px; align-items: flex-start; }
   .card .scores .lab { color: var(--muted); font-size: 11px; }
   .card .scores .val { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .card .band { display: flex; align-items: center; gap: 6px; margin-top: 5px; }
+  .card .band .rnum { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+  .card .flags { display: flex; flex-wrap: wrap; gap: 4px; margin: 2px 0 6px; }
+  .card .flag { padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 600; color: var(--bad); background: var(--bad-bg); }
+  h2 .legend { font-size: 12px; color: var(--muted); font-weight: 400; letter-spacing: 0; }
+  .tag .fcount { font-size: 10px; opacity: .85; margin-left: 2px; }
   .card .dist { font-size: 13px; color: var(--muted); }
   .card .dist b { font-variant-numeric: tabular-nums; }
   .card .price { font-size: 13px; color: var(--muted); margin: 2px 0 4px; }
@@ -293,7 +299,7 @@
   {% endif %}
 
   {# ---------- 2) 大盘卡片区 ---------- #}
-  <h2>大盘</h2>
+  <h2>大盘{% if risk_legend %} <span class="legend">{{ risk_legend }}</span>{% endif %}</h2>
   <div class="cards">
     {% for m in markets %}
     <div class="card">
@@ -304,8 +310,13 @@
       <div class="price">现价 <b>{{ m.price }}</b> <span class="{{ 'pos' if m.chg_good else 'neg' }}">{{ m.chg }}</span></div>
       <div class="scores">
         <div><div class="lab">趋势 T</div><div class="val">{{ m.T }}</div></div>
-        <div><div class="lab">风险 R</div><div class="val">{{ m.R }}</div></div>
+        <div><div class="lab">风险</div><div class="band"><span class="tag {{ m.risk.cls }}">{{ m.risk.icon }} {{ m.risk.label }}</span><span class="rnum">R {{ m.R }}</span></div></div>
       </div>
+      {% if m.risk_flags %}
+      <div class="flags">
+        {% for f in m.risk_flags %}<span class="flag">{{ f }}</span>{% endfor %}
+      </div>
+      {% endif %}
       <div class="dist">距200线 <b class="{{ 'pos' if m.dist200_good else 'neg' }}">{{ m.dist200 }}</b></div>
     </div>
     {% endfor %}
@@ -360,7 +371,7 @@
           <td><span class="tag {{ s.trend.cls }}">{{ s.trend.icon }} {{ s.trend.label }}</span></td>
           <td class="num {{ 'pos' if s.mom_good else 'neg' }}">{{ s.mom }}</td>
           <td class="num">{{ s.dist_high }}</td>
-          <td><span class="tag {{ s.risk.cls }}">{{ s.risk.icon }} {{ s.risk.label }}</span></td>
+          <td><span class="tag {{ s.risk.cls }}"{% if s.risk_flags %} title="{{ s.risk_flags | join('；') }}"{% endif %}>{{ s.risk.icon }} {{ s.risk.label }}{% if s.risk_flags %}<span class="fcount">·{{ s.risk_flags | length }}项</span>{% endif %}</span></td>
           <td>
             {% if s.hints %}
             <div class="hintlist">

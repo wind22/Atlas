@@ -123,11 +123,16 @@ def _status_tag(result: TickerResult) -> dict:
     return {"label": "警戒", "icon": "🟡", "cls": "tag-warn"}
 
 
-def _risk_flag(R: float) -> dict:
-    """个股风险旗标：R 越高越危险（🔴/🟡/🟢）。"""
+def risk_band(R: float) -> dict:
+    """R 的三档色带（🟢 低 / 🟡 中 / 🔴 高）。
+
+    R 是否决式累加，各分项在熊市中常同时触发、分数快速饱和，中段数值分辨率
+    有限；而制度判定只用 R_LOW / R_HIGH 两个阈值。因此呈现以**档位**为主、
+    数字为辅，档位边界与制度判定完全一致（R ≤ R_LOW 才算低，与进攻条件同口径）。
+    """
     if R >= config.R_HIGH:
         return {"label": "高风险", "icon": "🔴", "cls": "tag-bad"}
-    if R >= config.R_LOW:
+    if R > config.R_LOW:
         return {"label": "中风险", "icon": "🟡", "cls": "tag-warn"}
     return {"label": "低风险", "icon": "🟢", "cls": "tag-good"}
 
@@ -175,6 +180,8 @@ def _market_view(report: DailyReport) -> list[dict]:
             "name": r.name,
             "T": _fmt_num(r.T),
             "R": _fmt_num(r.R),
+            "risk": risk_band(r.R),
+            "risk_flags": list(r.risk_flags),
             "status": _status_tag(r),
             "dist200": _fmt_pct(d, signed=True),
             "dist200_good": d >= 0,
@@ -227,7 +234,8 @@ def _stock_view(report: DailyReport, detail_links: dict[str, str] | None = None)
             "mom": _fmt_pct(ind.mom_12_1, signed=True),
             "mom_good": ind.mom_12_1 >= 0,
             "dist_high": _fmt_pct(-ind.dist_to_52w_high, signed=True),
-            "risk": _risk_flag(r.R),
+            "risk": risk_band(r.R),
+            "risk_flags": list(r.risk_flags),
             "hints": [{
                 "title": a.title,
                 "is_risk": a.kind == AlertKind.RISK,
@@ -332,6 +340,11 @@ def build_view_model(
         "explain": explain,
         "breadth_pct": _fmt_pct(report.breadth_pct),
         "vix": _fmt_num(report.vix) if report.vix is not None else "—",
+        # R 以三档呈现（与制度判定的两个阈值同口径），中段数字仅供参考。
+        "risk_legend": (
+            f"风险档位：🟢 R≤{config.R_LOW} · 🟡 {config.R_LOW}–{config.R_HIGH}"
+            f" · 🔴 R≥{config.R_HIGH}，以档位与触发条目为准"
+        ),
         "markets": _market_view(report),
         "sectors": _sector_view(report),
         "multi_assets": _multi_asset_view(report),
