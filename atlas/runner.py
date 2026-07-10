@@ -20,6 +20,10 @@ import pandas as pd
 from . import config
 from . import data_fetch, indicators, scoring, alerts, snapshot, dashboard, detail, about
 from . import regime as regime_mod
+from .storage import artifacts
+from .report import explain as explain_mod
+from .report import state_machine
+from .report import similarity
 from .config import Layer
 from .types import (
     REGIME_LIGHT,
@@ -181,6 +185,35 @@ def run(
 
     site_dir = os.path.dirname(os.path.abspath(output))
 
+    # 近期快照（制度序列回填 + 状态机 + 解释层共用）。加载失败降级为空列表。
+    try:
+        recent = snapshot.load_recent(as_of, config.HISTORY_MAX_DAYS, db_path)
+    except Exception as exc:  # noqa: BLE001
+        _warn(f"近期快照加载失败（{exc!r}）")
+        recent = []
+
+    # 解释层：把今日结论/风险/机会/较昨日变化组织成人话（方案 §5）。纯派生，
+    # 喂给数据契约与看板顶部。失败降级为 None，不影响其余产物。
+    try:
+        explain = explain_mod.build_explain(report, prev_report)
+    except Exception as exc:  # noqa: BLE001
+        _warn(f"解释层生成失败（{exc!r}）")
+        explain = None
+
+    # 制度状态机：当前制度已持续多久、上次何时因何切换（方案 §6）。纯派生。
+    try:
+        state = state_machine.build_state(report, recent)
+    except Exception as exc:  # noqa: BLE001
+        _warn(f"制度状态机生成失败（{exc!r}）")
+        state = None
+
+    # 历史相似状态：当时状态和今天最像的历史日子（方案 §7，仅描述、无前向）。
+    try:
+        similar = similarity.build_similar(report, recent)
+    except Exception as exc:  # noqa: BLE001
+        _warn(f"相似状态生成失败（{exc!r}）")
+        similar = None
+
     # 算法原理页（数据无关，总是生成）。
     try:
         about.write_about_page(os.path.join(site_dir, "about.html"),
@@ -199,9 +232,35 @@ def run(
         except Exception as exc:  # noqa: BLE001 — 详情页失败不影响看板
             _warn(f"个股详情页生成失败（{exc!r}）")
 
+    # 看板视图模型：算一次，让 HTML 与 dashboard_view.json 同源（方案 §6）。展示逻辑
+    # （配色/格式化/标签/排序）都在此折叠成 JSON-safe 数据，供 PWA / memo / API 复用。
+    try:
+        view_model = dashboard.build_view_model(
+            report, prev_report, source=source, generated_at=generated_at,
+            detail_links=detail_links, explain=explain, state=state, similar=similar,
+        )
+    except Exception as exc:  # noqa: BLE001
+        _warn(f"视图模型构建失败（{exc!r}）")
+        view_model = None
+
+    # 数据产物层：把今日报告 + 视图模型发布成 public/data/*.json 公开契约（方案 §2）。
+    # 静态页面消费这些 JSON，而非直接依赖 Python 对象。失败不影响看板生成。
+    try:
+        artifacts.write_artifacts(
+            report, prev_report,
+            data_dir=os.path.join(site_dir, "data"),
+            source=source, generated_at=generated_at,
+            stocks=stocks, recent_reports=recent, explain=explain, state=state,
+            similar=similar, view_model=view_model,
+        )
+    except Exception as exc:  # noqa: BLE001 — 数据产物失败不影响看板
+        _warn(f"数据产物生成失败（{exc!r}）")
+
+    # 看板（主产物）：复用同一 view_model 渲染，避免重算。
     dashboard.write_dashboard(
         report, prev_report, output,
         source=source, generated_at=generated_at, detail_links=detail_links,
+        explain=explain, state=state, view_model=view_model,
     )
     return report
 

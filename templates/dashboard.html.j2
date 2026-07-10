@@ -81,6 +81,36 @@
   .regime-caution { background: var(--warn-bg); border-color: var(--warn); }
   .regime-off { background: var(--bad-bg); border-color: var(--bad); }
   .regime-oversold { background: var(--warn-bg); border-color: #d98a2b; }
+
+  /* ---- explain summary（今日结论 / 风险 / 机会 / 变化） ---- */
+  .explain { margin-top: 14px; }
+  .explain .headline { font-size: 16px; font-weight: 700; margin: 0 0 10px; }
+  .explain .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .explain .box {
+    border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px;
+    background: var(--panel); box-shadow: var(--shadow);
+  }
+  .explain .box h3 { margin: 0 0 6px; font-size: 13px; font-weight: 600; }
+  .explain .box.risk h3 { color: var(--bad); }
+  .explain .box.opp h3 { color: var(--good); }
+  .explain ul { margin: 0; padding-left: 18px; }
+  .explain li { font-size: 13.5px; margin: 3px 0; }
+  .explain .empty { color: var(--muted); font-size: 13px; }
+  .explain .delta { margin-top: 12px; font-size: 13.5px; }
+  .explain .delta b { color: var(--ink); }
+  @media (max-width: 640px) { .explain .cols { grid-template-columns: 1fr; } }
+
+  /* ---- 历史相似状态 ---- */
+  .similar h2 .disclaimer { font-size: 12px; color: var(--muted); font-weight: 400; letter-spacing: 0; }
+  .similar .simrows { display: flex; flex-direction: column; gap: 8px; }
+  .similar .simrow {
+    display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline;
+    border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px;
+    background: var(--panel); box-shadow: var(--shadow); font-size: 13.5px;
+  }
+  .similar .simrow .d { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .similar .simrow .rg { color: var(--muted); }
+  .similar .simrow .mx { color: var(--muted); font-variant-numeric: tabular-nums; }
   .change-badge {
     display: inline-block; margin-top: 8px; padding: 4px 10px; border-radius: 999px;
     background: var(--panel); border: 1px solid var(--line); font-size: 13px; font-weight: 600;
@@ -206,11 +236,61 @@
       <div class="name">{{ regime.label }}</div>
       <div class="reason">{{ regime.reason }}</div>
       <div class="stance">应对：{{ regime.stance }}</div>
+      {% if state and state.days_in_regime %}
+      <div class="reason">已处于当前制度 {{ state.days_in_regime }} 天{% if state.last_transition_date %}（自 {{ state.last_transition_date }}{% if state.previous_regime %}，此前 {{ prev_regime_label }}{% endif %}）{% endif %}</div>
+      {% endif %}
       {% if regime.changed and regime.prev %}
       <div class="change-badge">较昨日变化：{{ regime.prev.light }} {{ regime.prev.label }} → {{ regime.light }} {{ regime.label }}</div>
       {% endif %}
     </div>
   </section>
+
+  {# ---------- 1b) 今日结论摘要（解释层） ---------- #}
+  {% if explain %}
+  <section class="explain">
+    <div class="headline">今日结论：{{ explain.headline }}</div>
+    <div class="cols">
+      <div class="box risk">
+        <h3>⚠️ 主要风险</h3>
+        {% if explain.top_risks %}
+        <ul>{% for r in explain.top_risks %}<li>{{ r }}</li>{% endfor %}</ul>
+        {% else %}
+        <div class="empty">暂无风险类提示</div>
+        {% endif %}
+      </div>
+      <div class="box opp">
+        <h3>✨ 主要机会</h3>
+        {% if explain.top_opportunities %}
+        <ul>{% for o in explain.top_opportunities %}<li>{{ o }}</li>{% endfor %}</ul>
+        {% else %}
+        <div class="empty">暂无机会类提示</div>
+        {% endif %}
+      </div>
+    </div>
+    {% if explain.delta_from_yesterday %}
+    <div class="delta"><b>较昨日变化：</b>{{ explain.delta_from_yesterday | join('；') }}</div>
+    {% endif %}
+  </section>
+  {% endif %}
+
+  {# ---------- 1c) 历史相似状态（仅回看，不含未来） ---------- #}
+  {% if similar %}
+  <section class="similar">
+    <h2>历史相似状态 <span class="disclaimer">仅供回看当时状态，不含任何未来走势</span></h2>
+    <div class="simrows">
+      {% for s in similar %}
+      <div class="simrow">
+        <span class="d">{{ s.date }}</span>
+        <span class="rg">{{ s.regime_light }} {{ s.regime_label }}</span>
+        <span class="mx">T {{ s.T }}</span>
+        <span class="mx">R {{ s.R }}</span>
+        <span class="mx">广度 {{ s.breadth }}</span>
+        <span class="mx">VIX {{ s.vix }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
 
   {# ---------- 2) 大盘卡片区 ---------- #}
   <h2>大盘</h2>

@@ -277,21 +277,57 @@ def _regime_view(report: DailyReport) -> dict:
     return view
 
 
-def _build_context(
+def _similar_view(similar: dict | None) -> list[dict]:
+    """历史相似状态 → 展示行（补中文制度标签）。仅描述当时状态，无任何前向信息。"""
+    if not similar or not similar.get("similar_periods"):
+        return []
+    out = []
+    for p in similar["similar_periods"]:
+        reg = Regime(p["regime"])
+        out.append({
+            "date": p["date"],
+            "regime_label": REGIME_LABEL[reg],
+            "regime_light": REGIME_LIGHT[reg],
+            "T": _fmt_num(p["T_spy"]),
+            "R": _fmt_num(p["R_spy"]),
+            "breadth": _fmt_pct(p["breadth_pct"]),
+            "vix": "—" if p.get("vix") is None else _fmt_num(p["vix"]),
+        })
+    return out
+
+
+def build_view_model(
     report: DailyReport,
     prev_report: DailyReport | None,
-    source: str | None,
-    generated_at: str | None,
-    detail_links: dict[str, str] | None,
+    *,
+    source: str | None = None,
+    generated_at: str | None = None,
+    detail_links: dict[str, str] | None = None,
+    explain: dict | None = None,
+    state: dict | None = None,
+    similar: dict | None = None,
 ) -> dict:
+    """把 DailyReport 折叠成**看板视图模型**：一份 JSON-safe 的展示数据。
+
+    所有展示逻辑（配色、格式化、状态标签、排序）在此算好；模板只做排版。把它固化成
+    ``dashboard_view.json`` 后，HTML / PWA / LLM memo / API 可共用同一份视图数据，
+    无需各自重算（方案 §6）。返回值仅含 str/dict/list/bool/None，可直接 json.dump。
+    """
     if generated_at is None:
         generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    prev_regime_label = None
+    if state and state.get("previous_regime"):
+        prev_regime_label = REGIME_LABEL[Regime(state["previous_regime"])]
     return {
         "date": report.date,
         "prev_date": prev_report.date if prev_report else None,
         "source": source or "yfinance",
         "generated_at": generated_at,
         "regime": _regime_view(report),
+        "state": state,
+        "prev_regime_label": prev_regime_label,
+        "similar": _similar_view(similar),
+        "explain": explain,
         "breadth_pct": _fmt_pct(report.breadth_pct),
         "vix": _fmt_num(report.vix) if report.vix is not None else "—",
         "markets": _market_view(report),
@@ -314,6 +350,13 @@ def _environment() -> Environment:
     )
 
 
+def render_view(view_model: dict) -> str:
+    """从一份预先构建好的视图模型渲染 HTML —— HTML 与 dashboard_view.json 同源。"""
+    env = _environment()
+    template = env.get_template(_TEMPLATE_NAME)
+    return template.render(**view_model)
+
+
 def render_dashboard(
     report: DailyReport,
     prev_report: DailyReport | None,
@@ -321,13 +364,18 @@ def render_dashboard(
     source: str | None = None,
     generated_at: str | None = None,
     detail_links: dict[str, str] | None = None,
+    explain: dict | None = None,
+    state: dict | None = None,
+    view_model: dict | None = None,
 ) -> str:
-    """渲染完整的自包含 HTML 字符串。source 为数据来源标注，detail_links 为个股详情页链接。"""
-    env = _environment()
-    template = env.get_template(_TEMPLATE_NAME)
-    return template.render(
-        **_build_context(report, prev_report, source, generated_at, detail_links)
-    )
+    """渲染完整的自包含 HTML 字符串。传入 ``view_model`` 则直接复用（与 JSON 同源，
+    避免重算）；否则由其余参数现场构建。"""
+    if view_model is None:
+        view_model = build_view_model(
+            report, prev_report, source=source, generated_at=generated_at,
+            detail_links=detail_links, explain=explain, state=state,
+        )
+    return render_view(view_model)
 
 
 def write_dashboard(
@@ -338,10 +386,14 @@ def write_dashboard(
     source: str | None = None,
     generated_at: str | None = None,
     detail_links: dict[str, str] | None = None,
+    explain: dict | None = None,
+    state: dict | None = None,
+    view_model: dict | None = None,
 ) -> None:
     """渲染并写入 ``path``（UTF-8）。若父目录不存在则自动创建。"""
     html = render_dashboard(
-        report, prev_report, source=source, generated_at=generated_at, detail_links=detail_links
+        report, prev_report, source=source, generated_at=generated_at,
+        detail_links=detail_links, explain=explain, state=state, view_model=view_model,
     )
     parent = pathlib.Path(path).resolve().parent
     parent.mkdir(parents=True, exist_ok=True)
