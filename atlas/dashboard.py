@@ -277,6 +277,25 @@ def _regime_view(report: DailyReport) -> dict:
     return view
 
 
+def _similar_view(similar: dict | None) -> list[dict]:
+    """历史相似状态 → 展示行（补中文制度标签）。仅描述当时状态，无任何前向信息。"""
+    if not similar or not similar.get("similar_periods"):
+        return []
+    out = []
+    for p in similar["similar_periods"]:
+        reg = Regime(p["regime"])
+        out.append({
+            "date": p["date"],
+            "regime_label": REGIME_LABEL[reg],
+            "regime_light": REGIME_LIGHT[reg],
+            "T": _fmt_num(p["T_spy"]),
+            "R": _fmt_num(p["R_spy"]),
+            "breadth": _fmt_pct(p["breadth_pct"]),
+            "vix": "—" if p.get("vix") is None else _fmt_num(p["vix"]),
+        })
+    return out
+
+
 def build_view_model(
     report: DailyReport,
     prev_report: DailyReport | None,
@@ -286,6 +305,7 @@ def build_view_model(
     detail_links: dict[str, str] | None = None,
     explain: dict | None = None,
     state: dict | None = None,
+    similar: dict | None = None,
 ) -> dict:
     """把 DailyReport 折叠成**看板视图模型**：一份 JSON-safe 的展示数据。
 
@@ -306,6 +326,7 @@ def build_view_model(
         "regime": _regime_view(report),
         "state": state,
         "prev_regime_label": prev_regime_label,
+        "similar": _similar_view(similar),
         "explain": explain,
         "breadth_pct": _fmt_pct(report.breadth_pct),
         "vix": _fmt_num(report.vix) if report.vix is not None else "—",

@@ -188,6 +188,15 @@ R_HIGH = 60                 # R >= 60 → Risk-Off (defense outranks offense)
 REGIME_CONFIRM_DAYS = 2     # a switch confirms only after N consecutive days
 
 # --------------------------------------------------------------------------
+# Historical similarity (方案 §7). Descriptive analogues ONLY — 铁律 Ⅱ forbids
+# attaching forward returns. These are fixed structural choices, not fitted:
+# TOP_N how many analogues to surface; MIN_GAP_DAYS excludes the most recent
+# ~month so matches are genuine past episodes, not trivially-adjacent days.
+# --------------------------------------------------------------------------
+SIMILARITY_TOP_N = 3
+SIMILARITY_MIN_GAP_DAYS = TRADING_DAYS_MONTH   # ~21 trading days ≈ 1 month
+
+# --------------------------------------------------------------------------
 # Data / runtime defaults.
 # --------------------------------------------------------------------------
 DEFAULT_PERIOD = "2y"       # yfinance history window (need >1y for MA200 + vol)

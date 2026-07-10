@@ -23,6 +23,7 @@ from . import regime as regime_mod
 from .storage import artifacts
 from .report import explain as explain_mod
 from .report import state_machine
+from .report import similarity
 from .config import Layer
 from .types import (
     REGIME_LIGHT,
@@ -206,6 +207,13 @@ def run(
         _warn(f"制度状态机生成失败（{exc!r}）")
         state = None
 
+    # 历史相似状态：当时状态和今天最像的历史日子（方案 §7，仅描述、无前向）。
+    try:
+        similar = similarity.build_similar(report, recent)
+    except Exception as exc:  # noqa: BLE001
+        _warn(f"相似状态生成失败（{exc!r}）")
+        similar = None
+
     # 算法原理页（数据无关，总是生成）。
     try:
         about.write_about_page(os.path.join(site_dir, "about.html"),
@@ -229,7 +237,7 @@ def run(
     try:
         view_model = dashboard.build_view_model(
             report, prev_report, source=source, generated_at=generated_at,
-            detail_links=detail_links, explain=explain, state=state,
+            detail_links=detail_links, explain=explain, state=state, similar=similar,
         )
     except Exception as exc:  # noqa: BLE001
         _warn(f"视图模型构建失败（{exc!r}）")
@@ -243,7 +251,7 @@ def run(
             data_dir=os.path.join(site_dir, "data"),
             source=source, generated_at=generated_at,
             stocks=stocks, recent_reports=recent, explain=explain, state=state,
-            view_model=view_model,
+            similar=similar, view_model=view_model,
         )
     except Exception as exc:  # noqa: BLE001 — 数据产物失败不影响看板
         _warn(f"数据产物生成失败（{exc!r}）")

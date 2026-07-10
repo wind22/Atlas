@@ -99,6 +99,18 @@
   .explain .delta { margin-top: 12px; font-size: 13.5px; }
   .explain .delta b { color: var(--ink); }
   @media (max-width: 640px) { .explain .cols { grid-template-columns: 1fr; } }
+
+  /* ---- 历史相似状态 ---- */
+  .similar h2 .disclaimer { font-size: 12px; color: var(--muted); font-weight: 400; letter-spacing: 0; }
+  .similar .simrows { display: flex; flex-direction: column; gap: 8px; }
+  .similar .simrow {
+    display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline;
+    border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px;
+    background: var(--panel); box-shadow: var(--shadow); font-size: 13.5px;
+  }
+  .similar .simrow .d { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .similar .simrow .rg { color: var(--muted); }
+  .similar .simrow .mx { color: var(--muted); font-variant-numeric: tabular-nums; }
   .change-badge {
     display: inline-block; margin-top: 8px; padding: 4px 10px; border-radius: 999px;
     background: var(--panel); border: 1px solid var(--line); font-size: 13px; font-weight: 600;
@@ -258,6 +270,25 @@
     {% if explain.delta_from_yesterday %}
     <div class="delta"><b>较昨日变化：</b>{{ explain.delta_from_yesterday | join('；') }}</div>
     {% endif %}
+  </section>
+  {% endif %}
+
+  {# ---------- 1c) 历史相似状态（仅回看，不含未来） ---------- #}
+  {% if similar %}
+  <section class="similar">
+    <h2>历史相似状态 <span class="disclaimer">仅供回看当时状态，不含任何未来走势</span></h2>
+    <div class="simrows">
+      {% for s in similar %}
+      <div class="simrow">
+        <span class="d">{{ s.date }}</span>
+        <span class="rg">{{ s.regime_light }} {{ s.regime_label }}</span>
+        <span class="mx">T {{ s.T }}</span>
+        <span class="mx">R {{ s.R }}</span>
+        <span class="mx">广度 {{ s.breadth }}</span>
+        <span class="mx">VIX {{ s.vix }}</span>
+      </div>
+      {% endfor %}
+    </div>
   </section>
   {% endif %}
 

@@ -84,11 +84,13 @@ def build_report_envelope(
     generated_at: str | None,
     explain: dict | None = None,
     state: dict | None = None,
+    similar: dict | None = None,
 ) -> dict:
     """把 ``DailyReport.to_dict()`` 包成对外的稳定信封。
 
-    ``explain`` 为解释层摘要（方案 §5）；``state`` 为制度持续状态（§6）。两者由
-    runner 计算后传入，本模块只负责嵌入 —— storage 层保持纯序列化。
+    ``explain`` 为解释层摘要（方案 §5）；``state`` 为制度持续状态（§6）；``similar``
+    为历史相似状态（§7，仅描述、无前向）。均由 runner 计算后传入，本模块只负责嵌入
+    —— storage 层保持纯序列化。
     """
     envelope = {
         "schema_version": SCHEMA_VERSION,
@@ -104,6 +106,8 @@ def build_report_envelope(
         envelope["explain"] = explain
     if state is not None:
         envelope["state"] = state
+    if similar is not None:
+        envelope["similar"] = similar
     return envelope
 
 
@@ -219,6 +223,12 @@ def build_schema() -> dict:
                 "schema_version": "int，契约版本",
                 "meta": "{date, generated_at, source, prev_date}",
                 "report": "DailyReport.to_dict()：market_regime / breadth_pct / vix / results / alerts",
+                "explain": "解释层：headline / top_risks / top_opportunities / delta_from_yesterday",
+                "state": "制度状态机：current_regime / days_in_regime / previous_regime / last_transition_date / transition_reason",
+                "similar": (
+                    "历史相似状态：similar_periods:[{date, regime, T_spy, R_spy, breadth_pct,"
+                    " vix, distance}]。仅描述当时状态，铁律 Ⅱ 禁止任何前向收益字段"
+                ),
             },
             "regime_history.json": (
                 "升序数组，每项 {date, regime, raw_regime, T_spy, R_spy, breadth_pct, vix}"
@@ -247,6 +257,7 @@ def write_artifacts(
     recent_reports: list[DailyReport] | None = None,
     explain: dict | None = None,
     state: dict | None = None,
+    similar: dict | None = None,
     view_model: dict | None = None,
 ) -> dict[str, str]:
     """把 ``report`` 发布成 ``data_dir`` 下的整套 JSON 契约。
@@ -259,7 +270,7 @@ def write_artifacts(
 
     envelope = build_report_envelope(
         report, prev_report, source=source, generated_at=generated_at,
-        explain=explain, state=state,
+        explain=explain, state=state, similar=similar,
     )
     history = build_regime_history(
         report, _read_json(os.path.join(data_dir, "regime_history.json")), recent_reports
