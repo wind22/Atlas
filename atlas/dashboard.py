@@ -277,15 +277,22 @@ def _regime_view(report: DailyReport) -> dict:
     return view
 
 
-def _build_context(
+def build_view_model(
     report: DailyReport,
     prev_report: DailyReport | None,
-    source: str | None,
-    generated_at: str | None,
-    detail_links: dict[str, str] | None,
-    explain: dict | None,
-    state: dict | None,
+    *,
+    source: str | None = None,
+    generated_at: str | None = None,
+    detail_links: dict[str, str] | None = None,
+    explain: dict | None = None,
+    state: dict | None = None,
 ) -> dict:
+    """把 DailyReport 折叠成**看板视图模型**：一份 JSON-safe 的展示数据。
+
+    所有展示逻辑（配色、格式化、状态标签、排序）在此算好；模板只做排版。把它固化成
+    ``dashboard_view.json`` 后，HTML / PWA / LLM memo / API 可共用同一份视图数据，
+    无需各自重算（方案 §6）。返回值仅含 str/dict/list/bool/None，可直接 json.dump。
+    """
     if generated_at is None:
         generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     prev_regime_label = None
@@ -322,6 +329,13 @@ def _environment() -> Environment:
     )
 
 
+def render_view(view_model: dict) -> str:
+    """从一份预先构建好的视图模型渲染 HTML —— HTML 与 dashboard_view.json 同源。"""
+    env = _environment()
+    template = env.get_template(_TEMPLATE_NAME)
+    return template.render(**view_model)
+
+
 def render_dashboard(
     report: DailyReport,
     prev_report: DailyReport | None,
@@ -331,14 +345,16 @@ def render_dashboard(
     detail_links: dict[str, str] | None = None,
     explain: dict | None = None,
     state: dict | None = None,
+    view_model: dict | None = None,
 ) -> str:
-    """渲染完整的自包含 HTML 字符串。source 为数据来源标注，detail_links 为个股详情页链接，
-    explain 为解释层摘要、state 为制度持续状态（均可选，缺省时看板不显示对应块）。"""
-    env = _environment()
-    template = env.get_template(_TEMPLATE_NAME)
-    return template.render(
-        **_build_context(report, prev_report, source, generated_at, detail_links, explain, state)
-    )
+    """渲染完整的自包含 HTML 字符串。传入 ``view_model`` 则直接复用（与 JSON 同源，
+    避免重算）；否则由其余参数现场构建。"""
+    if view_model is None:
+        view_model = build_view_model(
+            report, prev_report, source=source, generated_at=generated_at,
+            detail_links=detail_links, explain=explain, state=state,
+        )
+    return render_view(view_model)
 
 
 def write_dashboard(
@@ -351,11 +367,12 @@ def write_dashboard(
     detail_links: dict[str, str] | None = None,
     explain: dict | None = None,
     state: dict | None = None,
+    view_model: dict | None = None,
 ) -> None:
     """渲染并写入 ``path``（UTF-8）。若父目录不存在则自动创建。"""
     html = render_dashboard(
         report, prev_report, source=source, generated_at=generated_at,
-        detail_links=detail_links, explain=explain, state=state,
+        detail_links=detail_links, explain=explain, state=state, view_model=view_model,
     )
     parent = pathlib.Path(path).resolve().parent
     parent.mkdir(parents=True, exist_ok=True)

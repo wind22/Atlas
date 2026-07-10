@@ -119,7 +119,7 @@ _FORBIDDEN = ("next_30d", "forecast", "prediction", "predicted",
 def test_contract_contains_no_forward_looking_fields(tmp_path):
     _, data_dir = _run(tmp_path, "2026-07-06")
     for name in ("latest.json", "regime_history.json", "universe.json",
-                 "manifest.json", "schema.json"):
+                 "manifest.json", "schema.json", "dashboard_view.json"):
         with open(os.path.join(data_dir, name), encoding="utf-8") as fh:
             raw = fh.read()
         # schema.json 的 description 里会解释「禁止 buy/sell」等，属元描述，跳过键名扫描。

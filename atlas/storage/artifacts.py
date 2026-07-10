@@ -194,6 +194,7 @@ def build_manifest(latest_date: str, dates: list[str]) -> dict:
             "universe": "universe.json",
             "regime_history": "regime_history.json",
             "daily": "daily/{date}.json",
+            "dashboard_view": "dashboard_view.json",
         },
     }
 
@@ -224,6 +225,10 @@ def build_schema() -> dict:
             ),
             "universe.json": "{benchmark, vix, layers:{market,sector,multi_asset,stock:[{ticker,name}]}}",
             "manifest.json": "{latest, dates:[...], files:{...}} —— 站点数据索引",
+            "dashboard_view.json": (
+                "看板视图模型：展示逻辑算好的 JSON-safe 数据（配色/格式化/标签/排序），"
+                "HTML 与之同源，供 PWA / memo / API 复用"
+            ),
         },
     }
 
@@ -242,6 +247,7 @@ def write_artifacts(
     recent_reports: list[DailyReport] | None = None,
     explain: dict | None = None,
     state: dict | None = None,
+    view_model: dict | None = None,
 ) -> dict[str, str]:
     """把 ``report`` 发布成 ``data_dir`` 下的整套 JSON 契约。
 
@@ -277,4 +283,8 @@ def write_artifacts(
     _write_json(paths["universe"], universe)
     _write_json(paths["manifest"], manifest)
     _write_json(paths["schema"], schema)
+    # 看板视图模型（可选）：HTML 与它同源，供 PWA / memo / API 复用（方案 §6）。
+    if view_model is not None:
+        paths["dashboard_view"] = os.path.join(data_dir, "dashboard_view.json")
+        _write_json(paths["dashboard_view"], view_model)
     return {k: os.path.abspath(v) for k, v in paths.items()}

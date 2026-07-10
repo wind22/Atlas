@@ -206,18 +206,6 @@ def run(
         _warn(f"制度状态机生成失败（{exc!r}）")
         state = None
 
-    # 数据产物层：把今日报告发布成 public/data/*.json 公开契约（方案 §2）。
-    # 静态页面消费这些 JSON，而非直接依赖 Python 对象。失败不影响看板生成。
-    try:
-        artifacts.write_artifacts(
-            report, prev_report,
-            data_dir=os.path.join(site_dir, "data"),
-            source=source, generated_at=generated_at,
-            stocks=stocks, recent_reports=recent, explain=explain, state=state,
-        )
-    except Exception as exc:  # noqa: BLE001 — 数据产物失败不影响看板
-        _warn(f"数据产物生成失败（{exc!r}）")
-
     # 算法原理页（数据无关，总是生成）。
     try:
         about.write_about_page(os.path.join(site_dir, "about.html"),
@@ -236,10 +224,35 @@ def run(
         except Exception as exc:  # noqa: BLE001 — 详情页失败不影响看板
             _warn(f"个股详情页生成失败（{exc!r}）")
 
+    # 看板视图模型：算一次，让 HTML 与 dashboard_view.json 同源（方案 §6）。展示逻辑
+    # （配色/格式化/标签/排序）都在此折叠成 JSON-safe 数据，供 PWA / memo / API 复用。
+    try:
+        view_model = dashboard.build_view_model(
+            report, prev_report, source=source, generated_at=generated_at,
+            detail_links=detail_links, explain=explain, state=state,
+        )
+    except Exception as exc:  # noqa: BLE001
+        _warn(f"视图模型构建失败（{exc!r}）")
+        view_model = None
+
+    # 数据产物层：把今日报告 + 视图模型发布成 public/data/*.json 公开契约（方案 §2）。
+    # 静态页面消费这些 JSON，而非直接依赖 Python 对象。失败不影响看板生成。
+    try:
+        artifacts.write_artifacts(
+            report, prev_report,
+            data_dir=os.path.join(site_dir, "data"),
+            source=source, generated_at=generated_at,
+            stocks=stocks, recent_reports=recent, explain=explain, state=state,
+            view_model=view_model,
+        )
+    except Exception as exc:  # noqa: BLE001 — 数据产物失败不影响看板
+        _warn(f"数据产物生成失败（{exc!r}）")
+
+    # 看板（主产物）：复用同一 view_model 渲染，避免重算。
     dashboard.write_dashboard(
         report, prev_report, output,
         source=source, generated_at=generated_at, detail_links=detail_links,
-        explain=explain, state=state,
+        explain=explain, state=state, view_model=view_model,
     )
     return report
 
