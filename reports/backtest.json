@@ -6,27 +6,27 @@
       "overall": {
         "name": "标普500",
         "start": "1994-05-05",
-        "end": "2026-07-08",
-        "bars": 8097,
+        "end": "2026-07-09",
+        "bars": 8098,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 2815.3,
+            "total": 2839.9,
             "cagr": 11.1,
             "maxdd": 55.2,
             "sharpe": 0.65,
-            "sortino": 0.83,
+            "sortino": 0.84,
             "ulcer": 14.7,
             "mar": 0.2,
             "label": "买入持有"
           },
           "atlas": {
-            "total": 1694.8,
+            "total": 1710.0,
             "cagr": 9.4,
             "maxdd": 20.5,
             "sharpe": 0.82,
             "sortino": 0.96,
-            "ulcer": 7.8,
+            "ulcer": 7.7,
             "mar": 0.46,
             "label": "制度调仓 (Atlas)",
             "turnover": 108.5,
@@ -35,11 +35,11 @@
             "time_off": 18.3
           },
           "naive200": {
-            "total": 1126.5,
+            "total": 1136.9,
             "cagr": 8.1,
             "maxdd": 30.8,
             "sharpe": 0.7,
-            "sortino": 0.8,
+            "sortino": 0.81,
             "ulcer": 11.2,
             "mar": 0.26,
             "label": "裸 200 日线",
@@ -121,12 +121,12 @@
       "overall": {
         "name": "纳指100",
         "start": "2000-06-13",
-        "end": "2026-07-08",
-        "bars": 6555,
+        "end": "2026-07-09",
+        "bars": 6556,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 795.8,
+            "total": 810.7,
             "cagr": 8.8,
             "maxdd": 80.5,
             "sharpe": 0.46,
@@ -136,13 +136,13 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 770.8,
+            "total": 785.3,
             "cagr": 8.7,
             "maxdd": 25.2,
             "sharpe": 0.64,
-            "sortino": 0.73,
+            "sortino": 0.74,
             "ulcer": 11.4,
-            "mar": 0.34,
+            "mar": 0.35,
             "label": "制度调仓 (Atlas)",
             "turnover": 115.5,
             "defensive_episodes": 45,
@@ -150,7 +150,7 @@
             "time_off": 21.2
           },
           "naive200": {
-            "total": 639.8,
+            "total": 652.1,
             "cagr": 8.0,
             "maxdd": 44.9,
             "sharpe": 0.58,
@@ -236,12 +236,12 @@
       "overall": {
         "name": "苹果",
         "start": "1982-03-19",
-        "end": "2026-07-08",
-        "bars": 11164,
+        "end": "2026-07-09",
+        "bars": 11165,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 551744.4,
+            "total": 556727.6,
             "cagr": 21.5,
             "maxdd": 81.8,
             "sharpe": 0.67,
@@ -251,21 +251,21 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 59339.9,
-            "cagr": 15.5,
+            "total": 61913.5,
+            "cagr": 15.6,
             "maxdd": 82.6,
-            "sharpe": 0.62,
-            "sortino": 0.71,
-            "ulcer": 43.1,
+            "sharpe": 0.63,
+            "sortino": 0.72,
+            "ulcer": 43.2,
             "mar": 0.19,
             "label": "制度调仓 (Atlas)",
-            "turnover": 263.0,
-            "defensive_episodes": 107,
-            "whipsaw_episodes": 47,
-            "time_off": 24.1
+            "turnover": 264.0,
+            "defensive_episodes": 108,
+            "whipsaw_episodes": 48,
+            "time_off": 24.0
           },
           "naive200": {
-            "total": 159601.5,
+            "total": 161043.5,
             "cagr": 18.1,
             "maxdd": 91.6,
             "sharpe": 0.69,
@@ -351,12 +351,12 @@
       "overall": {
         "name": "微软",
         "start": "1987-06-17",
-        "end": "2026-07-08",
-        "bars": 9838,
+        "end": "2026-07-09",
+        "bars": 9839,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 174876.5,
+            "total": 175341.9,
             "cagr": 21.1,
             "maxdd": 69.4,
             "sharpe": 0.75,
@@ -366,17 +366,17 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 27550.4,
-            "cagr": 15.5,
+            "total": 28274.4,
+            "cagr": 15.6,
             "maxdd": 56.1,
             "sharpe": 0.72,
             "sortino": 0.87,
-            "ulcer": 26.6,
+            "ulcer": 26.4,
             "mar": 0.28,
             "label": "制度调仓 (Atlas)",
             "turnover": 219.0,
-            "defensive_episodes": 82,
-            "whipsaw_episodes": 41,
+            "defensive_episodes": 83,
+            "whipsaw_episodes": 42,
             "time_off": 18.8
           },
           "naive200": {
@@ -456,22 +456,22 @@
       "overall": {
         "name": "英伟达",
         "start": "2000-04-27",
-        "end": "2026-07-08",
-        "bars": 6587,
+        "end": "2026-07-09",
+        "bars": 6588,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 117340.7,
-            "cagr": 31.0,
+            "total": 116569.8,
+            "cagr": 30.9,
             "maxdd": 89.7,
             "sharpe": 0.76,
             "sortino": 1.08,
             "ulcer": 46.1,
-            "mar": 0.35,
+            "mar": 0.34,
             "label": "买入持有"
           },
           "atlas": {
-            "total": 133334.3,
+            "total": 133043.1,
             "cagr": 31.6,
             "maxdd": 57.0,
             "sharpe": 0.89,
@@ -482,10 +482,10 @@
             "turnover": 121.0,
             "defensive_episodes": 44,
             "whipsaw_episodes": 15,
-            "time_off": 22.0
+            "time_off": 21.9
           },
           "naive200": {
-            "total": 213943.4,
+            "total": 212538.5,
             "cagr": 34.0,
             "maxdd": 55.2,
             "sharpe": 0.92,
@@ -566,22 +566,22 @@
       "overall": {
         "name": "谷歌",
         "start": "2005-11-22",
-        "end": "2026-07-08",
-        "bars": 5186,
+        "end": "2026-07-09",
+        "bars": 5187,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 3388.6,
+            "total": 3364.6,
             "cagr": 18.8,
             "maxdd": 65.3,
-            "sharpe": 0.73,
+            "sharpe": 0.72,
             "sortino": 1.02,
             "ulcer": 18.9,
             "mar": 0.29,
             "label": "买入持有"
           },
           "atlas": {
-            "total": 1170.1,
+            "total": 1161.3,
             "cagr": 13.1,
             "maxdd": 37.6,
             "sharpe": 0.69,
@@ -595,7 +595,7 @@
             "time_off": 17.1
           },
           "naive200": {
-            "total": 1213.3,
+            "total": 1204.2,
             "cagr": 13.3,
             "maxdd": 35.0,
             "sharpe": 0.67,
@@ -668,16 +668,16 @@
       "overall": {
         "name": "Meta",
         "start": "2013-08-27",
-        "end": "2026-07-08",
-        "bars": 3234,
+        "end": "2026-07-09",
+        "bars": 3235,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 1434.9,
-            "cagr": 23.7,
+            "total": 1507.0,
+            "cagr": 24.1,
             "maxdd": 76.7,
             "sharpe": 0.76,
-            "sortino": 0.99,
+            "sortino": 1.01,
             "ulcer": 21.4,
             "mar": 0.31,
             "label": "买入持有"
@@ -701,8 +701,8 @@
             "cagr": 23.0,
             "maxdd": 34.9,
             "sharpe": 0.87,
-            "sortino": 1.11,
-            "ulcer": 14.9,
+            "sortino": 1.1,
+            "ulcer": 15.0,
             "mar": 0.66,
             "label": "裸 200 日线",
             "turnover": 63.0
@@ -757,13 +757,13 @@
       "overall": {
         "name": "AMD",
         "start": "1981-06-22",
-        "end": "2026-07-08",
-        "bars": 11352,
+        "end": "2026-07-09",
+        "bars": 11353,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 13397.7,
-            "cagr": 11.5,
+            "total": 14162.3,
+            "cagr": 11.6,
             "maxdd": 96.6,
             "sharpe": 0.48,
             "sortino": 0.71,
@@ -772,8 +772,8 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 106258.1,
-            "cagr": 16.7,
+            "total": 112283.0,
+            "cagr": 16.9,
             "maxdd": 76.8,
             "sharpe": 0.59,
             "sortino": 0.69,
@@ -786,8 +786,8 @@
             "time_off": 35.7
           },
           "naive200": {
-            "total": 47381.4,
-            "cagr": 14.7,
+            "total": 50071.1,
+            "cagr": 14.8,
             "maxdd": 77.2,
             "sharpe": 0.54,
             "sortino": 0.6,
@@ -862,25 +862,25 @@
       "overall": {
         "name": "特斯拉",
         "start": "2011-10-03",
-        "end": "2026-07-08",
-        "bars": 3711,
+        "end": "2026-07-09",
+        "bars": 3712,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 24809.0,
-            "cagr": 45.3,
+            "total": 25598.5,
+            "cagr": 45.6,
             "maxdd": 73.6,
             "sharpe": 0.94,
-            "sortino": 1.4,
+            "sortino": 1.41,
             "ulcer": 27.6,
             "mar": 0.62,
             "label": "买入持有"
           },
           "atlas": {
-            "total": 2368.4,
-            "cagr": 24.3,
+            "total": 2407.5,
+            "cagr": 24.4,
             "maxdd": 59.6,
-            "sharpe": 0.71,
+            "sharpe": 0.72,
             "sortino": 0.92,
             "ulcer": 38.0,
             "mar": 0.41,
@@ -946,15 +946,15 @@
       "overall": {
         "name": "拼多多",
         "start": "2019-10-31",
-        "end": "2026-07-08",
-        "bars": 1678,
+        "end": "2026-07-09",
+        "bars": 1679,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 107.3,
-            "cagr": 11.5,
+            "total": 110.1,
+            "cagr": 11.7,
             "maxdd": 87.4,
-            "sharpe": 0.49,
+            "sharpe": 0.5,
             "sortino": 0.74,
             "ulcer": 47.9,
             "mar": 0.13,
@@ -972,7 +972,7 @@
             "turnover": 44.0,
             "defensive_episodes": 20,
             "whipsaw_episodes": 7,
-            "time_off": 33.1
+            "time_off": 33.2
           },
           "naive200": {
             "total": 26.4,
@@ -1017,33 +1017,33 @@
       "overall": {
         "name": "CleanSpark",
         "start": "2018-02-26",
-        "end": "2026-07-08",
-        "bars": 2102,
+        "end": "2026-07-09",
+        "bars": 2103,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": -22.0,
-            "cagr": -2.9,
+            "total": -18.9,
+            "cagr": -2.5,
             "maxdd": 98.6,
             "sharpe": 0.57,
-            "sortino": 1.38,
+            "sortino": 1.39,
             "ulcer": 81.4,
             "mar": -0.03,
             "label": "买入持有"
           },
           "atlas": {
-            "total": 34.9,
-            "cagr": 3.6,
+            "total": 37.5,
+            "cagr": 3.9,
             "maxdd": 79.8,
             "sharpe": 0.41,
-            "sortino": 0.66,
+            "sortino": 0.67,
             "ulcer": 61.6,
             "mar": 0.05,
             "label": "制度调仓 (Atlas)",
-            "turnover": 52.0,
+            "turnover": 52.5,
             "defensive_episodes": 27,
             "whipsaw_episodes": 8,
-            "time_off": 47.7
+            "time_off": 47.6
           },
           "naive200": {
             "total": -84.8,
@@ -1106,37 +1106,37 @@
       "overall": {
         "name": "美光",
         "start": "1985-09-05",
-        "end": "2026-07-08",
-        "bars": 10287,
+        "end": "2026-07-09",
+        "bars": 10288,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 130021.6,
-            "cagr": 19.2,
+            "total": 135896.8,
+            "cagr": 19.3,
             "maxdd": 98.2,
             "sharpe": 0.59,
-            "sortino": 0.9,
+            "sortino": 0.91,
             "ulcer": 63.0,
             "mar": 0.2,
             "label": "买入持有"
           },
           "atlas": {
-            "total": 34296.0,
-            "cagr": 15.4,
-            "maxdd": 76.5,
+            "total": 33504.6,
+            "cagr": 15.3,
+            "maxdd": 76.6,
             "sharpe": 0.56,
             "sortino": 0.67,
-            "ulcer": 50.5,
+            "ulcer": 50.8,
             "mar": 0.2,
             "label": "制度调仓 (Atlas)",
-            "turnover": 239.5,
-            "defensive_episodes": 119,
-            "whipsaw_episodes": 49,
+            "turnover": 241.5,
+            "defensive_episodes": 121,
+            "whipsaw_episodes": 51,
             "time_off": 34.4
           },
           "naive200": {
-            "total": 60243.4,
-            "cagr": 17.0,
+            "total": 62967.9,
+            "cagr": 17.1,
             "maxdd": 80.0,
             "sharpe": 0.59,
             "sortino": 0.69,
@@ -1146,8 +1146,8 @@
             "turnover": 295.0
           }
         },
-        "dd_saved": 21.7,
-        "atlas_vs_naive_dd": 3.5
+        "dd_saved": 21.6,
+        "atlas_vs_naive_dd": 3.4
       },
       "crises": [
         {
@@ -1221,18 +1221,18 @@
       "overall": {
         "name": "小米集团",
         "start": "2019-10-23",
-        "end": "2026-07-09",
-        "bars": 1649,
+        "end": "2026-07-10",
+        "bars": 1650,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 178.1,
-            "cagr": 16.5,
+            "total": 191.0,
+            "cagr": 17.2,
             "maxdd": 76.1,
-            "sharpe": 0.57,
-            "sortino": 0.92,
+            "sharpe": 0.58,
+            "sortino": 0.95,
             "ulcer": 44.6,
-            "mar": 0.22,
+            "mar": 0.23,
             "label": "买入持有"
           },
           "atlas": {
@@ -1292,18 +1292,18 @@
       "overall": {
         "name": "159605",
         "start": "2023-03-22",
-        "end": "2026-07-09",
-        "bars": 799,
+        "end": "2026-07-10",
+        "bars": 800,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 5.2,
-            "cagr": 1.6,
+            "total": 7.2,
+            "cagr": 2.1,
             "maxdd": 45.4,
-            "sharpe": 0.2,
-            "sortino": 0.35,
+            "sharpe": 0.22,
+            "sortino": 0.38,
             "ulcer": 16.0,
-            "mar": 0.03,
+            "mar": 0.05,
             "label": "买入持有"
           },
           "atlas": {
@@ -1318,7 +1318,7 @@
             "turnover": 22.5,
             "defensive_episodes": 10,
             "whipsaw_episodes": 4,
-            "time_off": 30.5
+            "time_off": 30.6
           },
           "naive200": {
             "total": 1.9,
@@ -1341,48 +1341,48 @@
       "overall": {
         "name": "三星电子",
         "start": "2001-03-26",
-        "end": "2026-07-09",
-        "bars": 6310,
+        "end": "2026-07-10",
+        "bars": 6311,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 9056.8,
-            "cagr": 19.6,
+            "total": 9682.6,
+            "cagr": 19.9,
             "maxdd": 47.3,
-            "sharpe": 0.71,
-            "sortino": 1.08,
+            "sharpe": 0.72,
+            "sortino": 1.09,
             "ulcer": 18.2,
-            "mar": 0.41,
+            "mar": 0.42,
             "label": "买入持有"
           },
           "atlas": {
-            "total": 1386.1,
+            "total": 1404.4,
             "cagr": 11.3,
-            "maxdd": 42.0,
+            "maxdd": 42.5,
             "sharpe": 0.56,
-            "sortino": 0.69,
-            "ulcer": 21.5,
+            "sortino": 0.7,
+            "ulcer": 21.7,
             "mar": 0.27,
             "label": "制度调仓 (Atlas)",
-            "turnover": 169.0,
+            "turnover": 170.0,
             "defensive_episodes": 71,
             "whipsaw_episodes": 34,
             "time_off": 25.3
           },
           "naive200": {
-            "total": 1514.2,
-            "cagr": 11.6,
+            "total": 1624.6,
+            "cagr": 11.9,
             "maxdd": 48.6,
-            "sharpe": 0.56,
-            "sortino": 0.66,
+            "sharpe": 0.57,
+            "sortino": 0.68,
             "ulcer": 23.6,
-            "mar": 0.24,
+            "mar": 0.25,
             "label": "裸 200 日线",
             "turnover": 213.0
           }
         },
-        "dd_saved": 5.3,
-        "atlas_vs_naive_dd": 6.6
+        "dd_saved": 4.8,
+        "atlas_vs_naive_dd": 6.1
       },
       "crises": [
         {
@@ -1456,42 +1456,42 @@
       "overall": {
         "name": "SK海力士",
         "start": "2004-03-18",
-        "end": "2026-07-09",
-        "bars": 5532,
+        "end": "2026-07-10",
+        "bars": 5533,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 28133.4,
-            "cagr": 28.8,
+            "total": 29257.1,
+            "cagr": 29.0,
             "maxdd": 84.6,
-            "sharpe": 0.78,
-            "sortino": 1.18,
+            "sharpe": 0.79,
+            "sortino": 1.19,
             "ulcer": 27.0,
             "mar": 0.34,
             "label": "买入持有"
           },
           "atlas": {
-            "total": 9234.6,
-            "cagr": 22.5,
+            "total": 9673.7,
+            "cagr": 22.8,
             "maxdd": 45.6,
-            "sharpe": 0.77,
+            "sharpe": 0.78,
             "sortino": 0.98,
-            "ulcer": 22.9,
-            "mar": 0.49,
+            "ulcer": 22.8,
+            "mar": 0.5,
             "label": "制度调仓 (Atlas)",
-            "turnover": 152.5,
+            "turnover": 151.5,
             "defensive_episodes": 61,
             "whipsaw_episodes": 35,
             "time_off": 23.4
           },
           "naive200": {
-            "total": 3934.9,
-            "cagr": 18.0,
+            "total": 4095.5,
+            "cagr": 18.2,
             "maxdd": 57.6,
             "sharpe": 0.65,
-            "sortino": 0.79,
+            "sortino": 0.8,
             "ulcer": 32.1,
-            "mar": 0.31,
+            "mar": 0.32,
             "label": "裸 200 日线",
             "turnover": 184.0
           }
@@ -1553,28 +1553,28 @@
       "overall": {
         "name": "半导体设备ETF",
         "start": "2025-02-10",
-        "end": "2026-07-09",
-        "bars": 344,
+        "end": "2026-07-10",
+        "bars": 345,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 229.9,
-            "cagr": 133.6,
+            "total": 228.5,
+            "cagr": 132.5,
             "maxdd": 66.8,
-            "sharpe": 1.07,
+            "sharpe": 1.06,
             "sortino": 2.14,
-            "ulcer": 10.6,
-            "mar": 2.0,
+            "ulcer": 11.1,
+            "mar": 1.98,
             "label": "买入持有"
           },
           "atlas": {
-            "total": 175.3,
-            "cagr": 105.4,
+            "total": 174.7,
+            "cagr": 104.8,
             "maxdd": 66.8,
             "sharpe": 0.99,
             "sortino": 1.98,
-            "ulcer": 11.3,
-            "mar": 1.58,
+            "ulcer": 11.8,
+            "mar": 1.57,
             "label": "制度调仓 (Atlas)",
             "turnover": 4.5,
             "defensive_episodes": 0,
@@ -1582,13 +1582,13 @@
             "time_off": 0.0
           },
           "naive200": {
-            "total": 207.4,
-            "cagr": 122.1,
+            "total": 206.0,
+            "cagr": 121.1,
             "maxdd": 66.8,
             "sharpe": 1.04,
             "sortino": 2.09,
-            "ulcer": 11.5,
-            "mar": 1.83,
+            "ulcer": 11.9,
+            "mar": 1.81,
             "label": "裸 200 日线",
             "turnover": 6.0
           }
@@ -1602,12 +1602,12 @@
       "overall": {
         "name": "日经225",
         "start": "1966-04-25",
-        "end": "2026-07-09",
-        "bars": 14803,
+        "end": "2026-07-10",
+        "bars": 14804,
         "cost_bps": 10.0,
         "strategies": {
           "buyhold": {
-            "total": 4327.2,
+            "total": 4395.6,
             "cagr": 6.5,
             "maxdd": 81.9,
             "sharpe": 0.42,
@@ -1617,7 +1617,7 @@
             "label": "买入持有"
           },
           "atlas": {
-            "total": 2100.5,
+            "total": 2134.5,
             "cagr": 5.3,
             "maxdd": 39.5,
             "sharpe": 0.48,
@@ -1631,11 +1631,11 @@
             "time_off": 27.7
           },
           "naive200": {
-            "total": 2829.9,
+            "total": 2875.2,
             "cagr": 5.8,
             "maxdd": 34.5,
             "sharpe": 0.51,
-            "sortino": 0.51,
+            "sortino": 0.52,
             "ulcer": 17.3,
             "mar": 0.17,
             "label": "裸 200 日线",
@@ -1714,5 +1714,5 @@
       ]
     }
   },
-  "as_of": "2026-07-09"
+  "as_of": "2026-07-10"
 }
