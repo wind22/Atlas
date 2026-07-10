@@ -1,9 +1,10 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-10 06:00 UTC",
-  "latest": "2026-07-09",
+  "generated_at": "2026-07-10 22:32 UTC",
+  "latest": "2026-07-10",
   "dates": [
-    "2026-07-09"
+    "2026-07-09",
+    "2026-07-10"
   ],
   "files": {
     "schema": "schema.json",
