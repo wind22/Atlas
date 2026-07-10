@@ -2,7 +2,7 @@
   "date": "2026-07-09",
   "prev_date": "2026-07-08",
   "source": "yfinance（Yahoo）",
-  "generated_at": "2026-07-10 05:08 UTC",
+  "generated_at": "2026-07-10 05:09 UTC",
   "regime": {
     "light": "🟢",
     "label": "进攻区 Risk-On",
@@ -742,7 +742,7 @@
       "ticker": "^N225",
       "name": "日经225",
       "link": "t/_N225.html",
-      "price": "68,794.91",
+      "price": "68,795.06",
       "chg": "+1.6%",
       "chg_good": true,
       "tone": "good",
