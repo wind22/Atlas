@@ -39,6 +39,19 @@ def test_html_and_json_are_same_source(tmp_path):
     assert render_view(view_model) == html_on_disk
 
 
+def test_risk_shown_as_band_with_flags(tmp_path):
+    """R 以三档呈现（数字为辅），并带出可追溯的否决条目 —— 方案一。"""
+    _, _, data_dir = _run(tmp_path)
+    with open(os.path.join(data_dir, "dashboard_view.json"), encoding="utf-8") as fh:
+        vm = json.load(fh)
+    assert "风险档位" in vm["risk_legend"]
+    for row in vm["markets"] + vm["stocks"]:
+        assert row["risk"]["label"] in ("低风险", "中风险", "高风险")
+        assert isinstance(row["risk_flags"], list)
+    # 大盘行保留原始 R 数值字段（契约只增不减）。
+    assert all("R" in m for m in vm["markets"])
+
+
 def test_view_model_is_json_serializable_and_has_expected_shape():
     from atlas.types import DailyReport, Regime, RegimeState
     report = DailyReport(

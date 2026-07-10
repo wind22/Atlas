@@ -16,6 +16,7 @@ import pandas as pd
 from .. import config
 from ..backtest import regime_timeline
 from ..types import REGIME_LABEL, REGIME_LIGHT, Regime, TickerResult
+from .dashboard import risk_band
 
 # 制度背景色（浅，半透明，明暗皆可读）
 _REGIME_FILL: dict[str, str] = {
@@ -216,6 +217,15 @@ def render_detail_page(
     r_val = float(current.R) if current else float(last["R"])
     events = _collect_events(tl)
 
+    # R 以三档呈现（与看板同口径），数字为辅；有否决条目时列出，可追溯到规则。
+    band = risk_band(r_val)
+    band_cls = {"tag-good": "r-on", "tag-warn": "r-cau", "tag-bad": "r-off"}[band["cls"]]
+    band_html = (f'<span class="tag {band_cls}">{band["icon"]} {band["label"]}</span> '
+                 f'<span class="muted" style="font-size:13px">R {r_val:.0f}</span>')
+    flags = list(current.risk_flags) if current else []
+    flags_html = (f'<div class="scores" style="margin:-8px 0 14px">风险触发：{"；".join(flags)}</div>'
+                  if flags else "")
+
     return f'''<!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{name} {ticker} · Atlas 详情</title>
@@ -253,8 +263,9 @@ def render_detail_page(
   <div class="head">
     <div class="px">{price:,.2f} <span class="{'pos' if chg >= 0 else 'neg'}" style="font-size:15px">{chg:+.2f}%</span></div>
     <div><span class="tag {_regime_cls(reg)}">{REGIME_LIGHT[reg]} {REGIME_LABEL[reg]}</span></div>
-    <div class="scores">趋势分 T <b>{t_val:.0f}</b>　·　风险分 R <b>{r_val:.0f}</b></div>
+    <div class="scores">趋势分 T <b>{t_val:.0f}</b>　·　风险 {band_html}</div>
   </div>
+  {flags_html}
 
   <div class="panel">{_svg(tl, name, ticker)}</div>
 
