@@ -139,10 +139,14 @@
   .card .scores .val { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
   .card .band { display: flex; align-items: center; gap: 6px; margin-top: 5px; }
   .card .band .rnum { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
-  .card .flags { display: flex; flex-wrap: wrap; gap: 4px; margin: 2px 0 6px; }
-  .card .flag { padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 600; color: var(--bad); background: var(--bad-bg); }
+  .flags { display: flex; flex-wrap: wrap; gap: 4px; margin: 2px 0 6px; }
+  .flags[hidden] { display: none; }
+  .flag { padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 600; color: var(--bad); background: var(--bad-bg); }
   h2 .legend { font-size: 12px; color: var(--muted); font-weight: 400; letter-spacing: 0; }
   .tag .fcount { font-size: 10px; opacity: .85; margin-left: 2px; }
+  /* 触屏没有 hover：带条目的旗标可点按，在行内展开/收起明细 */
+  .riskcell { cursor: pointer; }
+  td .rowflags { margin: 4px 0 0; white-space: normal; max-width: 240px; }
   .card .dist { font-size: 13px; color: var(--muted); }
   .card .dist b { font-variant-numeric: tabular-nums; }
   .card .price { font-size: 13px; color: var(--muted); margin: 2px 0 4px; }
@@ -371,7 +375,14 @@
           <td><span class="tag {{ s.trend.cls }}">{{ s.trend.icon }} {{ s.trend.label }}</span></td>
           <td class="num {{ 'pos' if s.mom_good else 'neg' }}">{{ s.mom }}</td>
           <td class="num">{{ s.dist_high }}</td>
-          <td><span class="tag {{ s.risk.cls }}"{% if s.risk_flags %} title="{{ s.risk_flags | join('；') }}"{% endif %}>{{ s.risk.icon }} {{ s.risk.label }}{% if s.risk_flags %}<span class="fcount">·{{ s.risk_flags | length }}项</span>{% endif %}</span></td>
+          <td>
+            <span class="tag {{ s.risk.cls }}{% if s.risk_flags %} riskcell{% endif %}"{% if s.risk_flags %} title="{{ s.risk_flags | join('；') }}" role="button" tabindex="0" aria-expanded="false"{% endif %}>{{ s.risk.icon }} {{ s.risk.label }}{% if s.risk_flags %}<span class="fcount">·{{ s.risk_flags | length }}项</span>{% endif %}</span>
+            {% if s.risk_flags %}
+            <div class="flags rowflags" hidden>
+              {% for f in s.risk_flags %}<span class="flag">{{ f }}</span>{% endfor %}
+            </div>
+            {% endif %}
+          </td>
           <td>
             {% if s.hints %}
             <div class="hintlist">
@@ -422,6 +433,22 @@
       navigator.serviceWorker.register('sw.js').catch(function () {});
     });
   }
+  // 风险旗标点按展开否决条目（触屏无 hover，title 提示不可用）
+  function toggleFlags(el) {
+    var f = el.parentNode.querySelector('.rowflags');
+    if (!f) return;
+    f.hidden = !f.hidden;
+    el.setAttribute('aria-expanded', String(!f.hidden));
+  }
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest && e.target.closest('.riskcell');
+    if (el) toggleFlags(el);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var el = e.target.closest && e.target.closest('.riskcell');
+    if (el) { e.preventDefault(); toggleFlags(el); }
+  });
 </script>
 </body>
 </html>
