@@ -224,6 +224,9 @@
       <div class="name">{{ regime.label }}</div>
       <div class="reason">{{ regime.reason }}</div>
       <div class="stance">应对：{{ regime.stance }}</div>
+      {% if state and state.days_in_regime %}
+      <div class="reason">已处于当前制度 {{ state.days_in_regime }} 天{% if state.last_transition_date %}（自 {{ state.last_transition_date }}{% if state.previous_regime %}，此前 {{ prev_regime_label }}{% endif %}）{% endif %}</div>
+      {% endif %}
       {% if regime.changed and regime.prev %}
       <div class="change-badge">较昨日变化：{{ regime.prev.light }} {{ regime.prev.label }} → {{ regime.light }} {{ regime.label }}</div>
       {% endif %}

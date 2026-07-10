@@ -22,6 +22,7 @@ from . import data_fetch, indicators, scoring, alerts, snapshot, dashboard, deta
 from . import regime as regime_mod
 from .storage import artifacts
 from .report import explain as explain_mod
+from .report import state_machine
 from .config import Layer
 from .types import (
     REGIME_LIGHT,
@@ -183,6 +184,13 @@ def run(
 
     site_dir = os.path.dirname(os.path.abspath(output))
 
+    # 近期快照（制度序列回填 + 状态机 + 解释层共用）。加载失败降级为空列表。
+    try:
+        recent = snapshot.load_recent(as_of, config.HISTORY_MAX_DAYS, db_path)
+    except Exception as exc:  # noqa: BLE001
+        _warn(f"近期快照加载失败（{exc!r}）")
+        recent = []
+
     # 解释层：把今日结论/风险/机会/较昨日变化组织成人话（方案 §5）。纯派生，
     # 喂给数据契约与看板顶部。失败降级为 None，不影响其余产物。
     try:
@@ -191,15 +199,21 @@ def run(
         _warn(f"解释层生成失败（{exc!r}）")
         explain = None
 
+    # 制度状态机：当前制度已持续多久、上次何时因何切换（方案 §6）。纯派生。
+    try:
+        state = state_machine.build_state(report, recent)
+    except Exception as exc:  # noqa: BLE001
+        _warn(f"制度状态机生成失败（{exc!r}）")
+        state = None
+
     # 数据产物层：把今日报告发布成 public/data/*.json 公开契约（方案 §2）。
     # 静态页面消费这些 JSON，而非直接依赖 Python 对象。失败不影响看板生成。
     try:
-        recent = snapshot.load_recent(as_of, config.HISTORY_MAX_DAYS, db_path)
         artifacts.write_artifacts(
             report, prev_report,
             data_dir=os.path.join(site_dir, "data"),
             source=source, generated_at=generated_at,
-            stocks=stocks, recent_reports=recent, explain=explain,
+            stocks=stocks, recent_reports=recent, explain=explain, state=state,
         )
     except Exception as exc:  # noqa: BLE001 — 数据产物失败不影响看板
         _warn(f"数据产物生成失败（{exc!r}）")
@@ -225,7 +239,7 @@ def run(
     dashboard.write_dashboard(
         report, prev_report, output,
         source=source, generated_at=generated_at, detail_links=detail_links,
-        explain=explain,
+        explain=explain, state=state,
     )
     return report
 
