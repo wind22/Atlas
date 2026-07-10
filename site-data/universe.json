@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-10 05:08 UTC",
+  "benchmark": "SPY",
+  "vix": "^VIX",
+  "layers": {
+    "market": [
+      {
+        "ticker": "SPY",
+        "name": "标普500"
+      },
+      {
+        "ticker": "QQQ",
+        "name": "纳指100"
+      },
+      {
+        "ticker": "IWM",
+        "name": "罗素2000"
+      },
+      {
+        "ticker": "DIA",
+        "name": "道指"
+      }
+    ],
+    "sector": [
+      {
+        "ticker": "XLK",
+        "name": "科技"
+      },
+      {
+        "ticker": "XLF",
+        "name": "金融"
+      },
+      {
+        "ticker": "XLE",
+        "name": "能源"
+      },
+      {
+        "ticker": "XLV",
+        "name": "医疗"
+      },
+      {
+        "ticker": "XLI",
+        "name": "工业"
+      },
+      {
+        "ticker": "XLY",
+        "name": "可选消费"
+      },
+      {
+        "ticker": "XLP",
+        "name": "必需消费"
+      },
+      {
+        "ticker": "XLU",
+        "name": "公用"
+      },
+      {
+        "ticker": "XLB",
+        "name": "材料"
+      },
+      {
+        "ticker": "XLRE",
+        "name": "地产"
+      },
+      {
+        "ticker": "XLC",
+        "name": "通信"
+      }
+    ],
+    "multi_asset": [
+      {
+        "ticker": "TLT",
+        "name": "长债"
+      },
+      {
+        "ticker": "IEF",
+        "name": "中债"
+      },
+      {
+        "ticker": "GLD",
+        "name": "黄金"
+      },
+      {
+        "ticker": "DBC",
+        "name": "商品"
+      },
+      {
+        "ticker": "UUP",
+        "name": "美元"
+      },
+      {
+        "ticker": "HYG",
+        "name": "高收益债"
+      }
+    ],
+    "stock": [
+      {
+        "ticker": "AAPL",
+        "name": "苹果"
+      },
+      {
+        "ticker": "MSFT",
+        "name": "微软"
+      },
+      {
+        "ticker": "NVDA",
+        "name": "英伟达"
+      },
+      {
+        "ticker": "GOOG",
+        "name": "谷歌"
+      },
+      {
+        "ticker": "META",
+        "name": "Meta"
+      },
+      {
+        "ticker": "AMD",
+        "name": "AMD"
+      },
+      {
+        "ticker": "TSLA",
+        "name": "特斯拉"
+      },
+      {
+        "ticker": "PDD",
+        "name": "拼多多"
+      },
+      {
+        "ticker": "CLSK",
+        "name": "CleanSpark"
+      },
+      {
+        "ticker": "MU",
+        "name": "美光"
+      },
+      {
+        "ticker": "1810.HK",
+        "name": "小米集团"
+      },
+      {
+        "ticker": "159605.SZ",
+        "name": "159605"
+      },
+      {
+        "ticker": "005930.KS",
+        "name": "三星电子"
+      },
+      {
+        "ticker": "000660.KS",
+        "name": "SK海力士"
+      },
+      {
+        "ticker": "562590.SS",
+        "name": "半导体设备ETF"
+      },
+      {
+        "ticker": "^N225",
+        "name": "日经225"
+      }
+    ]
+  }
+}

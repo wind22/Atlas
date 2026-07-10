@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-10 05:08 UTC",
+  "latest": "2026-07-09",
+  "dates": [
+    "2026-07-09"
+  ],
+  "files": {
+    "schema": "schema.json",
+    "latest": "latest.json",
+    "universe": "universe.json",
+    "regime_history": "regime_history.json",
+    "daily": "daily/{date}.json",
+    "dashboard_view": "dashboard_view.json"
+  }
+}

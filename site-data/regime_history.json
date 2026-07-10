@@ -1,0 +1,29 @@
+[
+  {
+    "date": "2026-07-07",
+    "regime": "risk_on",
+    "raw_regime": "risk_on",
+    "T_spy": 84.0,
+    "R_spy": 0.0,
+    "breadth_pct": 0.9090909090909091,
+    "vix": 17.459999084472656
+  },
+  {
+    "date": "2026-07-08",
+    "regime": "risk_on",
+    "raw_regime": "risk_on",
+    "T_spy": 84.0,
+    "R_spy": 0.0,
+    "breadth_pct": 0.8181818181818182,
+    "vix": 17.190000534057617
+  },
+  {
+    "date": "2026-07-09",
+    "regime": "risk_on",
+    "raw_regime": "risk_on",
+    "T_spy": 84.0,
+    "R_spy": 0.0,
+    "breadth_pct": 0.8181818181818182,
+    "vix": 15.84000015258789
+  }
+]
