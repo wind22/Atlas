@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-13 22:26 UTC",
+  "generated_at": "2026-07-14 22:29 UTC",
   "description": "Atlas 每日数据契约。静态页面只消费这些文件，不直接依赖 Python 对象。铁律 Ⅱ：契约禁止任何前向收益 / 买卖 / 价格目标字段——只描述已发生的状态。",
   "stability": "schema_version 只增不改；字段只增不删不改类型；破坏性变更须升版本。",
   "files": {
