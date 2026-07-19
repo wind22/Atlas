@@ -52,6 +52,22 @@ def test_risk_shown_as_band_with_flags(tmp_path):
     assert all("R" in m for m in vm["markets"])
 
 
+def test_gold_is_in_watchlist_and_displayed_as_cny_per_gram(tmp_path):
+    report, out, data_dir = _run(tmp_path)
+    gold = report.results["GC=F"]
+    with open(os.path.join(data_dir, "dashboard_view.json"), encoding="utf-8") as fh:
+        vm = json.load(fh)
+    row = next(s for s in vm["stocks"] if s["ticker"] == "GC=F")
+
+    assert gold.name == "黄金"
+    assert row["price_unit"] == "元/克"
+    assert "元/克" in open(out, encoding="utf-8").read()
+
+    universe = json.load(open(os.path.join(data_dir, "universe.json"), encoding="utf-8"))
+    gold_meta = next(s for s in universe["layers"]["stock"] if s["ticker"] == "GC=F")
+    assert gold_meta["price_unit"] == "元/克"
+
+
 def test_view_model_is_json_serializable_and_has_expected_shape():
     from atlas.types import DailyReport, Regime, RegimeState
     report = DailyReport(

@@ -1,7 +1,9 @@
 """Offline tests for the data layer's Stooq fallback parsing (no network)."""
 import pandas as pd
+import pytest
 
 from atlas import data_fetch as d
+from atlas import config
 
 
 def test_stooq_symbol_mapping():
@@ -81,3 +83,57 @@ def test_slice_period_trims_history():
     )
     out = d._slice_period(big, "1y")
     assert 240 <= len(out) <= 275  # ~1 year of business days
+
+
+def test_gold_to_cny_per_gram_converts_full_ohlc_and_preserves_volume():
+    gold_idx = pd.to_datetime(["2026-07-06", "2026-07-07", "2026-07-08"])
+    fx_idx = pd.to_datetime(["2026-07-06", "2026-07-08"])
+    gold = pd.DataFrame(
+        {
+            "Open": [3000.0, 3100.0, 3200.0],
+            "High": [3010.0, 3110.0, 3210.0],
+            "Low": [2990.0, 3090.0, 3190.0],
+            "Close": [3000.0, 3100.0, 3200.0],
+            "Volume": [10.0, 20.0, 30.0],
+        },
+        index=gold_idx,
+    )
+    fx = pd.DataFrame({"Close": [7.0, 7.2]}, index=fx_idx)
+    original_gold = gold.copy()
+
+    out = d.gold_to_cny_per_gram(gold, fx)
+
+    # 7 月 7 日无汇率 bar，沿用 7 月 6 日的已知收盘汇率。
+    assert out.loc[gold_idx[1], "Close"] == pytest.approx(
+        3100.0 * 7.0 / config.GRAMS_PER_TROY_OUNCE
+    )
+    assert out.loc[gold_idx[2], "High"] == pytest.approx(
+        3210.0 * 7.2 / config.GRAMS_PER_TROY_OUNCE
+    )
+    assert out["Volume"].tolist() == gold["Volume"].tolist()
+    pd.testing.assert_frame_equal(gold, original_gold)  # 输入未被原地修改
+
+
+def test_gold_to_cny_per_gram_rejects_missing_close():
+    idx = pd.to_datetime(["2026-07-06"])
+    with pytest.raises(ValueError, match="Close"):
+        d.gold_to_cny_per_gram(
+            pd.DataFrame({"Open": [3000.0]}, index=idx),
+            pd.DataFrame({"Close": [7.0]}, index=idx),
+        )
+
+
+def test_gold_conversion_never_backfills_with_future_fx():
+    gold_idx = pd.to_datetime(["2026-07-03", "2026-07-06"])
+    gold = pd.DataFrame(
+        {c: [3000.0, 3010.0] for c in ["Open", "High", "Low", "Close"]}
+        | {"Volume": [10.0, 11.0]},
+        index=gold_idx,
+    )
+    fx = pd.DataFrame(
+        {"Close": [7.0]}, index=pd.to_datetime(["2026-07-06"])
+    )
+
+    out = d.gold_to_cny_per_gram(gold, fx)
+
+    assert out.index.tolist() == [pd.Timestamp("2026-07-06")]

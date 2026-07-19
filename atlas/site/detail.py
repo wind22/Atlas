@@ -69,7 +69,10 @@ def _collect_events(tl: pd.DataFrame) -> list[dict]:
 # --------------------------------------------------------------------------
 # SVG 图
 # --------------------------------------------------------------------------
-def _svg(tl: pd.DataFrame, name: str, ticker: str, chart_id: str = "ch") -> str:
+def _svg(
+    tl: pd.DataFrame, name: str, ticker: str, chart_id: str = "ch",
+    price_unit: str = "",
+) -> str:
     W, H, pad = 900, 320, 12
     n = len(tl)
     step = max(1, n // 480)   # 控制点数；典型 <480 时 step=1，不丢事件
@@ -141,6 +144,7 @@ def _svg(tl: pd.DataFrame, name: str, ticker: str, chart_id: str = "ch") -> str:
         "b": [round(float(v), 2) for v in ma200],
         "g": list(regs),
         "e": ev_labels,
+        "u": price_unit,
         "geom": {"W": W, "H": H, "pad": pad, "lo": round(lo, 4), "span": round(span, 4)},
     }
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
@@ -175,7 +179,8 @@ def _svg(tl: pd.DataFrame, name: str, ticker: str, chart_id: str = "ch") -> str:
     var x=xOf(i), yv=yOf(D.c[i]);
     vl.setAttribute("x1",x); vl.setAttribute("x2",x);
     dot.setAttribute("cx",x); dot.setAttribute("cy",yv); cur.style.display="";
-    var h="<b>"+D.t[i]+"</b><br>价 "+D.c[i].toFixed(2)+"　MA50 "+D.a[i].toFixed(2)+"　MA200 "+D.b[i].toFixed(2)+"<br>"+(RM[D.g[i]]||D.g[i]);
+    var u=D.u ? " "+D.u : "";
+    var h="<b>"+D.t[i]+"</b><br>价 "+D.c[i].toFixed(2)+u+"　MA50 "+D.a[i].toFixed(2)+"　MA200 "+D.b[i].toFixed(2)+"<br>"+(RM[D.g[i]]||D.g[i]);
     if(D.e[i])h+="<br>★ "+D.e[i];
     tip.innerHTML=h; tip.hidden=false;
     var br=box.getBoundingClientRect(), tx=ev.clientX-br.left+14, ty=ev.clientY-br.top+14;
@@ -193,15 +198,16 @@ def _svg(tl: pd.DataFrame, name: str, ticker: str, chart_id: str = "ch") -> str:
 # --------------------------------------------------------------------------
 # 页面
 # --------------------------------------------------------------------------
-def _event_rows(events: list[dict]) -> str:
+def _event_rows(events: list[dict], price_unit: str = "") -> str:
     if not events:
         return '<tr><td colspan="3" class="muted">近期无关键节点。</td></tr>'
     cls_map = {"good": "good", "bad": "bad", "warn": "warn", "reg": ""}
     out = []
     for e in events[:20]:
+        suffix = f" {price_unit}" if price_unit else ""
         out.append(f'<tr><td class="muted">{e["date"]}</td>'
                    f'<td class="{cls_map.get(e["cls"], "")}">{e["label"]}</td>'
-                   f'<td class="num">{e["px"]:.2f}</td></tr>')
+                   f'<td class="num">{e["px"]:.2f}{suffix}</td></tr>')
     return "".join(out)
 
 
@@ -212,6 +218,8 @@ def render_detail_page(
     last = tl.iloc[-1]
     reg = Regime(str(last["regime"]))
     price = float(last["close"])
+    price_unit = config.price_unit_of(ticker)
+    price_suffix = f" {price_unit}" if price_unit else ""
     chg = (price / float(tl["close"].iloc[-2]) - 1.0) * 100 if len(tl) >= 2 else 0.0
     t_val = float(current.T) if current else float(last["T"])
     r_val = float(current.R) if current else float(last["R"])
@@ -261,17 +269,17 @@ def render_detail_page(
   <a class="back" href="../index.html">← 返回看板</a>
   <h1>{name} <span class="tk">{ticker}</span></h1>
   <div class="head">
-    <div class="px">{price:,.2f} <span class="{'pos' if chg >= 0 else 'neg'}" style="font-size:15px">{chg:+.2f}%</span></div>
+    <div class="px">{price:,.2f}{price_suffix} <span class="{'pos' if chg >= 0 else 'neg'}" style="font-size:15px">{chg:+.2f}%</span></div>
     <div><span class="tag {_regime_cls(reg)}">{REGIME_LIGHT[reg]} {REGIME_LABEL[reg]}</span></div>
     <div class="scores">趋势分 T <b>{t_val:.0f}</b>　·　风险 {band_html}</div>
   </div>
   {flags_html}
 
-  <div class="panel">{_svg(tl, name, ticker)}</div>
+  <div class="panel">{_svg(tl, name, ticker, price_unit=price_unit)}</div>
 
   <h3 style="font-size:15px;margin:0 0 6px">关键节点 / 趋势状态（近期在前）</h3>
   <div class="panel" style="padding:4px 14px">
-    <table><thead><tr><th>日期</th><th>事件</th><th>价格</th></tr></thead><tbody>{_event_rows(events)}</tbody></table>
+    <table><thead><tr><th>日期</th><th>事件</th><th>价格{f'（{price_unit}）' if price_unit else ''}</th></tr></thead><tbody>{_event_rows(events, price_unit)}</tbody></table>
   </div>
 
   <footer>

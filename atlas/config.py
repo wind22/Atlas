@@ -55,6 +55,7 @@ MULTI_ASSET_TICKERS: dict[str, str] = {
 }
 
 DEFAULT_STOCKS: dict[str, str] = {
+    "GC=F": "黄金",
     "AAPL": "苹果",
     "MSFT": "微软",
     "NVDA": "英伟达",
@@ -79,6 +80,16 @@ DEFAULT_STOCKS: dict[str, str] = {
 BENCHMARK: str = "SPY"        # relative-strength benchmark
 VIX_TICKER: str = "^VIX"      # market-fear gauge
 
+# 黄金自选行情：Yahoo 的 GC=F 为美元/金衡盎司，CNY=X 为 USD/CNY。
+# 流水线把整段 OHLC 历史换算为人民币/克后再计算趋势与风险，展示与评分同口径。
+GOLD_TICKER: str = "GC=F"
+USD_CNY_TICKER: str = "CNY=X"
+GRAMS_PER_TROY_OUNCE: float = 31.1034768
+
+PRICE_UNITS: dict[str, str] = {
+    GOLD_TICKER: "元/克",
+}
+
 
 def layer_of(ticker: str) -> Layer:
     """Return the layer a universe ticker belongs to (STOCK if unknown)."""
@@ -97,6 +108,11 @@ def name_of(ticker: str, stocks: dict[str, str] | None = None) -> str:
         if ticker in table:
             return table[ticker]
     return ticker
+
+
+def price_unit_of(ticker: str) -> str:
+    """返回看板价格单位；无专用单位的标的返回空字符串。"""
+    return PRICE_UNITS.get(ticker, "")
 
 
 # --------------------------------------------------------------------------

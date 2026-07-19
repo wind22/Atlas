@@ -240,6 +240,35 @@ def fetch_vix(
     return got.get(config.VIX_TICKER)
 
 
+def gold_to_cny_per_gram(
+    gold_usd_per_ounce: pd.DataFrame,
+    usd_cny: pd.DataFrame,
+) -> pd.DataFrame:
+    """把黄金美元/金衡盎司 OHLC 换算为人民币/克。
+
+    汇率按黄金交易日对齐并只向前填充（两地节假日不完全一致）；早于首个已知汇率
+    的黄金 bar 会被丢弃，绝不拿未来汇率回填历史。成交量保留黄金原始口径。返回
+    新 DataFrame，不修改输入。
+    """
+    if "Close" not in gold_usd_per_ounce or "Close" not in usd_cny:
+        raise ValueError("黄金或 USD/CNY 行情缺少 Close 列")
+
+    gold = gold_usd_per_ounce.copy()
+    fx_source = usd_cny["Close"].astype(float).sort_index()
+    fx = fx_source.reindex(gold.index, method="ffill")
+    known = fx.notna()
+    gold = gold.loc[known].copy()
+    fx = fx.loc[known]
+    if gold.empty or (fx <= 0).any():
+        raise ValueError("USD/CNY 行情无法对齐或含非正数")
+
+    factor = fx / config.GRAMS_PER_TROY_OUNCE
+    for col in ("Open", "High", "Low", "Close"):
+        if col in gold:
+            gold[col] = gold[col].astype(float) * factor
+    return gold
+
+
 # --------------------------------------------------------------------------
 # Deterministic offline generator.
 # --------------------------------------------------------------------------

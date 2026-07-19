@@ -161,7 +161,8 @@ def build_universe(stocks: dict[str, str] | None) -> dict:
         "stock": dict(stocks or config.DEFAULT_STOCKS),
     }
     layers = {
-        key: [{"ticker": t, "name": n} for t, n in tables[key].items()]
+        key: [{"ticker": t, "name": n, "price_unit": config.price_unit_of(t)}
+              for t, n in tables[key].items()]
         for _, key in _LAYER_ORDER
     }
     return {
@@ -233,7 +234,7 @@ def build_schema() -> dict:
             "regime_history.json": (
                 "升序数组，每项 {date, regime, raw_regime, T_spy, R_spy, breadth_pct, vix}"
             ),
-            "universe.json": "{benchmark, vix, layers:{market,sector,multi_asset,stock:[{ticker,name}]}}",
+            "universe.json": "{benchmark, vix, layers:{market,sector,multi_asset,stock:[{ticker,name,price_unit}]}}",
             "manifest.json": "{latest, dates:[...], files:{...}} —— 站点数据索引",
             "dashboard_view.json": (
                 "看板视图模型：展示逻辑算好的 JSON-safe 数据（配色/格式化/标签/排序），"

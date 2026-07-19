@@ -370,7 +370,7 @@
         {% for s in stocks %}
         <tr class="tone-{{ s.tone }}">
           <td><b>{% if s.link %}<a class="tklink" href="{{ s.link }}">{{ s.name }} ›</a>{% else %}{{ s.name }}{% endif %}</b> <span class="tk" style="color:var(--muted);font-size:12px">{{ s.ticker }}</span></td>
-          <td class="num"><b>{{ s.price }}</b></td>
+          <td class="num"><b>{{ s.price }}{% if s.price_unit %} {{ s.price_unit }}{% endif %}</b></td>
           <td class="num {{ 'pos' if s.chg_good else 'neg' }}">{{ s.chg }}</td>
           <td><span class="tag {{ s.trend.cls }}">{{ s.trend.icon }} {{ s.trend.label }}</span></td>
           <td class="num {{ 'pos' if s.mom_good else 'neg' }}">{{ s.mom }}</td>

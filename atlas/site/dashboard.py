@@ -72,6 +72,7 @@ def _price_fields(result: TickerResult) -> dict:
     chg = _day_change(result)
     return {
         "price": _fmt_price(result.indicators.close),
+        "price_unit": config.price_unit_of(result.ticker),
         "chg": _fmt_pct(chg, signed=True),
         "chg_good": chg >= 0,
     }

@@ -24,3 +24,6 @@ def test_detail_pages_generated_and_linked(tmp_path):
 
     dash = out.read_text(encoding="utf-8")
     assert 'class="tklink"' in dash and "t/" in dash   # dashboard links to details
+
+    gold_page = (tmp_path / "t" / "GC_F.html").read_text(encoding="utf-8")
+    assert "元/克" in gold_page

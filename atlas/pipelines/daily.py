@@ -86,15 +86,39 @@ def run(
         + list(stocks)
         + [config.BENCHMARK]
     )
-    all_tickers = _unique(universe + [config.VIX_TICKER])
+    auxiliaries = [config.VIX_TICKER]
+    if config.GOLD_TICKER in universe:
+        auxiliaries.append(config.USD_CNY_TICKER)
+    all_tickers = _unique(universe + auxiliaries)
 
     # 2) Fetch --------------------------------------------------------------
     if offline:
         frames = data_fetch.synthetic_prices(all_tickers)
         vix_frame = frames.get(config.VIX_TICKER)
     else:
-        frames = data_fetch.fetch_prices(universe, period=period)
+        fetch_tickers = _unique(
+            universe
+            + ([config.USD_CNY_TICKER] if config.GOLD_TICKER in universe else [])
+        )
+        frames = data_fetch.fetch_prices(fetch_tickers, period=period)
         vix_frame = data_fetch.fetch_vix(period=period)
+
+    # 黄金以人民币/克作为产品口径：先换算整段 OHLC，再进入指标与评分。
+    # 汇率仅作换算辅助，不进入四层 universe，也不单独发布为监控标的。
+    if config.GOLD_TICKER in universe:
+        gold_frame = frames.get(config.GOLD_TICKER)
+        fx_frame = frames.get(config.USD_CNY_TICKER)
+        if gold_frame is not None and fx_frame is not None:
+            try:
+                frames[config.GOLD_TICKER] = data_fetch.gold_to_cny_per_gram(
+                    gold_frame, fx_frame
+                )
+            except ValueError as exc:
+                _warn(f"黄金人民币/克换算失败（{exc}），跳过黄金")
+                frames.pop(config.GOLD_TICKER, None)
+        else:
+            _warn("黄金或 USD/CNY 数据缺失，无法生成黄金人民币/克行情")
+            frames.pop(config.GOLD_TICKER, None)
 
     benchmark_df = frames.get(config.BENCHMARK)
     if benchmark_df is None or "Close" not in benchmark_df or len(benchmark_df) == 0:
@@ -181,6 +205,8 @@ def run(
     # 9) Persist + render ---------------------------------------------------
     snapshot.save_report(report, db_path)
     source = "合成数据（离线）" if offline else "yfinance（Yahoo）"
+    if config.GOLD_TICKER in results:
+        source += "；黄金按 USD/CNY 换算为人民币/克"
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
     site_dir = os.path.dirname(os.path.abspath(output))
