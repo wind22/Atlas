@@ -1,0 +1,14 @@
+.git
+.github
+.pytest_cache
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.sqlite
+!data/atlas_snapshots.sqlite
+public
+runtime
+tests
+AGENTS.md
+CLAUDE.md
