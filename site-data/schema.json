@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-17 22:12 UTC",
+  "generated_at": "2026-07-19 13:05 UTC",
   "description": "Atlas 每日数据契约。静态页面只消费这些文件，不直接依赖 Python 对象。铁律 Ⅱ：契约禁止任何前向收益 / 买卖 / 价格目标字段——只描述已发生的状态。",
   "stability": "schema_version 只增不改；字段只增不删不改类型；破坏性变更须升版本。",
   "files": {
@@ -13,7 +13,7 @@
       "similar": "历史相似状态：similar_periods:[{date, regime, T_spy, R_spy, breadth_pct, vix, distance}]。仅描述当时状态，铁律 Ⅱ 禁止任何前向收益字段"
     },
     "regime_history.json": "升序数组，每项 {date, regime, raw_regime, T_spy, R_spy, breadth_pct, vix}",
-    "universe.json": "{benchmark, vix, layers:{market,sector,multi_asset,stock:[{ticker,name}]}}",
+    "universe.json": "{benchmark, vix, layers:{market,sector,multi_asset,stock:[{ticker,name,price_unit}]}}",
     "manifest.json": "{latest, dates:[...], files:{...}} —— 站点数据索引",
     "dashboard_view.json": "看板视图模型：展示逻辑算好的 JSON-safe 数据（配色/格式化/标签/排序），HTML 与之同源，供 PWA / memo / API 复用"
   }

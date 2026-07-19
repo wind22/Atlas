@@ -1,163 +1,205 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-17 22:12 UTC",
+  "generated_at": "2026-07-19 13:05 UTC",
   "benchmark": "SPY",
   "vix": "^VIX",
   "layers": {
     "market": [
       {
         "ticker": "SPY",
-        "name": "标普500"
+        "name": "标普500",
+        "price_unit": ""
       },
       {
         "ticker": "QQQ",
-        "name": "纳指100"
+        "name": "纳指100",
+        "price_unit": ""
       },
       {
         "ticker": "IWM",
-        "name": "罗素2000"
+        "name": "罗素2000",
+        "price_unit": ""
       },
       {
         "ticker": "DIA",
-        "name": "道指"
+        "name": "道指",
+        "price_unit": ""
       }
     ],
     "sector": [
       {
         "ticker": "XLK",
-        "name": "科技"
+        "name": "科技",
+        "price_unit": ""
       },
       {
         "ticker": "XLF",
-        "name": "金融"
+        "name": "金融",
+        "price_unit": ""
       },
       {
         "ticker": "XLE",
-        "name": "能源"
+        "name": "能源",
+        "price_unit": ""
       },
       {
         "ticker": "XLV",
-        "name": "医疗"
+        "name": "医疗",
+        "price_unit": ""
       },
       {
         "ticker": "XLI",
-        "name": "工业"
+        "name": "工业",
+        "price_unit": ""
       },
       {
         "ticker": "XLY",
-        "name": "可选消费"
+        "name": "可选消费",
+        "price_unit": ""
       },
       {
         "ticker": "XLP",
-        "name": "必需消费"
+        "name": "必需消费",
+        "price_unit": ""
       },
       {
         "ticker": "XLU",
-        "name": "公用"
+        "name": "公用",
+        "price_unit": ""
       },
       {
         "ticker": "XLB",
-        "name": "材料"
+        "name": "材料",
+        "price_unit": ""
       },
       {
         "ticker": "XLRE",
-        "name": "地产"
+        "name": "地产",
+        "price_unit": ""
       },
       {
         "ticker": "XLC",
-        "name": "通信"
+        "name": "通信",
+        "price_unit": ""
       }
     ],
     "multi_asset": [
       {
         "ticker": "TLT",
-        "name": "长债"
+        "name": "长债",
+        "price_unit": ""
       },
       {
         "ticker": "IEF",
-        "name": "中债"
+        "name": "中债",
+        "price_unit": ""
       },
       {
         "ticker": "GLD",
-        "name": "黄金"
+        "name": "黄金",
+        "price_unit": ""
       },
       {
         "ticker": "DBC",
-        "name": "商品"
+        "name": "商品",
+        "price_unit": ""
       },
       {
         "ticker": "UUP",
-        "name": "美元"
+        "name": "美元",
+        "price_unit": ""
       },
       {
         "ticker": "HYG",
-        "name": "高收益债"
+        "name": "高收益债",
+        "price_unit": ""
       }
     ],
     "stock": [
       {
+        "ticker": "GC=F",
+        "name": "黄金",
+        "price_unit": "元/克"
+      },
+      {
         "ticker": "AAPL",
-        "name": "苹果"
+        "name": "苹果",
+        "price_unit": ""
       },
       {
         "ticker": "MSFT",
-        "name": "微软"
+        "name": "微软",
+        "price_unit": ""
       },
       {
         "ticker": "NVDA",
-        "name": "英伟达"
+        "name": "英伟达",
+        "price_unit": ""
       },
       {
         "ticker": "GOOG",
-        "name": "谷歌"
+        "name": "谷歌",
+        "price_unit": ""
       },
       {
         "ticker": "META",
-        "name": "Meta"
+        "name": "Meta",
+        "price_unit": ""
       },
       {
         "ticker": "AMD",
-        "name": "AMD"
+        "name": "AMD",
+        "price_unit": ""
       },
       {
         "ticker": "TSLA",
-        "name": "特斯拉"
+        "name": "特斯拉",
+        "price_unit": ""
       },
       {
         "ticker": "PDD",
-        "name": "拼多多"
+        "name": "拼多多",
+        "price_unit": ""
       },
       {
         "ticker": "CLSK",
-        "name": "CleanSpark"
+        "name": "CleanSpark",
+        "price_unit": ""
       },
       {
         "ticker": "MU",
-        "name": "美光"
+        "name": "美光",
+        "price_unit": ""
       },
       {
         "ticker": "1810.HK",
-        "name": "小米集团"
+        "name": "小米集团",
+        "price_unit": ""
       },
       {
         "ticker": "159605.SZ",
-        "name": "159605"
+        "name": "159605",
+        "price_unit": ""
       },
       {
         "ticker": "005930.KS",
-        "name": "三星电子"
+        "name": "三星电子",
+        "price_unit": ""
       },
       {
         "ticker": "000660.KS",
-        "name": "SK海力士"
+        "name": "SK海力士",
+        "price_unit": ""
       },
       {
         "ticker": "562590.SS",
-        "name": "半导体设备ETF"
+        "name": "半导体设备ETF",
+        "price_unit": ""
       },
       {
         "ticker": "^N225",
-        "name": "日经225"
+        "name": "日经225",
+        "price_unit": ""
       }
     ]
   }
