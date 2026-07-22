@@ -1,8 +1,8 @@
 {
-  "date": "2026-07-21",
-  "prev_date": "2026-07-20",
+  "date": "2026-07-22",
+  "prev_date": "2026-07-21",
   "source": "yfinance（Yahoo）；黄金按 USD/CNY 换算为人民币/克",
-  "generated_at": "2026-07-21 22:25 UTC",
+  "generated_at": "2026-07-22 22:32 UTC",
   "regime": {
     "light": "🟢",
     "label": "进攻区 Risk-On",
@@ -14,7 +14,7 @@
   },
   "state": {
     "current_regime": "risk_on",
-    "days_in_regime": 11,
+    "days_in_regime": 12,
     "previous_regime": null,
     "last_transition_date": null,
     "transition_reason": null
@@ -24,22 +24,21 @@
   "explain": {
     "headline": "趋势健康，顺势持有",
     "top_risks": [
-      "可选消费：死叉：50日下穿200日",
-      "三星电子：深度回撤>20%",
-      "SK海力士：深度回撤>20%"
+      "Meta：跌破200日均线",
+      "美光：深度回撤>20%",
+      "三星电子：深度回撤>20%"
     ],
     "top_opportunities": [
       "标普500：多资产切换 Risk-On（股↑债↓金↓）"
     ],
     "delta_from_yesterday": [
-      "新增风险：可选消费：死叉：50日下穿200日",
-      "新增风险：美光：波动率突破近一年上沿",
-      "新增风险：159605：波动率突破近一年上沿",
-      "新增机会：标普500：多资产切换 Risk-On（股↑债↓金↓）"
+      "新增风险：Meta：跌破200日均线",
+      "新增风险：美光：深度回撤>20%",
+      "新增风险：Meta：波动率突破近一年上沿"
     ]
   },
   "breadth_pct": "81.8%",
-  "vix": "17.0",
+  "vix": "16.6",
   "risk_legend": "风险档位：🟢 R≤30 · 🟡 30–60 · 🔴 R≥60，以档位与触发条目为准",
   "markets": [
     {
@@ -58,17 +57,17 @@
         "icon": "🟢",
         "cls": "tag-good"
       },
-      "dist200": "+7.8%",
+      "dist200": "+7.6%",
       "dist200_good": true,
-      "price": "748.28",
+      "price": "747.41",
       "price_unit": "",
-      "chg": "+0.8%",
-      "chg_good": true
+      "chg": "-0.1%",
+      "chg_good": false
     },
     {
       "ticker": "QQQ",
       "name": "纳指100",
-      "T": "77",
+      "T": "71",
       "R": "0",
       "risk": {
         "label": "低风险",
@@ -81,12 +80,12 @@
         "icon": "🟢",
         "cls": "tag-good"
       },
-      "dist200": "+10.7%",
+      "dist200": "+10.0%",
       "dist200_good": true,
-      "price": "708.97",
+      "price": "705.35",
       "price_unit": "",
-      "chg": "+1.9%",
-      "chg_good": true
+      "chg": "-0.5%",
+      "chg_good": false
     },
     {
       "ticker": "IWM",
@@ -104,12 +103,12 @@
         "icon": "🟢",
         "cls": "tag-good"
       },
-      "dist200": "+12.8%",
+      "dist200": "+11.6%",
       "dist200_good": true,
-      "price": "296.54",
+      "price": "293.79",
       "price_unit": "",
-      "chg": "+1.4%",
-      "chg_good": true
+      "chg": "-0.9%",
+      "chg_good": false
     },
     {
       "ticker": "DIA",
@@ -127,12 +126,12 @@
         "icon": "🟢",
         "cls": "tag-good"
       },
-      "dist200": "+7.5%",
+      "dist200": "+7.4%",
       "dist200_good": true,
-      "price": "521.51",
+      "price": "521.47",
       "price_unit": "",
-      "chg": "+0.7%",
-      "chg_good": true
+      "chg": "-0.0%",
+      "chg_good": false
     }
   ],
   "sectors": [
@@ -146,24 +145,24 @@
         "icon": "🟢",
         "cls": "tag-good"
       },
-      "price": "56.11",
+      "price": "56.05",
       "price_unit": "",
-      "chg": "+0.1%",
-      "chg_good": true
+      "chg": "-0.1%",
+      "chg_good": false
     },
     {
       "ticker": "XLE",
       "name": "能源",
-      "T": "86",
-      "style": "background:rgb(84,162,81);color:#ffffff;",
+      "T": "92",
+      "style": "background:rgb(67,157,84);color:#ffffff;",
       "status": {
         "label": "强势",
         "icon": "🟢",
         "cls": "tag-good"
       },
-      "price": "58.50",
+      "price": "59.20",
       "price_unit": "",
-      "chg": "+1.0%",
+      "chg": "+1.2%",
       "chg_good": true
     },
     {
@@ -176,10 +175,10 @@
         "icon": "🟢",
         "cls": "tag-good"
       },
-      "price": "160.25",
+      "price": "159.43",
       "price_unit": "",
-      "chg": "+0.6%",
-      "chg_good": true
+      "chg": "-0.5%",
+      "chg_good": false
     },
     {
       "ticker": "XLRE",
@@ -191,9 +190,9 @@
         "icon": "🟢",
         "cls": "tag-good"
       },
-      "price": "45.20",
+      "price": "45.01",
       "price_unit": "",
-      "chg": "-0.1%",
+      "chg": "-0.4%",
       "chg_good": false
     },
     {
@@ -206,10 +205,10 @@
         "icon": "🟢",
         "cls": "tag-good"
       },
-      "price": "84.06",
+      "price": "84.38",
       "price_unit": "",
-      "chg": "-0.9%",
-      "chg_good": false
+      "chg": "+0.4%",
+      "chg_good": true
     },
     {
       "ticker": "XLI",
@@ -221,9 +220,9 @@
         "icon": "🟢",
         "cls": "tag-good"
       },
-      "price": "178.66",
+      "price": "178.85",
       "price_unit": "",
-      "chg": "+0.3%",
+      "chg": "+0.1%",
       "chg_good": true
     },
     {
@@ -236,10 +235,10 @@
         "icon": "🟢",
         "cls": "tag-good"
       },
-      "price": "44.92",
+      "price": "45.93",
       "price_unit": "",
-      "chg": "-0.0%",
-      "chg_good": false
+      "chg": "+2.2%",
+      "chg_good": true
     },
     {
       "ticker": "XLK",
@@ -251,24 +250,24 @@
         "icon": "🟢",
         "cls": "tag-good"
       },
-      "price": "180.78",
+      "price": "180.27",
       "price_unit": "",
-      "chg": "+2.9%",
-      "chg_good": true
+      "chg": "-0.3%",
+      "chg_good": false
     },
     {
       "ticker": "XLB",
       "name": "材料",
-      "T": "63",
-      "style": "background:rgb(151,180,69);color:#14181f;",
+      "T": "69",
+      "style": "background:rgb(129,177,72);color:#ffffff;",
       "status": {
         "label": "强势",
         "icon": "🟢",
         "cls": "tag-good"
       },
-      "price": "50.10",
+      "price": "50.82",
       "price_unit": "",
-      "chg": "+0.1%",
+      "chg": "+1.4%",
       "chg_good": true
     },
     {
@@ -281,9 +280,9 @@
         "icon": "🔴",
         "cls": "tag-bad"
       },
-      "price": "110.03",
+      "price": "109.20",
       "price_unit": "",
-      "chg": "-0.7%",
+      "chg": "-0.8%",
       "chg_good": false
     },
     {
@@ -296,10 +295,10 @@
         "icon": "🔴",
         "cls": "tag-bad"
       },
-      "price": "114.87",
+      "price": "114.02",
       "price_unit": "",
-      "chg": "+0.2%",
-      "chg_good": true
+      "chg": "-0.7%",
+      "chg_good": false
     }
   ],
   "multi_assets": [
@@ -312,7 +311,7 @@
         "label": "下行",
         "cls": "tag-bad"
       },
-      "price": "83.66",
+      "price": "83.44",
       "price_unit": "",
       "chg": "-0.3%",
       "chg_good": false
@@ -326,7 +325,7 @@
         "label": "下行",
         "cls": "tag-bad"
       },
-      "price": "93.31",
+      "price": "93.10",
       "price_unit": "",
       "chg": "-0.2%",
       "chg_good": false
@@ -340,9 +339,9 @@
         "label": "下行",
         "cls": "tag-bad"
       },
-      "price": "374.81",
+      "price": "379.12",
       "price_unit": "",
-      "chg": "+2.0%",
+      "chg": "+1.1%",
       "chg_good": true
     },
     {
@@ -354,9 +353,9 @@
         "label": "上行",
         "cls": "tag-good"
       },
-      "price": "29.57",
+      "price": "29.86",
       "price_unit": "",
-      "chg": "+1.5%",
+      "chg": "+1.0%",
       "chg_good": true
     },
     {
@@ -368,10 +367,10 @@
         "label": "上行",
         "cls": "tag-good"
       },
-      "price": "28.48",
+      "price": "28.45",
       "price_unit": "",
-      "chg": "+0.3%",
-      "chg_good": true
+      "chg": "-0.1%",
+      "chg_good": false
     },
     {
       "ticker": "HYG",
@@ -382,9 +381,9 @@
         "label": "上行",
         "cls": "tag-good"
       },
-      "price": "79.65",
+      "price": "79.52",
       "price_unit": "",
-      "chg": "-0.0%",
+      "chg": "-0.2%",
       "chg_good": false
     }
   ],
@@ -393,9 +392,9 @@
       "ticker": "GC=F",
       "name": "黄金",
       "link": "t/GC_F.html",
-      "price": "888.35",
+      "price": "897.17",
       "price_unit": "元/克",
-      "chg": "+1.7%",
+      "chg": "+1.2%",
       "chg_good": true,
       "tone": "warn",
       "trend": {
@@ -403,9 +402,9 @@
         "icon": "▼",
         "cls": "tag-bad"
       },
-      "mom": "+18.5%",
+      "mom": "+15.9%",
       "mom_good": true,
-      "dist_high": "-25.3%",
+      "dist_high": "-24.6%",
       "risk": {
         "label": "中风险",
         "icon": "🟡",
@@ -422,19 +421,19 @@
       "ticker": "AAPL",
       "name": "苹果",
       "link": "t/AAPL.html",
-      "price": "327.74",
+      "price": "325.89",
       "price_unit": "",
-      "chg": "+0.4%",
-      "chg_good": true,
+      "chg": "-0.6%",
+      "chg_good": false,
       "tone": "good",
       "trend": {
         "label": "多头",
         "icon": "▲",
         "cls": "tag-good"
       },
-      "mom": "+41.7%",
+      "mom": "+40.3%",
       "mom_good": true,
-      "dist_high": "-1.8%",
+      "dist_high": "-2.4%",
       "risk": {
         "label": "低风险",
         "icon": "🟢",
@@ -454,9 +453,9 @@
       "ticker": "MSFT",
       "name": "微软",
       "link": "t/MSFT.html",
-      "price": "397.75",
+      "price": "390.34",
       "price_unit": "",
-      "chg": "-1.1%",
+      "chg": "-1.9%",
       "chg_good": false,
       "tone": "bad",
       "trend": {
@@ -464,9 +463,9 @@
         "icon": "▼",
         "cls": "tag-bad"
       },
-      "mom": "-25.0%",
+      "mom": "-27.4%",
       "mom_good": false,
-      "dist_high": "-26.2%",
+      "dist_high": "-27.5%",
       "risk": {
         "label": "中风险",
         "icon": "🟡",
@@ -483,36 +482,34 @@
       "ticker": "NVDA",
       "name": "英伟达",
       "link": "t/NVDA.html",
-      "price": "207.29",
+      "price": "212.06",
       "price_unit": "",
-      "chg": "+2.0%",
+      "chg": "+2.3%",
       "chg_good": true,
       "tone": "good",
       "trend": {
-        "label": "震荡",
-        "icon": "◆",
-        "cls": "tag-warn"
+        "label": "多头",
+        "icon": "▲",
+        "cls": "tag-good"
       },
-      "mom": "+22.4%",
+      "mom": "+21.9%",
       "mom_good": true,
-      "dist_high": "-12.0%",
+      "dist_high": "-9.9%",
       "risk": {
         "label": "低风险",
         "icon": "🟢",
         "cls": "tag-good"
       },
-      "risk_flags": [
-        "自高点回撤 >10%"
-      ],
+      "risk_flags": [],
       "hints": []
     },
     {
       "ticker": "GOOG",
       "name": "谷歌",
       "link": "t/GOOG.html",
-      "price": "346.19",
+      "price": "341.91",
       "price_unit": "",
-      "chg": "-1.5%",
+      "chg": "-1.2%",
       "chg_good": false,
       "tone": "good",
       "trend": {
@@ -520,9 +517,9 @@
         "icon": "◆",
         "cls": "tag-warn"
       },
-      "mom": "+98.2%",
+      "mom": "+83.0%",
       "mom_good": true,
-      "dist_high": "-13.2%",
+      "dist_high": "-14.3%",
       "risk": {
         "label": "低风险",
         "icon": "🟢",
@@ -537,36 +534,47 @@
       "ticker": "META",
       "name": "Meta",
       "link": "t/META.html",
-      "price": "643.81",
+      "price": "627.17",
       "price_unit": "",
-      "chg": "-0.3%",
+      "chg": "-2.6%",
       "chg_good": false,
-      "tone": "warn",
+      "tone": "bad",
       "trend": {
-        "label": "震荡",
-        "icon": "◆",
-        "cls": "tag-warn"
+        "label": "空头破位",
+        "icon": "▼",
+        "cls": "tag-bad"
       },
-      "mom": "-17.8%",
+      "mom": "-20.7%",
       "mom_good": false,
-      "dist_high": "-18.2%",
+      "dist_high": "-20.4%",
       "risk": {
-        "label": "低风险",
-        "icon": "🟢",
-        "cls": "tag-good"
+        "label": "高风险",
+        "icon": "🔴",
+        "cls": "tag-bad"
       },
       "risk_flags": [
-        "死叉：50日<200日"
+        "跌破200日均线",
+        "死叉：50日<200日",
+        "波动骤放"
       ],
-      "hints": []
+      "hints": [
+        {
+          "title": "跌破200日均线",
+          "is_risk": true
+        },
+        {
+          "title": "波动率突破近一年上沿",
+          "is_risk": true
+        }
+      ]
     },
     {
       "ticker": "AMD",
       "name": "AMD",
       "link": "t/AMD.html",
-      "price": "544.43",
+      "price": "552.33",
       "price_unit": "",
-      "chg": "+8.1%",
+      "chg": "+1.5%",
       "chg_good": true,
       "tone": "good",
       "trend": {
@@ -574,9 +582,9 @@
         "icon": "▲",
         "cls": "tag-good"
       },
-      "mom": "+242.3%",
+      "mom": "+251.4%",
       "mom_good": true,
-      "dist_high": "-6.3%",
+      "dist_high": "-4.9%",
       "risk": {
         "label": "低风险",
         "icon": "🟢",
@@ -589,19 +597,19 @@
       "ticker": "TSLA",
       "name": "特斯拉",
       "link": "t/TSLA.html",
-      "price": "378.93",
+      "price": "374.01",
       "price_unit": "",
-      "chg": "+2.5%",
-      "chg_good": true,
+      "chg": "-1.3%",
+      "chg_good": false,
       "tone": "bad",
       "trend": {
         "label": "空头破位",
         "icon": "▼",
         "cls": "tag-bad"
       },
-      "mom": "+21.5%",
+      "mom": "+23.3%",
       "mom_good": true,
-      "dist_high": "-22.6%",
+      "dist_high": "-23.7%",
       "risk": {
         "label": "中风险",
         "icon": "🟡",
@@ -618,9 +626,9 @@
       "ticker": "PDD",
       "name": "拼多多",
       "link": "t/PDD.html",
-      "price": "84.83",
+      "price": "83.59",
       "price_unit": "",
-      "chg": "-1.4%",
+      "chg": "-1.5%",
       "chg_good": false,
       "tone": "bad",
       "trend": {
@@ -628,9 +636,9 @@
         "icon": "▼",
         "cls": "tag-bad"
       },
-      "mom": "-27.0%",
+      "mom": "-30.0%",
       "mom_good": false,
-      "dist_high": "-38.6%",
+      "dist_high": "-39.5%",
       "risk": {
         "label": "中风险",
         "icon": "🟡",
@@ -647,19 +655,19 @@
       "ticker": "CLSK",
       "name": "CleanSpark",
       "link": "t/CLSK.html",
-      "price": "15.38",
+      "price": "15.32",
       "price_unit": "",
-      "chg": "+6.7%",
-      "chg_good": true,
+      "chg": "-0.4%",
+      "chg_good": false,
       "tone": "good",
       "trend": {
         "label": "多头",
         "icon": "▲",
         "cls": "tag-good"
       },
-      "mom": "+34.9%",
+      "mom": "+40.8%",
       "mom_good": true,
-      "dist_high": "-33.7%",
+      "dist_high": "-33.9%",
       "risk": {
         "label": "低风险",
         "icon": "🟢",
@@ -674,31 +682,31 @@
       "ticker": "MU",
       "name": "美光",
       "link": "t/MU.html",
-      "price": "970.82",
+      "price": "959.48",
       "price_unit": "",
-      "chg": "+12.2%",
-      "chg_good": true,
-      "tone": "warn",
+      "chg": "-1.2%",
+      "chg_good": false,
+      "tone": "good",
       "trend": {
         "label": "多头",
         "icon": "▲",
         "cls": "tag-good"
       },
-      "mom": "+892.8%",
+      "mom": "+971.4%",
       "mom_good": true,
-      "dist_high": "-20.0%",
+      "dist_high": "-20.9%",
       "risk": {
-        "label": "中风险",
-        "icon": "🟡",
-        "cls": "tag-warn"
+        "label": "低风险",
+        "icon": "🟢",
+        "cls": "tag-good"
       },
       "risk_flags": [
         "自高点回撤 >10%",
-        "波动骤放"
+        "自高点回撤 >20%"
       ],
       "hints": [
         {
-          "title": "波动率突破近一年上沿",
+          "title": "深度回撤>20%",
           "is_risk": true
         }
       ]
@@ -707,9 +715,9 @@
       "ticker": "1810.HK",
       "name": "小米集团",
       "link": "t/1810_HK.html",
-      "price": "27.42",
+      "price": "26.68",
       "price_unit": "",
-      "chg": "-1.2%",
+      "chg": "-2.7%",
       "chg_good": false,
       "tone": "bad",
       "trend": {
@@ -717,26 +725,20 @@
         "icon": "▼",
         "cls": "tag-bad"
       },
-      "mom": "-56.8%",
+      "mom": "-58.6%",
       "mom_good": false,
-      "dist_high": "-53.9%",
+      "dist_high": "-55.1%",
       "risk": {
-        "label": "高风险",
-        "icon": "🔴",
-        "cls": "tag-bad"
+        "label": "中风险",
+        "icon": "🟡",
+        "cls": "tag-warn"
       },
       "risk_flags": [
         "跌破200日均线",
         "死叉：50日<200日",
-        "自高点回撤 >10%",
-        "波动骤放"
+        "自高点回撤 >10%"
       ],
-      "hints": [
-        {
-          "title": "波动率突破近一年上沿",
-          "is_risk": true
-        }
-      ]
+      "hints": []
     },
     {
       "ticker": "159605.SZ",
@@ -744,41 +746,35 @@
       "link": "t/159605_SZ.html",
       "price": "0.84",
       "price_unit": "",
-      "chg": "+3.2%",
-      "chg_good": true,
+      "chg": "-0.1%",
+      "chg_good": false,
       "tone": "bad",
       "trend": {
         "label": "空头破位",
         "icon": "▼",
         "cls": "tag-bad"
       },
-      "mom": "-25.5%",
+      "mom": "-25.7%",
       "mom_good": false,
-      "dist_high": "-34.7%",
+      "dist_high": "-34.8%",
       "risk": {
-        "label": "高风险",
-        "icon": "🔴",
-        "cls": "tag-bad"
+        "label": "中风险",
+        "icon": "🟡",
+        "cls": "tag-warn"
       },
       "risk_flags": [
         "跌破200日均线",
-        "死叉：50日<200日",
-        "波动骤放"
+        "死叉：50日<200日"
       ],
-      "hints": [
-        {
-          "title": "波动率突破近一年上沿",
-          "is_risk": true
-        }
-      ]
+      "hints": []
     },
     {
       "ticker": "005930.KS",
       "name": "三星电子",
       "link": "t/005930_KS.html",
-      "price": "259,000.00",
+      "price": "260,500.00",
       "price_unit": "",
-      "chg": "+6.1%",
+      "chg": "+0.6%",
       "chg_good": true,
       "tone": "warn",
       "trend": {
@@ -786,9 +782,9 @@
         "icon": "◆",
         "cls": "tag-warn"
       },
-      "mom": "+480.3%",
+      "mom": "+482.3%",
       "mom_good": true,
-      "dist_high": "-28.6%",
+      "dist_high": "-28.1%",
       "risk": {
         "label": "中风险",
         "icon": "🟡",
@@ -814,19 +810,19 @@
       "ticker": "000660.KS",
       "name": "SK海力士",
       "link": "t/000660_KS.html",
-      "price": "1,836,000.00",
+      "price": "1,830,000.00",
       "price_unit": "",
-      "chg": "+4.1%",
-      "chg_good": true,
+      "chg": "-0.3%",
+      "chg_good": false,
       "tone": "warn",
       "trend": {
         "label": "震荡",
         "icon": "◆",
         "cls": "tag-warn"
       },
-      "mom": "+924.2%",
+      "mom": "+939.4%",
       "mom_good": true,
-      "dist_high": "-37.1%",
+      "dist_high": "-37.3%",
       "risk": {
         "label": "中风险",
         "icon": "🟡",
@@ -852,19 +848,19 @@
       "ticker": "562590.SS",
       "name": "半导体设备ETF",
       "link": "t/562590_SS.html",
-      "price": "0.93",
+      "price": "1.02",
       "price_unit": "",
-      "chg": "-6.5%",
-      "chg_good": false,
+      "chg": "+10.0%",
+      "chg_good": true,
       "tone": "warn",
       "trend": {
         "label": "震荡",
         "icon": "◆",
         "cls": "tag-warn"
       },
-      "mom": "+194.3%",
+      "mom": "+201.9%",
       "mom_good": true,
-      "dist_high": "-74.9%",
+      "dist_high": "-72.4%",
       "risk": {
         "label": "中风险",
         "icon": "🟡",
@@ -890,27 +886,25 @@
       "ticker": "^N225",
       "name": "日经225",
       "link": "t/_N225.html",
-      "price": "64,141.12",
+      "price": "66,232.19",
       "price_unit": "",
-      "chg": "-4.0%",
-      "chg_good": false,
+      "chg": "+3.3%",
+      "chg_good": true,
       "tone": "good",
       "trend": {
         "label": "震荡",
         "icon": "◆",
         "cls": "tag-warn"
       },
-      "mom": "+78.5%",
+      "mom": "+80.0%",
       "mom_good": true,
-      "dist_high": "-11.4%",
+      "dist_high": "-8.5%",
       "risk": {
         "label": "低风险",
         "icon": "🟢",
         "cls": "tag-good"
       },
-      "risk_flags": [
-        "自高点回撤 >10%"
-      ],
+      "risk_flags": [],
       "hints": []
     }
   ],
@@ -919,11 +913,21 @@
       "is_risk": true,
       "icon": "⚠️",
       "kind_label": "风险",
-      "ticker": "XLY",
-      "name": "可选消费",
-      "title": "死叉：50日下穿200日",
-      "detail": "50日均线116.90下穿200日均线116.91，中期趋势转弱确认",
-      "severity": 8
+      "ticker": "META",
+      "name": "Meta",
+      "title": "跌破200日均线",
+      "detail": "收盘627.17 由上转下跌破200日均线638.23，最重要的风险信号",
+      "severity": 10
+    },
+    {
+      "is_risk": true,
+      "icon": "⚠️",
+      "kind_label": "风险",
+      "ticker": "MU",
+      "name": "美光",
+      "title": "深度回撤>20%",
+      "detail": "较60日高点回撤20.9%，深度回撤、风险偏高",
+      "severity": 6
     },
     {
       "is_risk": true,
@@ -932,7 +936,7 @@
       "ticker": "005930.KS",
       "name": "三星电子",
       "title": "深度回撤>20%",
-      "detail": "较60日高点回撤28.6%，深度回撤、风险偏高",
+      "detail": "较60日高点回撤28.1%，深度回撤、风险偏高",
       "severity": 6
     },
     {
@@ -942,7 +946,7 @@
       "ticker": "000660.KS",
       "name": "SK海力士",
       "title": "深度回撤>20%",
-      "detail": "较60日高点回撤37.1%，深度回撤、风险偏高",
+      "detail": "较60日高点回撤37.3%，深度回撤、风险偏高",
       "severity": 6
     },
     {
@@ -952,7 +956,7 @@
       "ticker": "562590.SS",
       "name": "半导体设备ETF",
       "title": "深度回撤>20%",
-      "detail": "较60日高点回撤74.9%，深度回撤、风险偏高",
+      "detail": "较60日高点回撤72.4%，深度回撤、风险偏高",
       "severity": 6
     },
     {
@@ -972,37 +976,17 @@
       "ticker": "AAPL",
       "name": "苹果",
       "title": "波动率突破近一年上沿",
-      "detail": "20日波动率0.024 > 近一年均值0.014×1.5，不确定性上升，仓位应收敛",
+      "detail": "20日波动率0.024 > 近一年均值0.015×1.5，不确定性上升，仓位应收敛",
       "severity": 5
     },
     {
       "is_risk": true,
       "icon": "⚠️",
       "kind_label": "风险",
-      "ticker": "MU",
-      "name": "美光",
+      "ticker": "META",
+      "name": "Meta",
       "title": "波动率突破近一年上沿",
-      "detail": "20日波动率0.070 > 近一年均值0.045×1.5，不确定性上升，仓位应收敛",
-      "severity": 5
-    },
-    {
-      "is_risk": true,
-      "icon": "⚠️",
-      "kind_label": "风险",
-      "ticker": "1810.HK",
-      "name": "小米集团",
-      "title": "波动率突破近一年上沿",
-      "detail": "20日波动率0.035 > 近一年均值0.023×1.5，不确定性上升，仓位应收敛",
-      "severity": 5
-    },
-    {
-      "is_risk": true,
-      "icon": "⚠️",
-      "kind_label": "风险",
-      "ticker": "159605.SZ",
-      "name": "159605",
-      "title": "波动率突破近一年上沿",
-      "detail": "20日波动率0.025 > 近一年均值0.016×1.5，不确定性上升，仓位应收敛",
+      "detail": "20日波动率0.034 > 近一年均值0.023×1.5，不确定性上升，仓位应收敛",
       "severity": 5
     },
     {
@@ -1012,7 +996,7 @@
       "ticker": "005930.KS",
       "name": "三星电子",
       "title": "波动率突破近一年上沿",
-      "detail": "20日波动率0.068 > 近一年均值0.036×1.5，不确定性上升，仓位应收敛",
+      "detail": "20日波动率0.063 > 近一年均值0.036×1.5，不确定性上升，仓位应收敛",
       "severity": 5
     },
     {
@@ -1022,7 +1006,7 @@
       "ticker": "000660.KS",
       "name": "SK海力士",
       "title": "波动率突破近一年上沿",
-      "detail": "20日波动率0.080 > 近一年均值0.046×1.5，不确定性上升，仓位应收敛",
+      "detail": "20日波动率0.077 > 近一年均值0.046×1.5，不确定性上升，仓位应收敛",
       "severity": 5
     },
     {
@@ -1032,7 +1016,7 @@
       "ticker": "562590.SS",
       "name": "半导体设备ETF",
       "title": "波动率突破近一年上沿",
-      "detail": "20日波动率0.461 > 近一年均值0.046×1.5，不确定性上升，仓位应收敛",
+      "detail": "20日波动率0.461 > 近一年均值0.048×1.5，不确定性上升，仓位应收敛",
       "severity": 5
     }
   ]
