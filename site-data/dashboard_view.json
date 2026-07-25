@@ -2,7 +2,7 @@
   "date": "2026-07-24",
   "prev_date": "2026-07-23",
   "source": "yfinance（Yahoo）；黄金按 USD/CNY 换算为人民币/克",
-  "generated_at": "2026-07-24 22:33 UTC",
+  "generated_at": "2026-07-25 08:22 UTC",
   "regime": {
     "light": "🟢",
     "label": "进攻区 Risk-On",
@@ -389,9 +389,9 @@
       "ticker": "GC=F",
       "name": "黄金",
       "link": "t/GC_F.html",
-      "price": "882.95",
+      "price": "885.68",
       "price_unit": "元/克",
-      "chg": "+0.2%",
+      "chg": "+0.5%",
       "chg_good": true,
       "tone": "warn",
       "trend": {
@@ -399,9 +399,11 @@
         "icon": "▼",
         "cls": "tag-bad"
       },
+      "ytd": "-9.0%",
+      "ytd_good": false,
       "mom": "+11.3%",
       "mom_good": true,
-      "dist_high": "-25.7%",
+      "dist_high": "-25.5%",
       "risk": {
         "label": "中风险",
         "icon": "🟡",
@@ -428,6 +430,8 @@
         "icon": "▲",
         "cls": "tag-good"
       },
+      "ytd": "+22.7%",
+      "ytd_good": true,
       "mom": "+37.4%",
       "mom_good": true,
       "dist_high": "-0.2%",
@@ -453,6 +457,8 @@
         "icon": "▼",
         "cls": "tag-bad"
       },
+      "ytd": "-20.7%",
+      "ytd_good": false,
       "mom": "-27.2%",
       "mom_good": false,
       "dist_high": "-29.1%",
@@ -482,6 +488,8 @@
         "icon": "◆",
         "cls": "tag-warn"
       },
+      "ytd": "+11.0%",
+      "ytd_good": true,
       "mom": "+16.7%",
       "mom_good": true,
       "dist_high": "-12.2%",
@@ -509,6 +517,8 @@
         "icon": "▼",
         "cls": "tag-bad"
       },
+      "ytd": "+1.8%",
+      "ytd_good": true,
       "mom": "+80.7%",
       "mom_good": true,
       "dist_high": "-20.0%",
@@ -537,6 +547,8 @@
         "icon": "▼",
         "cls": "tag-bad"
       },
+      "ytd": "-9.7%",
+      "ytd_good": false,
       "mom": "-21.6%",
       "mom_good": false,
       "dist_high": "-24.4%",
@@ -572,6 +584,8 @@
         "icon": "▲",
         "cls": "tag-good"
       },
+      "ytd": "+143.7%",
+      "ytd_good": true,
       "mom": "+227.6%",
       "mom_good": true,
       "dist_high": "-10.1%",
@@ -599,6 +613,8 @@
         "icon": "▼",
         "cls": "tag-bad"
       },
+      "ytd": "-30.4%",
+      "ytd_good": false,
       "mom": "+12.9%",
       "mom_good": true,
       "dist_high": "-36.1%",
@@ -639,6 +655,8 @@
         "icon": "▼",
         "cls": "tag-bad"
       },
+      "ytd": "-27.1%",
+      "ytd_good": false,
       "mom": "-36.1%",
       "mom_good": false,
       "dist_high": "-40.2%",
@@ -668,6 +686,8 @@
         "icon": "◆",
         "cls": "tag-warn"
       },
+      "ytd": "+43.5%",
+      "ytd_good": true,
       "mom": "+30.4%",
       "mom_good": true,
       "dist_high": "-37.4%",
@@ -701,6 +721,8 @@
         "icon": "◆",
         "cls": "tag-warn"
       },
+      "ytd": "+222.9%",
+      "ytd_good": true,
       "mom": "+856.1%",
       "mom_good": true,
       "dist_high": "-24.1%",
@@ -734,6 +756,8 @@
         "icon": "▼",
         "cls": "tag-bad"
       },
+      "ytd": "-31.8%",
+      "ytd_good": false,
       "mom": "-60.2%",
       "mom_good": false,
       "dist_high": "-55.1%",
@@ -753,19 +777,21 @@
       "ticker": "159605.SZ",
       "name": "159605",
       "link": "t/159605_SZ.html",
-      "price": "0.81",
+      "price": "0.80",
       "price_unit": "",
-      "chg": "+1.4%",
-      "chg_good": true,
+      "chg": "-2.3%",
+      "chg_good": false,
       "tone": "bad",
       "trend": {
         "label": "空头破位",
         "icon": "▼",
         "cls": "tag-bad"
       },
-      "mom": "-28.5%",
+      "ytd": "-26.5%",
+      "ytd_good": false,
+      "mom": "-30.9%",
       "mom_good": false,
-      "dist_high": "-36.6%",
+      "dist_high": "-38.0%",
       "risk": {
         "label": "中风险",
         "icon": "🟡",
@@ -792,6 +818,8 @@
         "icon": "◆",
         "cls": "tag-warn"
       },
+      "ytd": "+108.5%",
+      "ytd_good": true,
       "mom": "+464.6%",
       "mom_good": true,
       "dist_high": "-31.2%",
@@ -830,6 +858,8 @@
         "icon": "◆",
         "cls": "tag-warn"
       },
+      "ytd": "+170.7%",
+      "ytd_good": true,
       "mom": "+786.2%",
       "mom_good": true,
       "dist_high": "-39.7%",
@@ -858,19 +888,21 @@
       "ticker": "562590.SS",
       "name": "半导体设备ETF",
       "link": "t/562590_SS.html",
-      "price": "1.02",
+      "price": "1.05",
       "price_unit": "",
-      "chg": "-3.9%",
-      "chg_good": false,
+      "chg": "+3.0%",
+      "chg_good": true,
       "tone": "warn",
       "trend": {
         "label": "震荡",
         "icon": "◆",
         "cls": "tag-warn"
       },
-      "mom": "+216.1%",
+      "ytd": "+67.7%",
+      "ytd_good": true,
+      "mom": "+227.8%",
       "mom_good": true,
-      "dist_high": "-72.4%",
+      "dist_high": "-71.6%",
       "risk": {
         "label": "中风险",
         "icon": "🟡",
@@ -896,25 +928,29 @@
       "ticker": "^N225",
       "name": "日经225",
       "link": "t/_N225.html",
-      "price": "66,422.60",
+      "price": "64,611.15",
       "price_unit": "",
-      "chg": "+0.5%",
-      "chg_good": true,
+      "chg": "-2.7%",
+      "chg_good": false,
       "tone": "good",
       "trend": {
         "label": "震荡",
         "icon": "◆",
         "cls": "tag-warn"
       },
-      "mom": "+75.3%",
+      "ytd": "+28.4%",
+      "ytd_good": true,
+      "mom": "+74.5%",
       "mom_good": true,
-      "dist_high": "-8.2%",
+      "dist_high": "-10.7%",
       "risk": {
         "label": "低风险",
         "icon": "🟢",
         "cls": "tag-good"
       },
-      "risk_flags": [],
+      "risk_flags": [
+        "自高点回撤 >10%"
+      ],
       "hints": []
     }
   ],
@@ -976,7 +1012,7 @@
       "ticker": "562590.SS",
       "name": "半导体设备ETF",
       "title": "深度回撤>20%",
-      "detail": "较60日高点回撤72.4%，深度回撤、风险偏高",
+      "detail": "较60日高点回撤71.6%，深度回撤、风险偏高",
       "severity": 6
     },
     {
@@ -1036,7 +1072,7 @@
       "ticker": "562590.SS",
       "name": "半导体设备ETF",
       "title": "波动率突破近一年上沿",
-      "detail": "20日波动率0.462 > 近一年均值0.051×1.5，不确定性上升，仓位应收敛",
+      "detail": "20日波动率0.462 > 近一年均值0.053×1.5，不确定性上升，仓位应收敛",
       "severity": 5
     }
   ]
