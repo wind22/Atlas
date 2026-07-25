@@ -68,6 +68,21 @@ def test_gold_is_in_watchlist_and_displayed_as_cny_per_gram(tmp_path):
     assert gold_meta["price_unit"] == "元/克"
 
 
+def test_watchlist_rows_include_ytd(tmp_path):
+    report, out, data_dir = _run(tmp_path)
+    with open(os.path.join(data_dir, "dashboard_view.json"), encoding="utf-8") as fh:
+        vm = json.load(fh)
+
+    assert vm["stocks"]
+    for row in vm["stocks"]:
+        expected = report.results[row["ticker"]].indicators.ytd_change
+        assert row["ytd"] == f"{expected * 100:+.1f}%"
+        assert row["ytd_good"] is (expected >= 0)
+
+    html = open(out, encoding="utf-8").read()
+    assert "<th>YTD</th>" in html
+
+
 def test_view_model_is_json_serializable_and_has_expected_shape():
     from atlas.types import DailyReport, Regime, RegimeState
     report = DailyReport(

@@ -363,7 +363,7 @@
     <table>
       <thead>
         <tr>
-          <th>个股</th><th>现价</th><th>当日</th><th>趋势状态</th><th>动量(12-1)</th><th>距52周高</th><th>风险旗标</th><th>当日提示</th>
+          <th>个股</th><th>现价</th><th>当日</th><th>YTD</th><th>趋势状态</th><th>动量(12-1)</th><th>距52周高</th><th>风险旗标</th><th>当日提示</th>
         </tr>
       </thead>
       <tbody>
@@ -372,6 +372,7 @@
           <td><b>{% if s.link %}<a class="tklink" href="{{ s.link }}">{{ s.name }} ›</a>{% else %}{{ s.name }}{% endif %}</b> <span class="tk" style="color:var(--muted);font-size:12px">{{ s.ticker }}</span></td>
           <td class="num"><b>{{ s.price }}{% if s.price_unit %} {{ s.price_unit }}{% endif %}</b></td>
           <td class="num {{ 'pos' if s.chg_good else 'neg' }}">{{ s.chg }}</td>
+          <td class="num {{ 'pos' if s.ytd_good else 'neg' }}">{{ s.ytd }}</td>
           <td><span class="tag {{ s.trend.cls }}">{{ s.trend.icon }} {{ s.trend.label }}</span></td>
           <td class="num {{ 'pos' if s.mom_good else 'neg' }}">{{ s.mom }}</td>
           <td class="num">{{ s.dist_high }}</td>

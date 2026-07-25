@@ -47,6 +47,24 @@ def _safe_return(close: pd.Series, offset_from: int, offset_to: int) -> float:
     return _f(close.iloc[i_from] / base - 1.0)
 
 
+def _ytd_change(close: pd.Series) -> float:
+    """Latest close vs the prior calendar year's final available close."""
+    if close.empty:
+        return 0.0
+    latest_year = close.index[-1].year
+    prior_year = close[close.index.year < latest_year]
+    if not prior_year.empty:
+        base = prior_year.iloc[-1]
+    else:
+        current_year = close[close.index.year == latest_year]
+        if current_year.empty:
+            return 0.0
+        base = current_year.iloc[0]
+    if not np.isfinite(base) or base == 0:
+        return 0.0
+    return _f(close.iloc[-1] / base - 1.0)
+
+
 # --------------------------------------------------------------------------
 # hand-rolled indicators
 # --------------------------------------------------------------------------
@@ -174,6 +192,7 @@ def compute_indicators(
     ret_6m = _safe_return(
         close, offset_from=0, offset_to=config.TRADING_DAYS_MONTH * config.RET_MID_MONTHS
     )
+    ytd_change = _ytd_change(close)
 
     # --- relative strength vs benchmark (3m) ---------------------------
     rs_window = config.TRADING_DAYS_MONTH * config.RS_MONTHS
@@ -242,6 +261,7 @@ def compute_indicators(
         is_new_52w_high=bool(is_new_52w_high),
         vix=None,
         prev_vix=None,
+        ytd_change=ytd_change,
     )
 
 

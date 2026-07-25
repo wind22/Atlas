@@ -232,6 +232,8 @@ def _stock_view(report: DailyReport, detail_links: dict[str, str] | None = None)
             **_price_fields(r),
             "tone": _status_tag(r)["cls"].removeprefix("tag-"),  # good/warn/bad 行着色
             "trend": _trend_status(r),
+            "ytd": _fmt_pct(ind.ytd_change, signed=True),
+            "ytd_good": ind.ytd_change >= 0,
             "mom": _fmt_pct(ind.mom_12_1, signed=True),
             "mom_good": ind.mom_12_1 >= 0,
             "dist_high": _fmt_pct(-ind.dist_to_52w_high, signed=True),

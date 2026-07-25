@@ -118,6 +118,7 @@ def _make_indicators(**overrides) -> TickerIndicators:
         is_new_52w_high=False,
         vix=None,
         prev_vix=None,
+        ytd_change=0.15,
     )
     defaults.update(overrides)
     return TickerIndicators(**defaults)

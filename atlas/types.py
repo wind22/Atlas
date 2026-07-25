@@ -103,6 +103,10 @@ class TickerIndicators:
     vix: float | None = None
     prev_vix: float | None = None
 
+    # Calendar-year performance through the latest close. Kept at the end with
+    # a default so snapshots written before this additive field still load.
+    ytd_change: float = 0.0
+
 
 @dataclass
 class DimensionScores:

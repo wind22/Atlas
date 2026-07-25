@@ -43,6 +43,16 @@ def test_rsi_always_bounded(synthetic_ohlcv):
         assert ind.drawdown_60d >= 0.0
 
 
+def test_ytd_change_uses_previous_calendar_year_close(synthetic_ohlcv):
+    df = synthetic_ohlcv("up")
+    prior_year_close = df.loc[df.index.year < df.index[-1].year, "Close"].iloc[-1]
+    ind = indicators.compute_indicators(
+        df, synthetic_ohlcv("up"), ticker="X", name="X", layer=Layer.STOCK
+    )
+    expected = df["Close"].iloc[-1] / prior_year_close - 1.0
+    assert abs(ind.ytd_change - expected) < 1e-12
+
+
 def test_compute_breadth_fraction(synthetic_ohlcv):
     # 3 sectors above their MA200 (up), 2 below (down) -> 3/5 = 0.60.
     frames = {

@@ -223,7 +223,10 @@ def build_schema() -> dict:
             "latest.json / daily/{date}.json": {
                 "schema_version": "int，契约版本",
                 "meta": "{date, generated_at, source, prev_date}",
-                "report": "DailyReport.to_dict()：market_regime / breadth_pct / vix / results / alerts",
+                "report": (
+                    "DailyReport.to_dict()：market_regime / breadth_pct / vix / results / alerts；"
+                    "results[*].indicators.ytd_change 为截至当日的年初至今涨跌幅"
+                ),
                 "explain": "解释层：headline / top_risks / top_opportunities / delta_from_yesterday",
                 "state": "制度状态机：current_regime / days_in_regime / previous_regime / last_transition_date / transition_reason",
                 "similar": (
