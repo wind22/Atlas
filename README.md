@@ -36,6 +36,38 @@ python -m atlas.backtest --ticker SPY --online   # 真实历史
 
 打开生成的 `public/index.html` 查看当日市场姿态；同目录下的 `public/data/` 是页面消费的 JSON 数据契约。
 
+## 部署到 Zeabur / 自有服务器
+
+仓库根目录提供 `Dockerfile`，把静态看板、纽约时区的每日更新调度器和 HTTP 服务封装在
+同一个容器里。服务监听 Zeabur 注入的 `PORT`，并提供 `/healthz` 健康检查。
+
+部署时必须把一个持久卷挂载到 `/var/lib/atlas`；SQLite、生成后的站点和 JSON 数据契约
+都存放在这里，容器重启或重新部署不会丢失制度确认状态。空卷首次启动时会尝试从公开
+的 `data` 分支恢复最新状态，失败则降级到镜像内的冻结种子。
+
+常用环境变量：
+
+| 变量 | 默认值 | 说明 |
+|---|---|---|
+| `ATLAS_STOCKS` | 内置清单 | 逗号分隔的自选股 |
+| `ATLAS_PERIOD` | `3y` | 行情历史窗口 |
+| `ATLAS_RUN_ON_START` | `true` | 容器启动后立即刷新一次 |
+| `ATLAS_SCHEDULE_HOUR` | `16` | 纽约时区运行小时 |
+| `ATLAS_SCHEDULE_MINUTE` | `30` | 纽约时区运行分钟 |
+| `ATLAS_OFFLINE` | `false` | 仅演示/诊断时使用合成数据 |
+| `ATLAS_STATE_ARCHIVE_URL` | GitHub `data` 分支归档 | 空卷恢复来源；设为空可禁用 |
+
+本地验证容器：
+
+```bash
+docker build -t atlas-monitor .
+docker run --rm -p 8080:8080 -v atlas-state:/var/lib/atlas atlas-monitor
+curl http://localhost:8080/healthz
+```
+
+真实券商或模拟盘凭证不得放进这个公开网站容器。交易执行应作为独立的私有 worker
+部署，使用单独的持久卷和环境变量，只消费 Atlas 的状态结果。
+
 ### 命令行选项（`python -m atlas`）
 
 | 选项 | 说明 |

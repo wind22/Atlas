@@ -19,6 +19,7 @@ test = ["pytest>=7.4"]
 
 [project.scripts]
 atlas = "atlas.runner:main"
+atlas-server = "atlas.server:main"
 
 [tool.setuptools]
 packages = ["atlas", "atlas.storage", "atlas.report", "atlas.site", "atlas.pipelines"]
