@@ -2,7 +2,7 @@
   "date": "2026-10-12",
   "prev_date": "2026-10-08",
   "source": "yfinance（Yahoo）；黄金按 USD/CNY 换算为人民币/克",
-  "generated_at": "2026-10-13 02:39 UTC",
+  "generated_at": "2026-10-14 00:26 UTC",
   "regime": {
     "light": "🟢",
     "label": "进攻区 Risk-On",
@@ -22,15 +22,6 @@
   "prev_regime_label": null,
   "similar": [
     {
-      "date": "2026-09-02",
-      "regime_label": "进攻区 Risk-On",
-      "regime_light": "🟢",
-      "T": "77",
-      "R": "0",
-      "breadth": "72.7%",
-      "vix": "15.2"
-    },
-    {
       "date": "2026-09-04",
       "regime_label": "进攻区 Risk-On",
       "regime_light": "🟢",
@@ -38,6 +29,15 @@
       "R": "0",
       "breadth": "72.7%",
       "vix": "15.3"
+    },
+    {
+      "date": "2026-09-02",
+      "regime_label": "进攻区 Risk-On",
+      "regime_light": "🟢",
+      "T": "77",
+      "R": "0",
+      "breadth": "72.7%",
+      "vix": "15.2"
     },
     {
       "date": "2026-08-31",
@@ -57,14 +57,16 @@
       "SK海力士：深度回撤>20%"
     ],
     "top_opportunities": [
+      "SK海力士：重新站上200日均线",
       "标普500：多资产切换 Risk-On（股↑债↓金↓）"
     ],
     "delta_from_yesterday": [
-      "新增风险：小米集团：深度回撤>20%"
+      "新增风险：小米集团：深度回撤>20%",
+      "新增机会：SK海力士：重新站上200日均线"
     ]
   },
   "breadth_pct": "45.5%",
-  "vix": "15.2",
+  "vix": "15.3",
   "risk_legend": "风险档位：🟢 R≤30 · 🟡 30–60 · 🔴 R≥60，以档位与触发条目为准",
   "markets": [
     {
@@ -418,9 +420,9 @@
       "ticker": "GC=F",
       "name": "黄金",
       "link": "t/GC_F.html",
-      "price": "903.60",
+      "price": "900.54",
       "price_unit": "元/克",
-      "chg": "-0.5%",
+      "chg": "-0.1%",
       "chg_good": false,
       "tone": "bad",
       "trend": {
@@ -428,11 +430,11 @@
         "icon": "▼",
         "cls": "tag-bad"
       },
-      "ytd": "-7.5%",
+      "ytd": "-7.8%",
       "ytd_good": false,
-      "mom": "+4.6%",
+      "mom": "+2.4%",
       "mom_good": true,
-      "dist_high": "-24.0%",
+      "dist_high": "-24.3%",
       "risk": {
         "label": "中风险",
         "icon": "🟡",
@@ -735,21 +737,21 @@
       "ticker": "1810.HK",
       "name": "小米集团",
       "link": "t/1810_HK.html",
-      "price": "24.16",
+      "price": "25.04",
       "price_unit": "",
-      "chg": "-6.9%",
-      "chg_good": false,
+      "chg": "+2.1%",
+      "chg_good": true,
       "tone": "bad",
       "trend": {
         "label": "空头破位",
         "icon": "▼",
         "cls": "tag-bad"
       },
-      "ytd": "-38.4%",
+      "ytd": "-36.1%",
       "ytd_good": false,
-      "mom": "-52.0%",
+      "mom": "-52.8%",
       "mom_good": false,
-      "dist_high": "-56.7%",
+      "dist_high": "-54.5%",
       "risk": {
         "label": "高风险",
         "icon": "🔴",
@@ -772,21 +774,21 @@
       "ticker": "159605.SZ",
       "name": "159605",
       "link": "t/159605_SZ.html",
-      "price": "0.73",
+      "price": "0.74",
       "price_unit": "",
-      "chg": "-1.5%",
-      "chg_good": false,
+      "chg": "+0.5%",
+      "chg_good": true,
       "tone": "bad",
       "trend": {
         "label": "空头破位",
         "icon": "▼",
         "cls": "tag-bad"
       },
-      "ytd": "-32.6%",
+      "ytd": "-31.2%",
       "ytd_good": false,
       "mom": "-38.5%",
       "mom_good": false,
-      "dist_high": "-43.2%",
+      "dist_high": "-42.0%",
       "risk": {
         "label": "中风险",
         "icon": "🟡",
@@ -803,21 +805,21 @@
       "ticker": "005930.KS",
       "name": "三星电子",
       "link": "t/005930_KS.html",
-      "price": "232,750.00",
+      "price": "238,000.00",
       "price_unit": "",
-      "chg": "-11.2%",
-      "chg_good": false,
+      "chg": "+2.6%",
+      "chg_good": true,
       "tone": "warn",
       "trend": {
         "label": "震荡",
         "icon": "◆",
         "cls": "tag-warn"
       },
-      "ytd": "+94.7%",
+      "ytd": "+99.1%",
       "ytd_good": true,
-      "mom": "+222.8%",
+      "mom": "+216.9%",
       "mom_good": true,
-      "dist_high": "-35.7%",
+      "dist_high": "-34.3%",
       "risk": {
         "label": "低风险",
         "icon": "🟢",
@@ -832,21 +834,21 @@
       "ticker": "000660.KS",
       "name": "SK海力士",
       "link": "t/000660_KS.html",
-      "price": "1,476,000.00",
+      "price": "1,475,000.00",
       "price_unit": "",
-      "chg": "-12.2%",
-      "chg_good": false,
+      "chg": "+2.2%",
+      "chg_good": true,
       "tone": "warn",
       "trend": {
         "label": "震荡",
         "icon": "◆",
         "cls": "tag-warn"
       },
-      "ytd": "+127.2%",
+      "ytd": "+127.1%",
       "ytd_good": true,
-      "mom": "+395.4%",
+      "mom": "+422.2%",
       "mom_good": true,
-      "dist_high": "-49.4%",
+      "dist_high": "-49.5%",
       "risk": {
         "label": "低风险",
         "icon": "🟢",
@@ -858,6 +860,10 @@
       ],
       "hints": [
         {
+          "title": "重新站上200日均线",
+          "is_risk": false
+        },
+        {
           "title": "深度回撤>20%",
           "is_risk": true
         }
@@ -867,9 +873,9 @@
       "ticker": "562590.SS",
       "name": "半导体设备ETF",
       "link": "t/562590_SS.html",
-      "price": "0.85",
+      "price": "0.87",
       "price_unit": "",
-      "chg": "-3.0%",
+      "chg": "-0.8%",
       "chg_good": false,
       "tone": "warn",
       "trend": {
@@ -877,11 +883,11 @@
         "icon": "▼",
         "cls": "tag-bad"
       },
-      "ytd": "+36.0%",
+      "ytd": "+39.1%",
       "ytd_good": true,
       "mom": "+85.7%",
       "mom_good": true,
-      "dist_high": "-76.9%",
+      "dist_high": "-76.4%",
       "risk": {
         "label": "中风险",
         "icon": "🟡",
@@ -903,9 +909,9 @@
       "ticker": "^N225",
       "name": "日经225",
       "link": "t/_N225.html",
-      "price": "67,273.49",
+      "price": "67,958.03",
       "price_unit": "",
-      "chg": "-2.5%",
+      "chg": "-1.6%",
       "chg_good": false,
       "tone": "good",
       "trend": {
@@ -913,11 +919,11 @@
         "icon": "▲",
         "cls": "tag-good"
       },
-      "ytd": "+33.6%",
+      "ytd": "+35.0%",
       "ytd_good": true,
       "mom": "+43.9%",
       "mom_good": true,
-      "dist_high": "-7.0%",
+      "dist_high": "-6.1%",
       "risk": {
         "label": "低风险",
         "icon": "🟢",
@@ -928,6 +934,16 @@
     }
   ],
   "alerts": [
+    {
+      "is_risk": false,
+      "icon": "✨",
+      "kind_label": "机会",
+      "ticker": "000660.KS",
+      "name": "SK海力士",
+      "title": "重新站上200日均线",
+      "detail": "收盘1475000.00 由下转上收复200日均线1449159.09，制度或转向进攻",
+      "severity": 9
+    },
     {
       "is_risk": true,
       "icon": "⚠️",
@@ -945,7 +961,7 @@
       "ticker": "1810.HK",
       "name": "小米集团",
       "title": "深度回撤>20%",
-      "detail": "较60日高点回撤24.2%，深度回撤、风险偏高",
+      "detail": "较60日高点回撤21.5%，深度回撤、风险偏高",
       "severity": 6
     },
     {
@@ -965,7 +981,7 @@
       "ticker": "562590.SS",
       "name": "半导体设备ETF",
       "title": "深度回撤>20%",
-      "detail": "较60日高点回撤30.2%，深度回撤、风险偏高",
+      "detail": "较60日高点回撤28.6%，深度回撤、风险偏高",
       "severity": 6
     },
     {
