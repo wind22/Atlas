@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-18 03:00 UTC",
+  "generated_at": "2026-11-19 02:42 UTC",
   "benchmark": "SPY",
   "vix": "^VIX",
   "layers": {
